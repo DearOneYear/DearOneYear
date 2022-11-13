@@ -1,0 +1,40 @@
+{
+  "email": "rabbit@gmail.com",
+  "pwd": 1234,
+  "birthMonth": 5,
+  "birthDate": 9,
+  "letters": [
+    {
+      "id": 1,
+      "recipient": "토끼",
+      "sender": "거북이",
+      "message": "토끼야 안녕. 나는 거북이야!",
+      "sendAt": [2022, 10, 1],
+      "openAt": [2022, 12, 31]
+    },
+    {
+      "id": 2,
+      "recipient": "거북이",
+      "sender": "토끼",
+      "message": "거북이야 안녕. 나는 토끼야!",
+      "sendAt": [2022, 11, 1],
+      "openAt": [2022, 11, 11]
+    },
+    {
+      "id": 3,
+      "recipient": "거북이",
+      "sender": "거북이",
+      "message": "나는 거북이!",
+      "sendAt": [2022, 10, 1],
+      "openAt": [2023, 12, 31]
+    },
+    {
+      "id": 4,
+      "recipient": "거북이",
+      "sender": "거북이",
+      "message": "거북이입니다",
+      "sendAt": [2022, 11, 1],
+      "openAt": [2022, 11, 11]
+    }
+  ]
+}
