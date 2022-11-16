@@ -11,7 +11,9 @@ const LetterOpen = () => {
   letters.map((l) => {
     if (l.id === letterId) {
       currLetter = l;
+      l.isOpend = true;
     }
+    console.log(l);
   });
 
   return (
@@ -20,7 +22,7 @@ const LetterOpen = () => {
       <h3>편지 내용</h3>
       <p>To. {currLetter.recipient}</p>
       <p>{currLetter.message}</p>
-      <p>From. {currLetter.recipient} </p>
+      <p>From. {currLetter.sender} </p>
 
       <br />
       {currLetter.sender === currLetter.recipient ? (

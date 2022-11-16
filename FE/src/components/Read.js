@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import LetterBoxNav from "../components/LetterBoxNav";
 import dummyLetter from "../dummy/dummyLetter.json";
+import { Link } from "react-router-dom";
+import LetterBoxNav from "./LetterBoxNav";
 
-const LetterBox = () => {
+const Read = () => {
   let letters = dummyLetter.letters;
   letters.map((l) => {
     let now = new Date();
@@ -22,10 +22,10 @@ const LetterBox = () => {
     return a.dday - b.dday;
   });
 
-  let unOpenedLetters = [];
+  let openedLetters = [];
   letters.map((l) => {
-    if (l.isOpend !== true) {
-      unOpenedLetters.push(l);
+    if (l.isOpend === true) {
+      openedLetters.push(l);
     }
   });
 
@@ -51,7 +51,8 @@ const LetterBox = () => {
       <br />
       <LetterBoxNav />
       <br />
-      {unOpenedLetters.map((letter) => (
+
+      {openedLetters.map((letter) => (
         <div key={letter.id} id={letter.id}>
           <Link
             to={`/detail/${letter.id}`}
@@ -92,4 +93,4 @@ const LetterBox = () => {
   );
 };
 
-export default LetterBox;
+export default Read;
