@@ -17,6 +17,9 @@ const LetterBox = () => {
       l.ddayInfo = "D - DAY";
     }
   });
+  letters.sort(function (a, b) {
+    return a.dday - b.dday;
+  });
 
   //링크 공유하기
   let url = document.location.href;
@@ -44,11 +47,12 @@ const LetterBox = () => {
             to={`/detail/${letter.id}`}
             style={{ textDecoration: "none", color: "black" }}
           >
-            {letter.dday <= 0 ? (
+            {letter.isOpend === true ? (
               <img style={{ width: "10%" }} src="/img/open.png" alt="open" />
             ) : (
               <img style={{ width: "10%" }} src="/img/close.png" alt="close" />
             )}
+            {/* <img style={{ width: "10%" }} src="/img/close.png" alt="close" /> */}
           </Link>
           <p>{letter.ddayInfo}</p>
 
