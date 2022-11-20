@@ -1,5 +1,4 @@
-import dummyLetter from "../dummy/dummyLetter.json";
-
+import dummyLetter from "../letterbox/dummy/dummyLetter.json";
 const LetterClose = () => {
   let currUrl = window.document.location.href;
   let urlArr = currUrl.split("/");

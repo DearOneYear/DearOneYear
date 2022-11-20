@@ -1,4 +1,4 @@
-import dummyLetter from "../dummy/dummyLetter.json";
+import dummyLetter from "../letterbox/dummy/dummyLetter.json";
 
 const LetterOpen = () => {
   let currUrl = window.document.location.href;

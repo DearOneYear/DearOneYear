@@ -1,9 +1,9 @@
 import LetterOpen from "./LetterOpen";
 import LetterClose from "./LetterClose";
 import { useNavigate } from "react-router-dom";
-import dummyLetter from "../dummy/dummyLetter.json";
+import dummyLetter from "../letterbox/dummy/dummyLetter.json";
 
-const LetterCheck = () => {
+const ReadingLetter = () => {
   const navigate = useNavigate();
   const handleGoBack = () => {
     navigate(-1);
@@ -49,4 +49,4 @@ const LetterCheck = () => {
   );
 };
 
-export default LetterCheck;
+export default ReadingLetter;

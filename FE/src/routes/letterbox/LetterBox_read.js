@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import LetterBoxNav from "../components/LetterBoxNav";
-import dummyLetter from "../dummy/dummyLetter.json";
+import dummyLetter from "./dummy/dummyLetter.json";
+import { Link, useNavigate } from "react-router-dom";
+import LetterBoxNav from "./LetterBoxNav";
 
-const LetterBox = () => {
+const LetterBoxRead = () => {
   let letters = dummyLetter.letters;
   letters.map((l) => {
     let now = new Date();
@@ -22,10 +22,10 @@ const LetterBox = () => {
     return a.dday - b.dday;
   });
 
-  let unOpenedLetters = [];
+  let openedLetters = [];
   letters.map((l) => {
-    if (l.isOpend !== true) {
-      unOpenedLetters.push(l);
+    if (l.isOpend === true) {
+      openedLetters.push(l);
     }
   });
 
@@ -43,15 +43,21 @@ const LetterBox = () => {
     alert("링크가 복사되었습니다.");
   };
 
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       <h1>편지함</h1>
-      <button>뒤로 가기</button>
+      <button onClick={goBack}>뒤로 가기</button>
       <br />
       <br />
       <LetterBoxNav />
       <br />
-      {unOpenedLetters.map((letter) => (
+
+      {openedLetters.map((letter) => (
         <div key={letter.id} id={letter.id}>
           <Link
             to={`/detail/${letter.id}`}
@@ -92,4 +98,4 @@ const LetterBox = () => {
   );
 };
 
-export default LetterBox;
+export default LetterBoxRead;
