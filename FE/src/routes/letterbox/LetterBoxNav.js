@@ -10,7 +10,10 @@ const Nav = styled.div`
 const LetterBoxNav = () => {
   return (
     <Nav>
-      <Link to="/letterbox" style={{ color: "black", textDecoration: "none" }}>
+      <Link
+        to="/letterbox/unread"
+        style={{ color: "black", textDecoration: "none" }}
+      >
         <span>안 읽은 편지</span>
       </Link>
       <Link

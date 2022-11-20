@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import dummyLetter from "../dummy/dummyLetter.json";
+import dummyLetter from "../letterbox/dummy/dummyLetter.json";
 
 const MyPage = () => {
   const email = dummyLetter.email;
