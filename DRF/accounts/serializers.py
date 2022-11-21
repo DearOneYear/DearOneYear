@@ -6,3 +6,10 @@ class UserSerializer(sz.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+        
+        #read_only_fields = ()
+        #write_only_fields = ('password',)
+
+        # extra_kwargs = {
+        #     'kakao_id' : {'write_only' : True}
+        # }

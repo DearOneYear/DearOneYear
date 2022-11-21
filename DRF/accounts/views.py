@@ -1,32 +1,26 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 # simplejwt
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 #from rest_framework_simplejwt.tokens import RefreshToken # to refresh token
 
-
-
-# from django.contrib.auth.models import User
 from .models import User
 from .serializers import UserSerializer
-# from .forms import SignupForm
 import json
 import datetime as dt
 
 # KAKAO SIGN IN
 from DearOneYearLetter.settings import SOCIAL_OUTH_CONFIG
 from django.shortcuts import render, redirect, get_object_or_404
-#from django.views import View
 from django.http import JsonResponse
 import requests
 
 
-
 # Create your views here.
 class KakaoSignInView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny]
     def get(self, request):
         app_key = SOCIAL_OUTH_CONFIG['KAKAO_REST_API_KEY'] # 내 앱의 KAKAO_REST_API_KEY
         redirect_uri = SOCIAL_OUTH_CONFIG['KAKAO_REDIRECT_URI']
@@ -36,12 +30,10 @@ class KakaoSignInView(APIView):
             f'{kakao_auth_api}&client_id={app_key}&redirect_uri={redirect_uri}'
         )
 
-
 class KakaoSignInCallBackView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny]
     def get(self, request):
         auth_code = request.GET.get('code')
-        # auth_code="BZct9Av3AXOgEASWND9qFCkduLUAI37Wg_DIOFMASPC45HuUGBgJJiC1ByKBcSzvMKIH3Ao9dRsAAAGEhX_jZQ"
         kakao_token_api = 'https://kauth.kakao.com/oauth/token'
         data = {
             'grant_type': 'authorization_code',
@@ -90,25 +82,67 @@ class KakaoSignInCallBackView(APIView):
             my_access_token = str(token.access_token)
             my_refresh_token = str(token)
 
-            data = {
-                "user" : UserSerializer(user).data,
-                "msg": "Logged in!", 
-                "my_access_token": my_access_token,
-                "my_refresh_token": my_refresh_token    
-            }
-            res = Response(data = data, status=status.HTTP_200_OK)
-            res.set_cookie('my_access_token', my_access_token)
-            return res
+            serializer=UserSerializer(user, data={'is_active':True}, partial = True)
+            if serializer.is_valid():
+                serializer.save()
+                data = {
+                    "user" : serializer.data,
+                    "msg": "Logged in!",
+                    "access_token": access_token,
+                    "my_access_token": my_access_token,
+                    "my_refresh_token": my_refresh_token    
+                }
+                res = Response(data = data, status=status.HTTP_200_OK)
+                res.set_cookie('access_token', access_token)
+                res.set_cookie('my_access_token', my_access_token)
+                res.set_cookie('my_refresh_token', my_refresh_token)
+                
+                return res
+            else:
+                context = {"msg": "Serializer is not valid.", "error":serializer.errors}
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             context = {"msg":"Log in failed...", "name": kakaoAccount['profile']['nickname'], "birthday": birth_str}
             return Response(context, status = status.HTTP_400_BAD_REQUEST)
 
-        # 예제에 있던 JsonResponse 이건 front로 보내려고 json resonse 한 건가????
         #return JsonResponse({"user_info": user_info_response.json()}) 
 
-
-# kakao 연동 해제 -> 나중에 생각하자
+# Log out
 class KakaoSignOutView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):        
+        ### Front에서 Query string 등으로 전달받고자 함!!!!
+        ### 혹은 Front에서 json으로 보내줘도 괜찮음. json.loads(request.body) 사용 가능.
+        access_token = request.GET.get('access_token')
+        
+        kakao_logout_api = "https://kapi.kakao.com/v1/user/logout"
+        header = {"Authorization": f"Bearer ${access_token}"}
+        logout_response = requests.post(kakao_logout_api, headers=header)
+
+        print(logout_response.json())
+        kakao_id = logout_response.json().get("id")
+
+        user = User.objects.get(kakao_id=kakao_id) # Do not user filter, because it returns Query Set. I need a Model Object.
+        print(user)
+        if user is None:
+            return Response(context={"msg":f'User not found. ${kakao_id}.'}, status = status.HTTP_400_BAD_REQUEST)
+
+        serializer = UserSerializer(user, data={'is_active':False}, partial = True)
+       
+        if serializer.is_valid():
+            serializer.save()
+            context = {"msg": "Logged Out! See you next time.", "is_active":serializer.data['is_active']}
+            res = Response(context, status=status.HTTP_200_OK)
+            # front에서 하면 됨 일단 테스트용
+            res.delete_cookie('my_access_token')
+            res.delete_cookie('access_token')
+            res.delete_cookie('my_refresh_token')
+            return res
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+
+# kakao 연동 해제
+class KakaoLinkOutView(APIView):
     permission_classes = [IsAuthenticated]
     def delete(self, request):        
         auth_code = request.GET.get('code')
