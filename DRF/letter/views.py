@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response #response
 from rest_framework import status
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 # time
 from datetime import datetime
 from datetime import timedelta
@@ -51,7 +51,7 @@ class LetterList(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class LetterDetail(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     def get_object(self, pk):
         return get_object_or_404(Letter, pk=pk)
     def get_now(self):
