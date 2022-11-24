@@ -17,21 +17,32 @@ import LetterBoxRead from "../routes/letterbox/LetterBox_read";
 // 편지 확인
 import ReadingLetter from "../routes/reading/ReadingLetter";
 
+// main
+import Main from "../routes/main/Main";
+import Login from "../routes/main/Login";
+// 로그인 여부 확인
+// import isLogin from "../routes/auth/isLogin";
+// import PrivateRoute from "../routes/auth/PrivateRoute";
+// import PublicRoute from "../routes/auth/PublicRoute"; 
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        // 메인화면
+        {/* // 메인화면 */}
         <Route path="/" element={<Home />} />
-        // 로그인
+        {/* // 로그인 */}
         <Route path="/oauth/kakao/callback" element={<Authcheck />} />
-        // 마이페이지
+        {/* // 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
+        
         <Route path="/mypage/edit" element={<MyPageEdit />} />
-        // 편지함
+        {/* // 편지함 */}
         <Route path="/letterbox/unread" element={<LetterBoxUnread />} />
         <Route path="/letterbox/read" element={<LetterBoxRead />} />
         <Route path="/detail/:id" element={<ReadingLetter />} />
+        {/* // 메인 */}
+        <Route path="/main" element={<Main />} />
+        <Route path="/main/login" element={<Login/>} />
       </Routes>
     </BrowserRouter>
   );
