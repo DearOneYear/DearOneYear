@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const MyPageEdit = () => {
+  const currName = "토끼";
   const currEmail = "inner0509@gmail.com";
   const currBirthMonth = 5;
   const currBirthDate = 9;
 
-  const [email, setEmail] = useState(currEmail);
   const [birthMonth, setBirthMonth] = useState(currBirthMonth);
   const [birthDate, setBirthDate] = useState(currBirthDate);
   const [maxDate, setMaxDate] = useState(31);
@@ -15,12 +15,8 @@ const MyPageEdit = () => {
   const thirty = ["4", "6", "9", "11"];
 
   const onChange = (e) => {
-    if (e.target.id === "email") {
-      setEmail(e.target.value);
-    }
     if (e.target.id === "birth_month") {
       setBirthMonth(e.target.value);
-      console.log(typeof e.target.value);
       if (thirtyOne.includes(e.target.value)) {
         setMaxDate(31);
       } else if (thirty.includes(e.target.value)) {
@@ -36,8 +32,8 @@ const MyPageEdit = () => {
   return (
     <>
       <h1>마이 페이지</h1>
-      <label htmlFor="email">이메일</label>
-      <input id="email" onChange={onChange} type="text" value={email} />
+      <p>이름 {currName}</p>
+      <p>카카오계정 이메일 {currEmail}</p>
       <p>생일</p>
       <input
         id="birth_month"
