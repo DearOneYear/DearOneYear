@@ -43,7 +43,14 @@ class LetterDetail(APIView):
         letter = self.get_object(pk);
         serializer = LetterSerializer(letter)
         return Response(serializer.data)
-
+    def post(self, request, pk):
+        letter = self.get_object(pk);
+        serializer = LetterSerializer(letter, data={'isOpened':True}, partial = True);
+        if serializer.is_valid():
+            serializer.isOpened = True
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     # edit, delete is not allowed
 
 # class LetterResult(APIView):
