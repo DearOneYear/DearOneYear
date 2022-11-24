@@ -20,19 +20,15 @@ const LetterBoxUnread = () => {
 
 
   const getLetter = async () => { 
-    console.log('받아보자');
     await axios.get('http://localhost:8000/letter/postbox/', { headers: { Authorization: `Bearer ${accessToken}`} }).then((res) => {
     setDbLetter([...res.data]);
   }).catch(function (err) {
     console.log(err)
   });
   }  
-  
-  console.log(dbLetter);
-  
+    
 
   dbLetter.map((e) => {
-    console.log(e);
     let open = e.openAt.split('T')[0].split('-');
     e.openYear = open[0];
     e.openMonth = open[1];
@@ -44,7 +40,7 @@ const LetterBoxUnread = () => {
     e.sendDate = send[2];
   })
 
-  console.log(dbLetter);
+  // console.log(dbLetter);
 
   useEffect(() => {
     getCookie();
@@ -55,12 +51,14 @@ const LetterBoxUnread = () => {
 
 
 
-  // let unOpenedLetters = [];
-  // letters.map((l) => {
-  //   if (l.isOpend !== true) {
-  //     unOpenedLetters.push(l);
-  //   }
-  // });
+  let unOpenedLetters = [];
+  dbLetter.map((l) => {
+    if (l.isOpend !== true) {
+      unOpenedLetters.push(l);
+    }
+  });
+
+  console.log(unOpenedLetters);
 
   //링크 공유하기
   let url = document.location.href;
@@ -89,7 +87,7 @@ const LetterBoxUnread = () => {
       <br />
       <LetterBoxNav />
       <br />
-      {dbLetter.map((letter) => (
+      {unOpenedLetters.map((letter) => (
         <div key={letter.id} id={letter.id}>
           <Link
             to={`/detail/${letter.id}`}
