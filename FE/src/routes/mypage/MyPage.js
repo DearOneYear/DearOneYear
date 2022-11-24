@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import dummyLetter from "../letterbox/dummy/dummyLetter.json";
 
 const MyPage = () => {
+  const name = "토끼";
   const email = dummyLetter.email;
   const birth_month = dummyLetter.birthMonth;
   const birth_date = dummyLetter.birthDate;
@@ -16,17 +17,16 @@ const MyPage = () => {
     <>
       <h1>마이 페이지</h1>
       <button onClick={handleGoBack}>뒤로 가기</button>
-
-      <p>이메일</p>
-      <p>{email}</p>
-      <p>생일</p>
+      <p>이름 {name}</p>
+      <p>카카오계정 이메일 {email}</p>
       <p>
-        {birth_month} 월 {birth_date} 일
+        생일 {birth_month} 월 {birth_date} 일
       </p>
+
       <Link to="/mypage/edit">
-        <button>정보 수정하기</button>
+        <button>프로필 수정하기</button>
       </Link>
-      <button>탈퇴하기</button>
+      <p>로그아웃</p>
     </>
   );
 };
