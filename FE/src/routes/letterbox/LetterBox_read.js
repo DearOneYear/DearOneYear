@@ -1,33 +1,64 @@
 import dummyLetter from "./dummy/dummyLetter.json";
 import { Link, useNavigate } from "react-router-dom";
 import LetterBoxNav from "./LetterBoxNav";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const LetterBoxRead = () => {
-  let letters = dummyLetter.letters;
-  letters.map((l) => {
-    let now = new Date();
-    let openDay = new Date(`${l.openAt[0]}, ${l.openAt[1]}, ${l.openAt[2]}`);
-    let gap = openDay.getTime() - now.getTime();
-    let dday = Math.ceil(gap / (1000 * 60 * 60 * 24));
-    l.dday = dday;
-    if (dday > 0) {
-      l.ddayInfo = `D - ${dday}`;
-    } else if (dday < 0) {
-      l.ddayInfo = `D + ${Math.abs(dday)}`;
-    } else if (dday === 0) {
-      l.ddayInfo = "D - DAY";
-    }
+  let [dbLetter, setDbLetter] = useState([]);
+  let [accessToken, setAccessToken] = useState('');
+
+  const getCookie = () => {
+    let cookie = document.cookie.split(';');
+    let cookieArr = [];
+    cookie.map((e) => {
+      let c = e.split('=');
+      cookieArr.push(c);
+    });
+    setAccessToken(cookieArr[2][1]);
+  }
+
+
+  const getLetter = async () => { 
+    await axios.get('http://localhost:8000/letter/postbox/', { headers: { Authorization: `Bearer ${accessToken}`} }).then((res) => {
+    setDbLetter([...res.data]);
+  }).catch(function (err) {
+    console.log(err)
   });
-  letters.sort(function (a, b) {
-    return a.dday - b.dday;
-  });
+  }  
+    
+
+  dbLetter.map((e) => {
+    let open = e.openAt.split('T')[0].split('-');
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
+    
+    let send = e.sendAt.split('T')[0].split('-');
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
+  })
+
+  // console.log(dbLetter);
+
+  useEffect(() => {
+    getCookie();
+    getLetter();
+  }, []);
+
+
+
+
 
   let openedLetters = [];
-  letters.map((l) => {
+  dbLetter.map((l) => {
     if (l.isOpend === true) {
       openedLetters.push(l);
     }
   });
+
+  console.log(openedLetters);
 
   //링크 공유하기
   let url = document.location.href;
