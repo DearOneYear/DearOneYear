@@ -16,6 +16,9 @@ import LetterBoxRead from "../routes/letterbox/LetterBox_read";
 
 // 편지 확인
 import ReadingLetter from "../routes/reading/ReadingLetter";
+import OpenGift from "../routes/reading/OpenGift";
+import OpenBottle from "../routes/reading/OpenBottle";
+import OpenPhoto from "../routes/reading/OpenPhoto";
 
 // main
 import Main from "../routes/main/Main";
@@ -40,9 +43,15 @@ const AppRouter = () => {
         <Route path="/letterbox/unread" element={<LetterBoxUnread />} />
         <Route path="/letterbox/read" element={<LetterBoxRead />} />
         <Route path="/detail/:id" element={<ReadingLetter />} />
+
         {/* // 메인 */}
         <Route path="/main" element={<Main />} />
         <Route path="/main/login" element={<Login/>} />
+
+        <Route path="/detail/:id/gift" element={<OpenGift />} />
+        <Route path="/detail/:id/bottle" element={<OpenBottle />} />
+        <Route path="/detail/:id/photo" element={<OpenPhoto />} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,5 @@
 import dummyLetter from "../letterbox/dummy/dummyLetter.json";
+import { useNavigate, Link } from "react-router-dom";
 
 const LetterOpen = () => {
   let currUrl = window.document.location.href;
@@ -13,23 +14,49 @@ const LetterOpen = () => {
       currLetter = l;
       l.isOpend = true;
     }
-    console.log(l);
   });
+
+  // 뒤로 가기
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
   return (
     <>
-      <br />
-      <h3>편지 내용</h3>
-      <p>To. {currLetter.recipient}</p>
-      <p>{currLetter.message}</p>
-      <p>From. {currLetter.sender} </p>
+      <h1>편지가 도착했어요</h1>
+      <button onClick={handleGoBack}>뒤로 가기</button>
+      {currLetter.sender === currLetter.recipient ? (
+        <>
+          <p>
+            {currLetter.sendAt[0]}년 {currLetter.sendAt[1]}월{" "}
+            {currLetter.sendAt[2]}일,
+          </p>
+
+          <p>
+            뭐뭐하고 싶었던 당신이 보낸 유리병이 --- 일 동안 세상을 여행하고
+            당신께 돌아왔어요.
+          </p>
+        </>
+      ) : (
+        <>
+          <p>
+            {currLetter.sendAt[0]}년 {currLetter.sendAt[1]}월{" "}
+            {currLetter.sendAt[2]}일,
+          </p>
+          <p>
+            뭐뭐하고 싶었던 {currLetter.sender} 님이 보낸 유리병이 ---일 동안
+            세상을 여행하고 {currLetter.recipient} 님께 도착했어요.
+          </p>
+        </>
+      )}
+      <p>유리병을 눌러 편지를 열어볼까요?</p>
+
+      <Link to={`/detail/${currLetter.id}/gift`}>
+        <button>유리병</button>
+      </Link>
 
       <br />
-      {currLetter.sender === currLetter.recipient ? (
-        <button>새로운 편지하기</button>
-      ) : (
-        <button>답장하기</button>
-      )}
     </>
   );
 };
