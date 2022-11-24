@@ -19,6 +19,7 @@ class Letter(models.Model):
     sender = models.CharField(max_length=50)
     recipient = models.CharField(max_length=50)    
     message = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
 
     KST = timezone('Asia/Seoul')
     now = datetime.datetime.utcnow()
