@@ -1,33 +1,65 @@
 import { Link, useNavigate } from "react-router-dom";
 import LetterBoxNav from "./LetterBoxNav";
 import dummyLetter from "./dummy/dummyLetter.json";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const LetterBoxUnread = () => {
-  let letters = dummyLetter.letters;
-  letters.map((l) => {
-    let now = new Date();
-    let openDay = new Date(`${l.openAt[0]}, ${l.openAt[1]}, ${l.openAt[2]}`);
-    let gap = openDay.getTime() - now.getTime();
-    let dday = Math.ceil(gap / (1000 * 60 * 60 * 24));
-    l.dday = dday;
-    if (dday > 0) {
-      l.ddayInfo = `D - ${dday}`;
-    } else if (dday < 0) {
-      l.ddayInfo = `D + ${Math.abs(dday)}`;
-    } else if (dday === 0) {
-      l.ddayInfo = "D - DAY";
-    }
-  });
-  letters.sort(function (a, b) {
-    return a.dday - b.dday;
+  console.log("여기");
+
+  let [dbLetter, setDbLetter] = useState([]);
+  let [accessToken, setAccessToken] = useState("");
+
+  const getCookie = () => {
+    let cookie = document.cookie.split(";");
+    let cookieArr = [];
+    cookie.map((e) => {
+      let c = e.split("=");
+      cookieArr.push(c);
+    });
+    setAccessToken(cookieArr[2][1]);
+  };
+
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/postbox/", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        setDbLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+
+  dbLetter.map((e) => {
+    let open = e.openAt.split("T")[0].split("-");
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
+
+    let send = e.sendAt.split("T")[0].split("-");
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
   });
 
+  // console.log(dbLetter);
+
+  useEffect(() => {
+    getCookie();
+    getLetter();
+  }, []);
+
   let unOpenedLetters = [];
-  letters.map((l) => {
+  dbLetter.map((l) => {
     if (l.isOpend !== true) {
       unOpenedLetters.push(l);
     }
   });
+
+  console.log(unOpenedLetters);
 
   //링크 공유하기
   let url = document.location.href;
@@ -69,15 +101,15 @@ const LetterBoxUnread = () => {
             )}
             {/* <img style={{ width: "10%" }} src="/img/close.png" alt="close" /> */}
           </Link>
-          <p>{letter.ddayInfo}</p>
+          {/* <p>D - {letter.remaining_days}</p> */}
 
-          {letter.recipient !== letter.sender ? (
-            <span>{letter.sender} 에게</span>
+          {letter.to_name !== letter.from_name ? (
+            <span>{letter.to_name}에게</span>
           ) : (
             <span>나에게</span>
           )}
 
-          {letter.recipient !== letter.sender ? (
+          {letter.to_name !== letter.from_name ? (
             <span onClick={onShareClick} id={letter.id}>
               🔗
             </span>
@@ -86,9 +118,8 @@ const LetterBoxUnread = () => {
           )}
 
           <p>
-            {`${letter.sendAt[0]}년 ${letter.sendAt[1]}월 ${letter.sendAt[2]}일`}
-            →
-            {`${letter.openAt[0]}년 ${letter.openAt[1]}월 ${letter.openAt[2]}일`}
+            {`${letter.sendYear}년 ${letter.sendMonth}월 ${letter.sendDate}일`}→
+            {`${letter.openYear}년 ${letter.openMonth}월 ${letter.openDate}일`}
           </p>
           <hr />
         </div>

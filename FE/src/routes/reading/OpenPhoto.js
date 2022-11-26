@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import dummyLetter from "../letterbox/dummy/dummyLetter.json";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const OpenPhoto = () => {
   // 뒤로 가기
@@ -15,19 +17,49 @@ const OpenPhoto = () => {
   let letters = dummyLetter.letters;
   let currLetter;
 
-  letters.map((l) => {
-    if (l.id === letterId) {
-      currLetter = l;
-      l.isOpend = true;
-    }
-  });
+  let [dbLetter, setDbLetter] = useState([]);
+  let [accessToken, setAccessToken] = useState("");
+
+  const getCookie = () => {
+    let cookie = document.cookie.split(";");
+    let cookieArr = [];
+    cookie.map((e) => {
+      let c = e.split("=");
+      cookieArr.push(c);
+    });
+    setAccessToken(cookieArr[2][1]);
+  };
+
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/postbox/", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        setDbLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+
+    dbLetter.map((l) => {
+      if (l.id === letterId) {
+        currLetter = l;
+      }
+    });
+  };
+
+  useEffect(() => {
+    getCookie();
+    getLetter();
+  }, []);
 
   return (
     <>
       <h1>편지가 도착했어요</h1>
       <button onClick={handleGoBack}>뒤로 가기</button>
       <br />
-      <p>사진</p>
+      <img alt="gift_photo" src={currLetter.image} />
       <br />
       <button>새로운 편지 하러 가기</button>
     </>
