@@ -1,44 +1,49 @@
 import { Link, useNavigate } from "react-router-dom";
 import LetterBoxNav from "./LetterBoxNav";
 import dummyLetter from "./dummy/dummyLetter.json";
-import axios from 'axios';
+import axios from "axios";
 import { useState, useEffect } from "react";
 
 const LetterBoxUnread = () => {
+  console.log("여기");
+
   let [dbLetter, setDbLetter] = useState([]);
-  let [accessToken, setAccessToken] = useState('');
+  let [accessToken, setAccessToken] = useState("");
 
   const getCookie = () => {
-    let cookie = document.cookie.split(';');
+    let cookie = document.cookie.split(";");
     let cookieArr = [];
     cookie.map((e) => {
-      let c = e.split('=');
+      let c = e.split("=");
       cookieArr.push(c);
     });
     setAccessToken(cookieArr[2][1]);
-  }
+  };
 
-
-  const getLetter = async () => { 
-    await axios.get('http://localhost:8000/letter/postbox/', { headers: { Authorization: `Bearer ${accessToken}`} }).then((res) => {
-    setDbLetter([...res.data]);
-  }).catch(function (err) {
-    console.log(err)
-  });
-  }  
-    
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/postbox/", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res) => {
+        setDbLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
 
   dbLetter.map((e) => {
-    let open = e.openAt.split('T')[0].split('-');
+    let open = e.openAt.split("T")[0].split("-");
     e.openYear = open[0];
     e.openMonth = open[1];
     e.openDate = open[2];
-    
-    let send = e.sendAt.split('T')[0].split('-');
+
+    let send = e.sendAt.split("T")[0].split("-");
     e.sendYear = send[0];
     e.sendMonth = send[1];
     e.sendDate = send[2];
-  })
+  });
 
   // console.log(dbLetter);
 
@@ -46,10 +51,6 @@ const LetterBoxUnread = () => {
     getCookie();
     getLetter();
   }, []);
-
-
-
-
 
   let unOpenedLetters = [];
   dbLetter.map((l) => {
@@ -100,7 +101,7 @@ const LetterBoxUnread = () => {
             )}
             {/* <img style={{ width: "10%" }} src="/img/close.png" alt="close" /> */}
           </Link>
-          {/* <p>{letter.ddayInfo}</p> */}
+          {/* <p>D - {letter.remaining_days}</p> */}
 
           {letter.to_name !== letter.from_name ? (
             <span>{letter.to_name}에게</span>
@@ -117,8 +118,7 @@ const LetterBoxUnread = () => {
           )}
 
           <p>
-            {`${letter.sendYear}년 ${letter.sendMonth}월 ${letter.sendDate}일`}
-            →
+            {`${letter.sendYear}년 ${letter.sendMonth}월 ${letter.sendDate}일`}→
             {`${letter.openYear}년 ${letter.openMonth}월 ${letter.openDate}일`}
           </p>
           <hr />

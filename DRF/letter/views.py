@@ -63,7 +63,7 @@ class LetterDetail(APIView):
         return td.days, td.seconds//3600, (td.seconds//60)%60
 
     def get(self, request, pk):
-        letter = self.get_object(pk);
+        letter = self.get_object(pk)
         print(type(letter.openAt))
         print(type(self.get_now()))
         
@@ -72,14 +72,27 @@ class LetterDetail(APIView):
         dday = openDay - datetime.datetime.now()
         print(dday)
         [tday, thour, tminute] = self.days_hours_minutes(dday)
+        print(dday.days)
+        print(thour)
+        print(tminute)
 
-        if dday.days > 0 or thour > 0 or tminute > 0 or dday.seconds > 0:
+        if dday.days < 0: 
+            serializer = LetterSerializer(letter)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        elif dday.days > 0:
             #날짜 남은 것
-            return Response({"msg": "아직!", "remaining_days":str(dday.days), "open_date" : self.get_now()})
+            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt})
+        elif thour > 0 or tminute > 0 or dday.seconds > 0:
+            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt})        
 
+    def post(self, request, pk):
+        letter = self.get_object(pk)
         serializer = LetterSerializer(letter)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+
+        if serializer.is_valid():
+            serializer.save(letter, data={'isOpened':True}, partial = True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response({"msg": "Letter read failed."}, status = status.HTTP_400_BAD_REQUEST)
 
     # edit, delete is not allowed
-
 # class LetterResult(APIView):
