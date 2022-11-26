@@ -94,14 +94,14 @@ AUTH_USER_MODEL = 'accounts.User'
 # )
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
 ]
 
 ROOT_URLCONF = 'DearOneYearLetter.urls'
@@ -171,6 +171,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+# Media files - 업로드를 하는 URL과 디렉토리 설정
+MEDIA_URL = '/files/' # 업로드 할 경로
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads') #로컬 디렉토리 어디에 저장할 것인지
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -182,6 +186,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://localhost:8000', 'http://localhost:3000']
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
 REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': (
@@ -191,6 +215,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES':(
         # authorization
+        'rest_framework.authentication.TokenAuthentication', 
         # jwt를 이용하여 인증함
         'rest_framework_simplejwt.authentication.JWTAuthentication', # token을 이용한 인증
         # 'rest_framework.authentication.SessionAuthentication', # session을 통한 인증
