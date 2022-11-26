@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#장고
+0004_alter_letter_openat_alter_letter_sendat.py
+secrets.json
