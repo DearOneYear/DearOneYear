@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import KakaoSignInView, KakaoSignInCallBackView, KakaoSignOutView, UserDetailView
+from .views import KakaoSignInView, KakaoSignInCallBackView, KakaoSignOutView, VerifyUser, UserDetailView
 
 urlpatterns = [
     path('signin/kakao/', KakaoSignInView.as_view()),
     path('signin/kakao/callback/', KakaoSignInCallBackView.as_view()), # kakao 앱에서 설정한 redirect_uri와 일치하게
     path('signout/kakao/', KakaoSignOutView.as_view()),
-
+    path('verify/', VerifyUser.as_view() ),
     path('mypage/', UserDetailView.as_view()), # front에서 query string을 받으면 뒤에 int 어쩌구는 지울 수 있을지도?
 ]

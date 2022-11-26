@@ -20,6 +20,6 @@ from .views import LetterList, LetterDetail
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
-    path('postbox/', LetterList.as_view()),
+    path('letterbox/', LetterList.as_view()),
     path('letter/<int:pk>', LetterDetail.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
