@@ -1,11 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import LetterBoxNav from "./LetterBoxNav";
 import dummyLetter from "./dummy/dummyLetter.json";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
 const LetterBoxUnread = () => {
-  console.log("여기");
+  const location = useLocation();
+  const email = location.state.email.userEmail;
+
+  console.log(email);
 
   let [dbLetter, setDbLetter] = useState([]);
   let [accessToken, setAccessToken] = useState("");
@@ -22,8 +25,8 @@ const LetterBoxUnread = () => {
 
   const getLetter = async () => {
     await axios
-      .get("http://localhost:8000/letter/postbox/", {
-        headers: { Authorization: `Bearer ${accessToken}` },
+      .get("http://localhost:8000/letter/letterbox/", {
+        headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
       })
       .then((res) => {
         setDbLetter([...res.data]);

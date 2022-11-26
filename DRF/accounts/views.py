@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 # simplejwt
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import (TokenObtainPairSerializer, TokenRefreshSerializer)
 from rest_framework_simplejwt.tokens import RefreshToken # to refresh token
 from rest_framework_simplejwt.exceptions import TokenError # invoke error during token verification
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -195,16 +195,35 @@ class VerifyUser(APIView):
     # find user from access token info
     def get_user(self, access_token):
         payload = jwt.decode(access_token, SIMPLE_JWT['SIGNING_KEY'], algorithms = [SIMPLE_JWT['ALGORITHM']]) # django sccret key, ['HS256'] 
+        print(payload.get('user_id'))
         user_pk = payload.get('user_id')
         user = User.objects.get(pk=user_pk)
         return user
 
     # read user info
-    def get(self, request):
+    def post(self, request):
         try:
+            print("\n\n\n")
             # access_token = request.COOKIES['my_access_token']    
-            access_token = request.headers.get('HTTP_AUTHORIZATION')        
-            user = self.get_user(access_token)
+            # access_token = request.headers.get('HTTP_AUTHORIZATION') 
+            # access_token = request.META.get['HTTP_AUTHORIZATION']
+            # print("<request.META>")            
+            # for a in request.META:
+            #     print(a)
+            # print("<request.headers>")
+            # for a in request.headers:
+            #     print(a)
+            access_token = request.headers.get('Authorization')
+            print(access_token)
+            # print(access_token)
+            # print(access_token.split(' ')[-1])
+            access_token = access_token.split(' ')[-1]
+            payload = jwt.decode(access_token, SIMPLE_JWT['SIGNING_KEY'], algorithms = [SIMPLE_JWT['ALGORITHM']]) # django sccret key, ['HS256'] 
+            # print(payload.get('user_id'))
+            user_pk = payload.get('user_id')
+            user = User.objects.get(pk=user_pk)
+
+            # user = self.get_user(access_token[-1])
             serializer = UserSerializer(user)
             res = Response(data = serializer.data, status = status.HTTP_200_OK)
             return res
@@ -227,7 +246,7 @@ class VerifyUser(APIView):
 
             raise jwt.exceptions.InvalidTokenError
         except(jwt.exceptions.InvalidTokenError):
-            return Response( {'msg': "Login expired."}, status = status.HTTP_200_OK)
+            return Response( {'msg': "Login expired. Invalid token."}, status = status.HTTP_200_OK)
     
 class CreateUserView(APIView):
 

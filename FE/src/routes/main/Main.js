@@ -5,27 +5,78 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import dummyLetter from "../letterbox/dummy/dummyLetter.json";
-import Axios from "axios"
+import axios from 'axios';
 
 
 
+function Main() {    
+    // 쿠키
+    let [accessToken, setAccessToken] = useState("");
+    // let [userEmail, setUserEmail] = useState('');
 
-function Main() {
-    const KAKAO_AUTH_URL = "http://localhost:8000/accounts/signin/kakao/";
-    
-    // 쿠키 받기
-    let [accessToken, setAccessToken] = useState('');
+    const navigate = useNavigate();
 
-    let cookie = document.cookie.split(';');
+    const getCookie = () => {
+    let cookie = document.cookie.split(";");
     let cookieArr = [];
-      cookie.map((e) => {
-        let c = e.split('=');
-        cookieArr.push(c);
-      });
-      console.log(cookieArr);
-      setAccessToken(cookieArr[2][1]);
+    cookie.map((e) => {
+      let c = e.split("=");
+      cookieArr.push(c);
+    });
+    setAccessToken(cookieArr[2][1]);
+  };
 
-    console.log(accessToken);
+    // 편지함 갈 때 유저 인증
+    const userCheck = () => { 
+        let tokenVerifyUrl = 'http://localhost:8000/accounts/verify/';
+        const getDB = async () => {
+            try {
+                const response = await axios.post(`${tokenVerifyUrl}`, '', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                
+                if (response.data.email.length !== 0) {
+                    // setUserEmail(response.data.email);
+                    let userEmail = response.data.email;
+                    console.log(userEmail);
+
+                    // const getLetterBox = async () => {
+                    //     // try {
+                    //     //     const res = await axios.get('http://localhost:8000/letter/letterbox/',
+                    //     //         { headers: { email: `Bearer ${userEmail}` } }
+                    //     //     );
+                    //     // } catch (error) {
+                    //     //     console.log(error);
+                    //     // }
+                    // }
+                    // getLetterBox();
+                    navigate('/letterbox/unread', { state : {email : {userEmail}}});
+                } else {
+                    console.log('login');
+                    kakaoLogin();
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getDB();
+    };
+
+    // 카카오 로그인 백 뷰 이동
+    const kakaoLogin = async() => {
+        await axios.get('http://localhost:8000/accounts/signin/kakao/')
+            .then((res) => console.log(res))
+            .catch(function (error) {
+                console.log(error);
+            })
+        
+    }
+
+    useEffect(() => {
+        getCookie();
+    }, []);
 
 
 
@@ -33,36 +84,29 @@ function Main() {
         <div>
             <div>
                 <h1>나의 내일에게</h1>
-                <a href={KAKAO_AUTH_URL}>
-                <button>카카오로 시작하기</button>
-                </a>
+                {/* <a href={KAKAO_AUTH_URL}> */}
+                <button onClick={userCheck}>카카오로 시작하기</button>
+                {/* </a> */}
             </div>
             <div>
                 <p>내일의 당신에게 편지하세요</p>
                 <h1>나의 내일에게</h1>
-                <Link to="/main/login">
-                    <button>로그인</button>
-                    
-                </Link>
+
+                {/* <a href={KAKAO_AUTH_URL}> */}
+                <button>로그인</button>
+                {/* </a> */}
+
             </div>
             <div>
                 <p>유리병을 눌러 익명의 편지를 읽어보세요</p>
-                <img onClick=""></img>
+                {/* <img onClick=""></img> */}
             </div>
             <div>
-                
-                {/* {accessToken !== null || accessToken !== '' } */}
-                {/* {accessToken이 있다 
-                    ? <Link to="/mypage">
-                        <button>편지하러 가기</button>
-                        //편지쓰기가 없어서 일단은 마이페이지 링크
-                    </Link>
-                } */}
 
-                <Link to="/mypage">
+
                     <button>편지하러 가기</button>
                     //편지쓰기가 없어서 일단은 마이페이지 링크
-                </Link>
+                {/* </Link> */}
             </div>
         </div>
     );

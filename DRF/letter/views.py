@@ -19,21 +19,33 @@ from datetime import datetime
 from datetime import timedelta
 import datetime
 from pytz import timezone, utc
-
+import json
 # Create your views here.
 class LetterList(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = (AllowAny,)
     def get(self, request):
-        author = User.objects.get(email = request.user)
+        # print("\n\n\n<request.headers>")
+        # for a in request.headers:
+        #    print(a)
+        # print("\n\n\n<request.META>")            
+        # for a in request.META:
+        #     print(a)
+        # print("EMAIL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        # print(request.headers.get('email'))
+        user_email = request.headers.get('email').split(' ')[-1]
+        # print(user_email)
+        author = User.objects.filter(email = user_email)[0]
         letters = Letter.objects.filter(author=author)
         serializer = LetterSerializer(letters, many = True)
         return Response(serializer.data)
 
     def post(self, request):
-        author = User.objects.get(user=request.user)
+        data = json.loads(request.body)
+        # 유저 정보 받는 부분 고쳐야 해~~~~
+        author = User.objects.filter(email = data['email'])[0]
         # request에서 data 받아서 편지에 넣는다
         serializer = LetterSerializer(data = request.data)
-
+        serializer.author = author
         # image 확장자 검사
         if request.FILES['image']:
             image = request.FILES['image']
@@ -45,6 +57,7 @@ class LetterList(APIView):
             
             serializer.image = image # image 넘어온 경우에만 serializer에 추가
         
+
         if serializer.is_valid():
             serializer.save(author = author)            
             return Response(serializer.data, status = status.HTTP_201_CREATED)
