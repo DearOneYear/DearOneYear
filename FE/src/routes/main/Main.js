@@ -79,6 +79,7 @@ function Main() {
     }, []);
 
 
+
     return (
         <div>
             <div>
@@ -90,16 +91,19 @@ function Main() {
             <div>
                 <p>내일의 당신에게 편지하세요</p>
                 <h1>나의 내일에게</h1>
+
                 {/* <a href={KAKAO_AUTH_URL}> */}
                 <button>로그인</button>
                 {/* </a> */}
+
             </div>
             <div>
                 <p>유리병을 눌러 익명의 편지를 읽어보세요</p>
                 {/* <img onClick=""></img> */}
             </div>
             <div>
-                {/* <Link to="/mypage"> */}
+
+
                     <button>편지하러 가기</button>
                     //편지쓰기가 없어서 일단은 마이페이지 링크
                 {/* </Link> */}
