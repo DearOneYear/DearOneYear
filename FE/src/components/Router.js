@@ -26,7 +26,7 @@ import Login from "../routes/main/Login";
 // 로그인 여부 확인
 // import isLogin from "../routes/auth/isLogin";
 // import PrivateRoute from "../routes/auth/PrivateRoute";
-// import PublicRoute from "../routes/auth/PublicRoute"; 
+// import PublicRoute from "../routes/auth/PublicRoute";
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -37,21 +37,21 @@ const AppRouter = () => {
         <Route path="/oauth/kakao/callback" element={<Authcheck />} />
         {/* // 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
-        
+
         <Route path="/mypage/edit" element={<MyPageEdit />} />
         {/* // 편지함 */}
         <Route path="/letterbox/unread" element={<LetterBoxUnread />} />
         <Route path="/letterbox/read" element={<LetterBoxRead />} />
-        <Route path="/detail/:id" element={<ReadingLetter />} />
 
         {/* // 메인 */}
         <Route path="/main" element={<Main />} />
-        <Route path="/main/login" element={<Login/>} />
+        <Route path="/main/login" element={<Login />} />
 
+        {/* 편지 오픈 */}
+        <Route path="/detail/:id" element={<ReadingLetter />} />
         <Route path="/detail/:id/gift" element={<OpenGift />} />
         <Route path="/detail/:id/bottle" element={<OpenBottle />} />
         <Route path="/detail/:id/photo" element={<OpenPhoto />} />
-
       </Routes>
     </BrowserRouter>
   );
