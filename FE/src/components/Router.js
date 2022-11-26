@@ -32,7 +32,7 @@ const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         {/* // 메인화면 */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Main />} />
         {/* // 로그인 */}
         <Route path="/oauth/kakao/callback" element={<Authcheck />} />
         {/* // 마이페이지 */}
@@ -44,8 +44,8 @@ const AppRouter = () => {
         <Route path="/letterbox/read" element={<LetterBoxRead />} />
 
         {/* // 메인 */}
-        <Route path="/main" element={<Main />} />
-        <Route path="/main/login" element={<Login />} />
+        {/* <Route path="/main" element={<Main />} /> */}
+        {/* <Route path="/main/login" element={<Login />} /> */}
 
         {/* 편지 오픈 */}
         <Route path="/detail/:id" element={<ReadingLetter />} />
