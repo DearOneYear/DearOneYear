@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import LetterList, LetterDetail
-
+# photo
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('postbox/', LetterList.as_view()),
     path('letter/<int:pk>', LetterDetail.as_view())
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
