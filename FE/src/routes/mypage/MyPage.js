@@ -20,10 +20,9 @@ const MyPage = () => {
 
   console.log(email);
 
-
   // let [accessToken, setAccessToken] = useState("");
-  let kakaoToken = '';
-  let access_token = '';
+  let kakaoToken = "";
+  let access_token = "";
   const getCookie = () => {
     let cookie = document.cookie.split(";");
     let cookieArr = [];
@@ -36,19 +35,19 @@ const MyPage = () => {
     let key = [];
     cookieArr.map((e) => {
       key.push(e[0]);
-    })
-    console.log(key.indexOf(' access_token'));
-    let indexAccessToken = key.indexOf(' my_access_token');
-    let indexKakaoToken = key.indexOf(' access_token');
+    });
+    console.log(key.indexOf(" access_token"));
+    let indexAccessToken = key.indexOf(" my_access_token");
+    let indexKakaoToken = key.indexOf(" access_token");
 
     access_token = cookieArr[indexAccessToken][1];
     kakaoToken = cookieArr[indexKakaoToken][1];
 
     console.log(access_token);
-    if (access_token !== '') {
+    if (access_token !== "") {
       getUserInfo();
     }
-    
+
     return access_token, kakaoToken;
   };
   const [dbUserInfo, setDbUserInfo] = useState([]);
@@ -73,56 +72,62 @@ const MyPage = () => {
 
   const birthbirth = (dbUserInfo) => {
     console.log(dbUserInfo);
-    let birthday = dbUserInfo.birthday.split("T")[0].split('-');
+    let birthday = dbUserInfo.birthday.split("T")[0].split("-");
     console.log(birthday);
     setMonth(birthday[1]);
     setDate(birthday[2]);
     // month = birthday[1];
     // date = birthday[2];
-
-  }
+  };
   console.log(dbUserInfo);
   console.log(month);
-
-
 
   // 카카오 로그아웃
   const sendToken = async (kakaoToken) => {
     console.log(kakaoToken);
-      try {
-                const response = await axios.post('http://localhost:8000/accounts/signout/kakao/', '', {
-                    headers: {
-                    Kakaoauth: `${kakaoToken}` // Bearer 넣지 말 것! JWT 토큰으로 착각해서 Unauthorized 에러 남.
-                    }
-                });
-        console.log(response);
-        deleteCookie(' access_token');
-        deleteCookie(' my_access_token');
-        deleteCookie(' my_refresh_token');
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/accounts/signout/kakao/",
+        "",
+        {
+          headers: {
+            Kakaoauth: `${kakaoToken}`, // Bearer 넣지 말 것! JWT 토큰으로 착각해서 Unauthorized 에러 남.
+          },
+        }
+      );
+      console.log(response);
+      deleteCookie(" access_token");
+      deleteCookie(" my_access_token");
+      deleteCookie(" my_refresh_token");
 
-        navigate('/');
-            } catch (error) {
-                console.log(error);
-            }
-        };
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const logout = () => {
     getCookie();
     console.log(kakaoToken);
     sendToken(kakaoToken);
-
-  }
+  };
 
   const setCookie = (key, value, expiredays) => {
     let todayDate = new Date();
     todayDate.setDate(todayDate.getDate() + expiredays);
-    document.cookie = key + '=' + escape(value) + "; path=/; expires=" + todayDate.toGMTString() + ";";
-  }
+    document.cookie =
+      key +
+      "=" +
+      escape(value) +
+      "; path=/; expires=" +
+      todayDate.toGMTString() +
+      ";";
+  };
 
   const deleteCookie = (key) => {
     // document.cookie = key + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    setCookie(key, '', -1);
-  }
+    setCookie(key, "", -1);
+  };
 
   useEffect(() => {
     getCookie();
@@ -147,7 +152,6 @@ const MyPage = () => {
       <Link to="/mypage/edit">
         <button>프로필 수정하기</button>
       </Link>
-      
     </>
   );
 };
