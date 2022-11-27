@@ -67,4 +67,3 @@ export default IsLogin;
 //response 실패했는지 성공했는지에 따라서 다른 화면 띄워주세요
 
 
-//쿠키-
