@@ -1,61 +1,51 @@
 import React from "react";
 import { Route, Navigate } from "react-router-dom";
-import Axios from "axios"
-import { useState } from "react";
-    // 쿠키생성
-    // var setCookie = function(cookieNm, val, exp) {
-    //     var date = new Date();
-    //     date.setDate(date.getDate() + exp);
-    //     document.cookie = cookieNm + '=' + val+ ';expires=' + date.toGMTString() + ';path=/';
-    // };
-
-    // // 쿠키삭제
-    // var delCookie = function(cookieNm) {
-    //     var date = new Date();
-    //     date.setDate(date.getDate() - 1);
-    //     document.cookie = cookieNm+ "= " + "; expires=" + date.toGMTString();
-    // };
-
-    // // 쿠키가져오기
-    // var getCookie = function(cookieNm) {
-    //     var cookieValue = document.cookie.match('(^|;) ?' + cookieNm + '=([^;]*)(;|$)'); 
-    //     return unescape(cookieValue);
-    // };
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const IsLogin = () => {
-    let [accessToken, setAccessToken] = useState('');
+  console.log('오키');
+    // 쿠키
+    let [accessToken, setAccessToken] = useState("");
 
-    let cookie = document.cookie.split(';');
+    const getCookie = () => {
+    let cookie = document.cookie.split(";");
     let cookieArr = [];
-      cookie.map((e) => {
-        let c = e.split('=');
-        cookieArr.push(c);
-      });
-      setAccessToken(cookieArr[2][1]);
-    
-    let logincheck;
-    // if (accessToken값이 있으면){
-    //     logincheck = true; 
-//         또는
-            //PublicRoute();
-    // } else {
-    //     logincheck = false;
-    //         또는
-    //      PrivateRoute();
-    // }
-    return logincheck;
-
-    //바로 되는게 안되면 
-
-//   let access_token = getCookie("my_access_token");
-//   Axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-  //백 주소로 요청 보내기
-  // Axios.get('', access_token).then(res => )
-    // return !!localStorage.getItem("access_token");
-  
-//accesstoken이 없으면 NULL
-      
+    cookie.map((e) => {
+      let c = e.split("=");
+      cookieArr.push(c);
+    });
+    setAccessToken(cookieArr[2][1]);
   };
+
+    // 유저 인증
+    const userCheck = () => {
+        const getDB = async () => {
+            try {
+                const response = await axios.post('http://localhost:8000/accounts/verify/', '', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                    // Authorization: `Bearer ${accessToken}`
+                });
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getDB();
+            
+      return true;  
+        
+    };
+
+    // useEffect(() => {
+        getCookie();
+    // }, []);
+
+
+};
   
 export default IsLogin;
 

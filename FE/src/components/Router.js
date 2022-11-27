@@ -23,6 +23,7 @@ import OpenPhoto from "../routes/reading/OpenPhoto";
 // main
 import Main from "../routes/main/Main";
 import Login from "../routes/main/Login";
+import KakaoLogin from "../routes/auth/KakaoLogin";
 // 로그인 여부 확인
 
 import isLogin from "../routes/auth/IsLogin";
@@ -36,7 +37,8 @@ const AppRouter = () => {
         {/* // 메인화면 */}
         <Route path="/" element={<Main />} />
         {/* // 로그인 */}
-        <Route path="/oauth/kakao/callback" element={<Authcheck />} />
+        <Route path="/login" element={<KakaoLogin />} />
+        {/* <Route path="/oauth/kakao/callback" element={<Authcheck />} /> */}
         {/* // 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
 

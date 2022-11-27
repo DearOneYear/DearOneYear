@@ -27,7 +27,10 @@ class KakaoSignInView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         app_key = SOCIAL_OUTH_CONFIG['KAKAO_REST_API_KEY'] # 내 앱의 KAKAO_REST_API_KEY
-        redirect_uri = SOCIAL_OUTH_CONFIG['KAKAO_REDIRECT_URI']
+        # redirect_uri = SOCIAL_OUTH_CONFIG['KAKAO_REDIRECT_URI']
+
+        redirect_uri = "http://localhost:3000/login/"
+        print(redirect_uri)
         kakao_auth_api = "https://kauth.kakao.com/oauth/authorize?response_type=code"
 
         return redirect(
@@ -36,8 +39,10 @@ class KakaoSignInView(APIView):
 
 class KakaoSignInCallBackView(APIView):
     permission_classes = [AllowAny]
-    def get(self, request):
-        auth_code = request.GET.get('code')
+    def post(self, request):
+        # auth_code = request.GET.get('code')
+        auth_code = request.data.get('code')
+
         kakao_token_api = 'https://kauth.kakao.com/oauth/token'
         data = {
             'grant_type': 'authorization_code',
@@ -49,7 +54,7 @@ class KakaoSignInCallBackView(APIView):
         token_response = requests.post(kakao_token_api, data=data)
 
         access_token = token_response.json().get('access_token') # kakao 계정의 access_token
-        # 카카오의 refresh_token은 언제 쓰나요???
+        
         kakao_user_api = "https://kapi.kakao.com/v2/user/me"
         header = {"Authorization": f"Bearer ${access_token}"}
         user_info_response = requests.get(kakao_user_api, headers=header) # request 카카오 사용자 정보
@@ -90,18 +95,18 @@ class KakaoSignInCallBackView(APIView):
             if serializer.is_valid():
                 serializer.save()
                 data = {
-                    "user" : serializer.data,
+                    # "user" : serializer.data, 
                     "msg": "Logged in!",
                     "access_token": access_token,
                     "my_access_token": my_access_token,
                     "my_refresh_token": my_refresh_token    
                 }
                 res = Response(data = data, status=status.HTTP_200_OK)
-                res.set_cookie('access_token', access_token)
-                res.set_cookie('my_access_token', my_access_token)
-                res.set_cookie('my_refresh_token', my_refresh_token)
-                
+                # res.set_cookie('access_token', access_token)
+                # res.set_cookie('my_access_token', my_access_token)
+                # res.set_cookie('my_refresh_token', my_refresh_token)
                 return res
+                # return redirect(f'http://localhost:3000/')
             else:
                 context = {"msg": "Serializer is not valid.", "error":serializer.errors}
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -114,16 +119,27 @@ class KakaoSignInCallBackView(APIView):
 # Log out
 class KakaoSignOutView(APIView):
     permission_classes = [AllowAny]
-    def get(self, request):        
-        ### Front에서 Query string 등으로 전달받고자 함!!!!
-        ### 혹은 Front에서 json으로 보내줘도 괜찮음. json.loads(request.body) 사용 가능.
-        access_token = request.GET.get('access_token')
+    def post(self, request):        
         
+        # debug
+        print("\n\n\n<request.headers>")
+        for a in request.headers:
+           print(a)
+        
+        access_token = request.headers.get('Kakaoauth')
+        print('------')
+        print(access_token)
+        # access_token = access_token.split(' ')[-1]
+        
+
         kakao_logout_api = "https://kapi.kakao.com/v1/user/logout"
         header = {"Authorization": f"Bearer ${access_token}"}
         logout_response = requests.post(kakao_logout_api, headers=header)
 
         print(logout_response.json())
+        if(logout_response.json().get('code')):
+            return Response({"msg":"Please logout...", "success":False}, status=status.HTTP_200_OK)
+        
         kakao_id = logout_response.json().get("id")
 
         user = User.objects.get(kakao_id=kakao_id) # Do not user filter, because it returns Query Set. I need a Model Object.
@@ -201,7 +217,7 @@ class VerifyUser(APIView):
         return user
 
     # read user info
-    def post(self, request):
+    def get(self, request):
         try:
             print("\n\n\n")
             # access_token = request.COOKIES['my_access_token']    
@@ -211,8 +227,8 @@ class VerifyUser(APIView):
             # for a in request.META:
             #     print(a)
             # print("<request.headers>")
-            # for a in request.headers:
-            #     print(a)
+            for a in request.headers:
+                print(a)
             access_token = request.headers.get('Authorization')
             print(access_token)
             # print(access_token)
@@ -277,10 +293,21 @@ class CreateUserView(APIView):
         return Response(context, status = status.HTTP_201_CREATED)
 
 class UserDetailView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request, user_pk):
-        user = get_object_or_404(User, pk=user_pk)
+    permission_classes = (AllowAny,)
+    def get(self, request):
+        # debug
+        print("\n\n\n<request.headers>")
+        for a in request.headers:
+           print(a)
+        
+        user_email = request.headers.get('email').split(' ')[-1]
+        print('------')
+        print(user_email)
+
+        user = get_object_or_404(User, email=user_email)
         serializer=UserSerializer(user)
         return Response(serializer.data)
+    
+    # post
     
 
