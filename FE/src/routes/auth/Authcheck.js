@@ -1,7 +1,7 @@
-import Auth from "./Auth"
+// import Auth from "./Auth"
 
-function Authcheck() {
-    return Auth()
-  }
+// function Authcheck() {
+//     return Auth()
+//   }
 
-export default Authcheck;
+// export default Authcheck;
