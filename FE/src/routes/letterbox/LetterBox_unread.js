@@ -45,7 +45,7 @@ const Letter = styled.div`
   width: 19.25rem;
   height: 3.625rem;
   left: 1.688rem;
-  top: 1.5rem;
+  top: 1rem;
 `;
 
 const LetterTitle = styled.p`
@@ -88,27 +88,24 @@ const LetterPeriod = styled.p`
 `;
 
 const NewLetterBtn = styled.button`
-  position: absolute;
-  width: 382px;
-  height: 57px;
-  left: 24px;
-  top: 799px;
-
+  position: relative;
+  width: 23.875rem;
+  height: 3.563rem;
+  top: 31rem;
 
   background: rgba(50, 50, 50, 0.7);
-  border: 1.2px solid #ffffff;
-  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  border: 0.075rem solid #ffffff;
+  box-shadow: 0px 0.25rem 1.5rem -0.063rem rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(0.625rem);
 
-  border-radius: 10px;
+  border-radius: 0.625rem;
 `;
 
 const NewLetterTxt = styled.p`
-  position: absolute;
+  position: relative;
   width: 12.188rem;
   height: 1.5rem;
-  left: calc(50% - 12.188rem / 2 + 0.017rem);
-  top: calc(50% - 1.5rem / 2 + 22.625rem);
+  top: 34.8rem;
   z-index: 3;
 
   font-family: "MapoGoldenPier";
@@ -147,7 +144,7 @@ const LetterBoxUnread = () => {
   });
 
   // 백 연결시
-  
+
   // 1127
   // const location = useLocation();
   // const email = location.state.email.userEmail;
@@ -169,16 +166,16 @@ const LetterBoxUnread = () => {
 
   // const getLetter = async () => {
   //  await axios
-   //   .get("http://localhost:8000/letter/letterbox/", {
-   //     headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
-   //   })
+  //   .get("http://localhost:8000/letter/letterbox/", {
+  //     headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+  //   })
   //    .then((res) => {
-   //     setDbLetter([...res.data]);
-   //   })
-   //   .catch(function (err) {
+  //     setDbLetter([...res.data]);
+  //   })
+  //   .catch(function (err) {
   //      console.log(err);
   //    });
-//  };
+  //  };
   // let [dbLetter, setDbLetter] = useState([]);
   // let [accessToken, setAccessToken] = useState("");
 
@@ -278,17 +275,10 @@ const LetterBoxUnread = () => {
             top: "2rem",
           }}
         />
-        <br />
-        <br />
         <LetterBoxNav />
-        <br />
 
         {unOpenedLetters.map((letter) => (
           <Letter key={letter.id} id={letter.id}>
-            {/* <Link
-              to={`/detail/${letter.id}`}
-              style={{ textDecoration: "none", color: "black" }}
-            > */}
             <div onClick={openLetter} id={letter.id}>
               {letter.isOpend === true ? (
                 <img
@@ -304,9 +294,6 @@ const LetterBoxUnread = () => {
                   id={letter.id}
                 />
               )}
-              {/* <img style={{ width: "10%" }} src="/img/close.png" alt="close" /> */}
-              {/* </Link> */}
-              {/* <p>D - {letter.remaining_days}</p> */}
 
               {letter.to_name !== letter.from_name ? (
                 <LetterTitle id={letter.id}>
@@ -339,8 +326,10 @@ const LetterBoxUnread = () => {
             </LetterPeriod>
           </Letter>
         ))}
-        <NewLetterTxt>새로운 편지하러 가기</NewLetterTxt>
-        <NewLetterBtn></NewLetterBtn>
+        <center>
+          <NewLetterTxt>새로운 편지하러 가기</NewLetterTxt>
+          <NewLetterBtn></NewLetterBtn>
+        </center>
       </Container>
     </>
   );
