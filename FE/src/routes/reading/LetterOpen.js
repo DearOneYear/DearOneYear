@@ -1,4 +1,6 @@
-import dummyLetter from "../letterbox/dummy/dummyLetter.json";
+// import dummyLetter from "../letterbox/dummy/dummyLetter.json";
+import new_dummy from "../letterbox/dummy/new_dummy.json";
+
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -8,57 +10,57 @@ const LetterOpen = () => {
   let urlArr = currUrl.split("/");
   let letterId = parseInt(urlArr[urlArr.length - 1]);
 
-  // let letters = dummyLetter.letters;
-  let currLetter;
+  let currLetter = [new_dummy];
+  // let currLetter;
 
-  let [dbLetter, setDbLetter] = useState([]);
-  let [accessToken, setAccessToken] = useState("");
+  // let [dbLetter, setDbLetter] = useState([]);
+  // let [accessToken, setAccessToken] = useState("");
 
-  const getCookie = () => {
-    let cookie = document.cookie.split(";");
-    let cookieArr = [];
-    cookie.map((e) => {
-      let c = e.split("=");
-      cookieArr.push(c);
-    });
-    setAccessToken(cookieArr[2][1]);
-  };
+  // const getCookie = () => {
+  //   let cookie = document.cookie.split(";");
+  //   let cookieArr = [];
+  //   cookie.map((e) => {
+  //     let c = e.split("=");
+  //     cookieArr.push(c);
+  //   });
+  //   setAccessToken(cookieArr[2][1]);
+  // };
 
-  const getLetter = async () => {
-    await axios
-      .get("http://localhost:8000/letter/postbox/", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((res) => {
-        setDbLetter([...res.data]);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+  // const getLetter = async () => {
+  //   await axios
+  //     .get("http://localhost:8000/letter/postbox/", {
+  //       headers: { Authorization: `Bearer ${accessToken}` },
+  //     })
+  //     .then((res) => {
+  //       setDbLetter([...res.data]);
+  //     })
+  //     .catch(function (err) {
+  //       console.log(err);
+  //     });
 
-    dbLetter.map((e) => {
-      let open = e.openAt.split("T")[0].split("-");
-      e.openYear = open[0];
-      e.openMonth = open[1];
-      e.openDate = open[2];
+  //   dbLetter.map((e) => {
+  //     let open = e.openAt.split("T")[0].split("-");
+  //     e.openYear = open[0];
+  //     e.openMonth = open[1];
+  //     e.openDate = open[2];
 
-      let send = e.sendAt.split("T")[0].split("-");
-      e.sendYear = send[0];
-      e.sendMonth = send[1];
-      e.sendDate = send[2];
-    });
+  //     let send = e.sendAt.split("T")[0].split("-");
+  //     e.sendYear = send[0];
+  //     e.sendMonth = send[1];
+  //     e.sendDate = send[2];
+  //   });
 
-    dbLetter.map((l) => {
-      if (l.id === letterId) {
-        currLetter = l;
-      }
-    });
-  };
+  //   dbLetter.map((l) => {
+  //     if (l.id === letterId) {
+  //       currLetter = l;
+  //     }
+  //   });
+  // };
 
-  useEffect(() => {
-    getCookie();
-    getLetter();
-  }, []);
+  // useEffect(() => {
+  //   getCookie();
+  //   getLetter();
+  // }, []);
 
   // 뒤로 가기
   const navigate = useNavigate();
