@@ -197,9 +197,10 @@ const LetterBoxUnread = () => {
   // });
 
   //링크 공유하기
-  let url = document.location.href;
+  let url = document.location.href.split("/").splice(0, 3).join("/");
+  console.log(url);
   const onShareClick = (e) => {
-    let shareUrl = url + "/" + e.target.id;
+    let shareUrl = url + "/detail/" + e.target.id;
     console.log(shareUrl);
     let textArea = document.createElement("textarea");
     document.body.appendChild(textArea);
@@ -211,8 +212,11 @@ const LetterBoxUnread = () => {
   };
 
   const navigate = useNavigate();
-  const goBack = () => {
-    navigate(-1);
+
+  const openLetter = (e) => {
+    console.log("클릭됨");
+    console.log(e.target.id);
+    navigate(`/detail/${e.target.id}`);
   };
 
   return (
@@ -220,6 +224,7 @@ const LetterBoxUnread = () => {
       <Container>
         <Title>편지함</Title>
         <AiFillHome
+          onClick={() => navigate("/")}
           style={{
             color: "white",
             position: "relative",
@@ -230,6 +235,7 @@ const LetterBoxUnread = () => {
           }}
         />
         <BsFillPersonFill
+          onClick={() => navigate("/mypage")}
           style={{
             color: "white",
             position: "relative",
@@ -246,31 +252,37 @@ const LetterBoxUnread = () => {
 
         {unOpenedLetters.map((letter) => (
           <Letter key={letter.id} id={letter.id}>
-            <Link
+            {/* <Link
               to={`/detail/${letter.id}`}
               style={{ textDecoration: "none", color: "black" }}
-            >
+            > */}
+            <div onClick={openLetter} id={letter.id}>
               {letter.isOpend === true ? (
                 <img
                   style={{ width: "10%" }}
                   src="/img/opendbottle.png"
                   alt="open"
+                  id={letter.id}
                 />
               ) : (
-                <ClosedBottle src="/img/closedbottle.png" alt="close" />
+                <ClosedBottle
+                  src="/img/closedbottle.png"
+                  alt="close"
+                  id={letter.id}
+                />
               )}
               {/* <img style={{ width: "10%" }} src="/img/close.png" alt="close" /> */}
-            </Link>
-            {/* <p>D - {letter.remaining_days}</p> */}
+              {/* </Link> */}
+              {/* <p>D - {letter.remaining_days}</p> */}
 
-            {letter.to_name !== letter.from_name ? (
-              <LetterTitle>
-                D - {letter.dday} {letter.to_name}에게
-              </LetterTitle>
-            ) : (
-              <LetterTitle>나에게</LetterTitle>
-            )}
-
+              {letter.to_name !== letter.from_name ? (
+                <LetterTitle id={letter.id}>
+                  D - {letter.dday} {letter.to_name}에게
+                </LetterTitle>
+              ) : (
+                <LetterTitle id={letter.id}>나에게</LetterTitle>
+              )}
+            </div>
             {letter.to_name !== letter.from_name ? (
               <BsLink45Deg
                 style={{
