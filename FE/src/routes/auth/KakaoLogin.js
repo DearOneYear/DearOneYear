@@ -61,7 +61,7 @@ const LoginBtn = styled.img`
   position: relative;
   width: 23.875rem;
   height: 3.563rem;
-  top: 37rem;
+  top: 34.5rem;
 `;
 
 const KakaoLogin = () => {

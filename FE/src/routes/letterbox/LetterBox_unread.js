@@ -91,7 +91,7 @@ const NewLetterBtn = styled.button`
   position: relative;
   width: 23.875rem;
   height: 3.563rem;
-  top: 31rem;
+  top: 29rem;
 
   background: rgba(50, 50, 50, 0.7);
   border: 0.075rem solid #ffffff;
@@ -105,7 +105,7 @@ const NewLetterTxt = styled.p`
   position: relative;
   width: 12.188rem;
   height: 1.5rem;
-  top: 34.8rem;
+  top: 32.8rem;
   z-index: 3;
 
   font-family: "MapoGoldenPier";
