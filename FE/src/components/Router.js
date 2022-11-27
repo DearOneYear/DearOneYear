@@ -23,18 +23,22 @@ import OpenPhoto from "../routes/reading/OpenPhoto";
 // main
 import Main from "../routes/main/Main";
 import Login from "../routes/main/Login";
+import KakaoLogin from "../routes/auth/KakaoLogin";
 // 로그인 여부 확인
-// import isLogin from "../routes/auth/isLogin";
-// import PrivateRoute from "../routes/auth/PrivateRoute";
-// import PublicRoute from "../routes/auth/PublicRoute";
+
+import isLogin from "../routes/auth/IsLogin";
+import PrivateRoute from "../routes/auth/PrivateRoute";
+import PublicRoute from "../routes/auth/PublicRoute"; 
+
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* // 메인화면 */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Main />} />
         {/* // 로그인 */}
-        <Route path="/oauth/kakao/callback" element={<Authcheck />} />
+        <Route path="/login" element={<KakaoLogin />} />
+        {/* <Route path="/oauth/kakao/callback" element={<Authcheck />} /> */}
         {/* // 마이페이지 */}
         <Route path="/mypage" element={<MyPage />} />
 
@@ -44,8 +48,8 @@ const AppRouter = () => {
         <Route path="/letterbox/read" element={<LetterBoxRead />} />
 
         {/* // 메인 */}
-        <Route path="/main" element={<Main />} />
-        <Route path="/main/login" element={<Login />} />
+        {/* <Route path="/main" element={<Main />} /> */}
+        {/* <Route path="/main/login" element={<Login />} /> */}
 
         {/* 편지 오픈 */}
         <Route path="/detail/:id" element={<ReadingLetter />} />

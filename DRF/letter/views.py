@@ -19,21 +19,33 @@ from datetime import datetime
 from datetime import timedelta
 import datetime
 from pytz import timezone, utc
-
+import json
 # Create your views here.
 class LetterList(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = (AllowAny,)
     def get(self, request):
-        author = User.objects.get(email = request.user)
+        # print("\n\n\n<request.headers>")
+        # for a in request.headers:
+        #    print(a)
+        # print("\n\n\n<request.META>")            
+        # for a in request.META:
+        #     print(a)
+        # print("EMAIL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        # print(request.headers.get('email'))
+        user_email = request.headers.get('email').split(' ')[-1]
+        # print(user_email)
+        author = User.objects.filter(email = user_email)[0]
         letters = Letter.objects.filter(author=author)
         serializer = LetterSerializer(letters, many = True)
         return Response(serializer.data)
 
     def post(self, request):
-        author = User.objects.get(user=request.user)
+        data = json.loads(request.body)
+        # 유저 정보 받는 부분 고쳐야 해~~~~
+        author = User.objects.filter(email = data['email'])[0]
         # request에서 data 받아서 편지에 넣는다
         serializer = LetterSerializer(data = request.data)
-
+        serializer.author = author
         # image 확장자 검사
         if request.FILES['image']:
             image = request.FILES['image']
@@ -45,6 +57,7 @@ class LetterList(APIView):
             
             serializer.image = image # image 넘어온 경우에만 serializer에 추가
         
+
         if serializer.is_valid():
             serializer.save(author = author)            
             return Response(serializer.data, status = status.HTTP_201_CREATED)
@@ -63,7 +76,7 @@ class LetterDetail(APIView):
         return td.days, td.seconds//3600, (td.seconds//60)%60
 
     def get(self, request, pk):
-        letter = self.get_object(pk);
+        letter = self.get_object(pk)
         print(type(letter.openAt))
         print(type(self.get_now()))
         
@@ -72,14 +85,27 @@ class LetterDetail(APIView):
         dday = openDay - datetime.datetime.now()
         print(dday)
         [tday, thour, tminute] = self.days_hours_minutes(dday)
+        print(dday.days)
+        print(thour)
+        print(tminute)
 
-        if dday.days > 0 or thour > 0 or tminute > 0 or dday.seconds > 0:
+        if dday.days < 0: 
+            serializer = LetterSerializer(letter)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        elif dday.days > 0:
             #날짜 남은 것
-            return Response({"msg": "아직!", "remaining_days":str(dday.days), "open_date" : self.get_now()})
+            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt})
+        elif thour > 0 or tminute > 0 or dday.seconds > 0:
+            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt})        
 
+    def post(self, request, pk):
+        letter = self.get_object(pk)
         serializer = LetterSerializer(letter)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+
+        if serializer.is_valid():
+            serializer.save(letter, data={'isOpened':True}, partial = True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        return Response({"msg": "Letter read failed."}, status = status.HTTP_400_BAD_REQUEST)
 
     # edit, delete is not allowed
-
 # class LetterResult(APIView):

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import LetterBoxNav from "./LetterBoxNav";
 import new_dummy from "./dummy/new_dummy.json";
 import axios from "axios";
@@ -94,6 +94,7 @@ const NewLetterBtn = styled.button`
   left: 24px;
   top: 799px;
 
+
   background: rgba(50, 50, 50, 0.7);
   border: 1.2px solid #ffffff;
   box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
@@ -146,6 +147,38 @@ const LetterBoxUnread = () => {
   });
 
   // 백 연결시
+  
+  // 1127
+  // const location = useLocation();
+  // const email = location.state.email.userEmail;
+
+  // console.log(email);
+
+  // let [dbLetter, setDbLetter] = useState([]);
+  // let [accessToken, setAccessToken] = useState("");
+
+  // const getCookie = () => {
+  //  let cookie = document.cookie.split(";");
+  //  let cookieArr = [];
+  //  cookie.map((e) => {
+  //    let c = e.split("=");
+  //    cookieArr.push(c);
+  //  });
+  //  setAccessToken(cookieArr[2][1]);
+  //};
+
+  // const getLetter = async () => {
+  //  await axios
+   //   .get("http://localhost:8000/letter/letterbox/", {
+   //     headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+   //   })
+  //    .then((res) => {
+   //     setDbLetter([...res.data]);
+   //   })
+   //   .catch(function (err) {
+  //      console.log(err);
+  //    });
+//  };
   // let [dbLetter, setDbLetter] = useState([]);
   // let [accessToken, setAccessToken] = useState("");
 

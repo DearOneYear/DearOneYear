@@ -94,14 +94,14 @@ AUTH_USER_MODEL = 'accounts.User'
 # )
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
 ]
 
 ROOT_URLCONF = 'DearOneYearLetter.urls'
@@ -183,8 +183,34 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # cors 설정(다른 포트 간의 소통을 위해)
 # React 포트 번호 물어보자...
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://localhost:8000', 'http://localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://localhost:8000', 'http://localhost:3000', 'http://localhost:3001']
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+CORS_ALLOW_HEADERS = (
+    'access-control-allow-credentials',
+    'access-control-allow-origin',
+    'access-control-request-method',
+    'access-control-request-headers',
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'email',
+    'kakaoauth'
+)
 
 REST_FRAMEWORK = {
 
@@ -195,6 +221,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES':(
         # authorization
+        'rest_framework.authentication.TokenAuthentication', 
         # jwt를 이용하여 인증함
         'rest_framework_simplejwt.authentication.JWTAuthentication', # token을 이용한 인증
         # 'rest_framework.authentication.SessionAuthentication', # session을 통한 인증
