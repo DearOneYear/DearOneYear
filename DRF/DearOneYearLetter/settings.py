@@ -209,6 +209,7 @@ CORS_ALLOW_HEADERS = (
     'x-csrftoken',
     'x-requested-with',
     'email',
+    'kakaoauth'
 )
 
 REST_FRAMEWORK = {
