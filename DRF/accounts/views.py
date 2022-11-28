@@ -232,10 +232,10 @@ class VerifyUser(APIView):
             access_token = request.headers.get('Authorization')
             print(access_token)
             # print(access_token)
-            # print(access_token.split(' ')[-1])
+
             access_token = access_token.split(' ')[-1]
             payload = jwt.decode(access_token, SIMPLE_JWT['SIGNING_KEY'], algorithms = [SIMPLE_JWT['ALGORITHM']]) # django sccret key, ['HS256'] 
-            # print(payload.get('user_id'))
+
             user_pk = payload.get('user_id')
             user = User.objects.get(pk=user_pk)
 
@@ -247,11 +247,15 @@ class VerifyUser(APIView):
         except(jwt.exceptions.ExpiredSignatureError): # access token has been expired
             try:
                 serializer = TokenRefreshSerializer(data ={'refresh':request.COOKIES['my_refresh_token']})
-                if serializer.is_valie(raise_exception=True):
-                    access_token = serializer.validated_data['access'] #validated_data로 접근해야 함
+                if serializer.is_valid(raise_exception=True):
+                    access_token = serializer.validated_data['access']
                     refresh_token = request.COOKIES.get('refresh_token', None)
                     
-                    serializer = UserSerializer(self.get_user(access_token))
+                    payload = jwt.decode(access_token, SIMPLE_JWT['SIGNING_KEY'], algorithms = [SIMPLE_JWT['ALGORITHM']]) # django sccret key, ['HS256'] 
+
+                    user_pk = payload.get('user_id')
+                    user = User.objects.get(pk=user_pk)
+                    serializer = UserSerializer(user)
 
                     res = Response(data = serializer.data, status = status.HTTP_200_OK)
                     res.set_cookie('my_access_token', access_token)
