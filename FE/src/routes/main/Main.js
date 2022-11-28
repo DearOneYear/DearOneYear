@@ -4,6 +4,145 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const url = "/img/clear.png";
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url(${url});
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-size: cover;
+`;
+const Header = styled.div`
+  width: 100vw;
+`;
+
+const Title = styled.p`
+  position: relative;
+  width: 10rem;
+  height: 2rem;
+  left: 1.5rem;
+  top: 2rem;
+
+  font-family: "MapoGoldenPier";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 2rem;
+
+  letter-spacing: 0.02rem;
+
+  color: #ffffff;
+
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+`;
+
+const LoginBtn = styled.p`
+  position: relative;
+  height: 1.5rem;
+  left: -2rem;
+  top: -1.3rem;
+
+  font-family: "MapoGoldenPier";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  /* identical to box height */
+
+  text-align: right;
+
+  color: #ffffff;
+`;
+
+const Text1 = styled.p`
+  position: relative;
+  width: 313px;
+  height: 4.875rem;
+  left: 5rem;
+  top: 4rem;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+
+  text-align: right;
+
+  color: #ffffff;
+
+  text-shadow: 0px 0px 0.25rem rgba(0, 0, 0, 0.25);
+`;
+
+const Text2 = styled.p`
+  position: relative;
+  width: 313px;
+  left: 5rem;
+  top: 0rem;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 2.5rem;
+
+  text-align: right;
+
+  color: #ffffff;
+
+  text-shadow: 0px 0px 0.25rem rgba(0, 0, 0, 0.25);
+`;
+const Text3 = styled.p`
+  position: relative;
+  width: 60vw;
+  height: 2rem;
+  top: 5rem;
+  margin: 0;
+
+  font-family: "MapoGoldenPier";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.75ren;
+
+  color: #ffffff;
+
+  text-shadow: 0px 0px 0.25rem rgba(0, 0, 0, 0.25);
+`;
+
+const NewLetterBtn = styled.button`
+  position: relative;
+  width: 90vw;
+  height: 3.563rem;
+  top: 21rem;
+
+  background: rgba(50, 50, 50, 0.7);
+  border: 0.075rem solid #ffffff;
+  box-shadow: 0px 0.25rem 1.5rem -0.063rem rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(0.625rem);
+
+  border-radius: 0.625rem;
+`;
+
+const NewLetterTxt = styled.p`
+  position: relative;
+  width: 12.188rem;
+  height: 1.5rem;
+  top: 24.7rem;
+  z-index: 3;
+
+  font-family: "MapoGoldenPier";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+
+  color: #ffffff;
+`;
+
 function Main() {
   // navigator
   const navigate = useNavigate();
@@ -100,12 +239,11 @@ function Main() {
   }, []);
 
   return (
-    <div>
-      <div>
-        <p>내일의 당신에게 편지하세요</p>
-        <h1>나의 내일에게</h1>
+    <Container>
+      <Header>
+        <Title>나의 내일에게</Title>
         {isLoggedIn === false ? (
-          <button onClick={login}>로그인</button>
+          <LoginBtn onClick={login}>로그인</LoginBtn>
         ) : (
           <>
             <button id="letterbox" onClick={moveTo}>
@@ -116,14 +254,21 @@ function Main() {
             </button>
           </>
         )}
-      </div>
+      </Header>
+
       <div>
-        <p>유리병을 눌러 익명의 편지를 읽어보세요</p>
+        <Text1>내일의 당신에게 편지하세요</Text1>
+        <Text2>나의 내일에게</Text2>
       </div>
-      <div>
-        <button onClick={writeLetter}>편지하러 가기</button>
-      </div>
-    </div>
+
+      <center>
+        <Text3>유리병을 눌러</Text3>
+        <Text3>익명의 편지를 읽어보세요</Text3>
+
+        <NewLetterTxt onClick={writeLetter}>편지하러 가기</NewLetterTxt>
+        <NewLetterBtn></NewLetterBtn>
+      </center>
+    </Container>
   );
 }
 
