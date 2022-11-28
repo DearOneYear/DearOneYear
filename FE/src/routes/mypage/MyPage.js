@@ -2,6 +2,123 @@ import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
+
+const url = "/img/background.png";
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url(${url});
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-size: cover;
+`;
+const Header = styled.div`
+  width: 100vw;
+`;
+const Title = styled.p`
+  position: relative;
+  left: 4.5rem;
+  top: 0rem;
+  width: 20rem;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 28px;
+
+  letter-spacing: 0.02em;
+
+  color: #ffffff;
+`;
+
+const LogoutBtn = styled.p`
+  position: relative;
+  height: 1.5rem;
+  left: -2rem;
+  top: -2.9rem;
+
+  font-family: "MapoGoldenPier";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  /* identical to box height */
+
+  text-align: right;
+
+  color: #ffffff;
+`;
+const Welcome = styled.div`
+  position: relative;
+  left: 1.5rem;
+  top: 0rem;
+  width: 70vw;
+`;
+
+const Bottle = styled.img`
+  width: 3.25rem;
+  height: 4.063rem;
+  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.15));
+`;
+
+const WelcomeTxt = styled.p`
+  position: relative;
+  left: 3.5rem;
+  top: -4.5rem;
+
+  margin: 0.5rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+
+  color: #ffffff;
+
+  text-shadow: 0px 0px 0.313rem rgba(0, 0, 0, 0.25);
+`;
+const Info = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 3.5rem;
+`;
+const Label = styled.span`
+  position: relative;
+  top: -1rem;
+  left: 1.5rem;
+  width: 7rem;
+  height: 1.5rem;
+  margin: 1.625rem 0;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+
+  color: #ffffff;
+`;
+
+const Value = styled.span`
+  position: relative;
+  top: -5.75rem;
+  left: 5.5rem;
+  width: 20rem;
+  height: 24px;
+  margin: 1.625rem 0;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+
+  color: #ffffff;
+`;
 
 const MyPage = () => {
   // navigate
@@ -119,20 +236,49 @@ const MyPage = () => {
   }, []);
 
   return (
-    <>
-      <h1>마이 페이지</h1>
-      <button onClick={() => navigate(-1)}>뒤로 가기</button>
-      <button onClick={logout}>로그아웃</button>
-      <p>이름 {dbUserInfo.name}</p>
-      <p>카카오계정 이메일 {dbUserInfo.email}</p>
-      <p>
-        생일 {month} 월 {date} 일
-      </p>
+    <Container>
+      <Header>
+        <IoIosArrowBack
+          onClick={() => navigate(-1)}
+          style={{
+            position: "relative",
+            width: "2.125rem",
+            height: "2.125rem",
+            left: "1.5rem",
+            top: "3.4rem",
+            color: "white",
+          }}
+        />
 
-      <Link to="/mypage/edit">
+        <Title>마이 페이지</Title>
+        <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
+      </Header>
+
+      <Welcome>
+        <Bottle src="img/closedbottle.png" alt="closedbottle" />
+        <WelcomeTxt>안녕하세요, 이름 님.</WelcomeTxt>
+        <WelcomeTxt>당신만의 유리병을 찾으셨나요?</WelcomeTxt>
+      </Welcome>
+
+      <Info>
+        <Label>이름</Label>
+        <Value>{dbUserInfo.name}</Value>
+      </Info>
+      <Info>
+        <Label>계정</Label>
+        <Value>{dbUserInfo.email}</Value>
+      </Info>
+      <Info>
+        <Label>생일</Label>
+        <Value>
+          {month}월 {date}일
+        </Value>
+      </Info>
+
+      {/* <Link to="/mypage/edit">
         <button>프로필 수정하기</button>
-      </Link>
-    </>
+      </Link> */}
+    </Container>
   );
 };
 
