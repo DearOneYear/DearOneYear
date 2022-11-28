@@ -160,7 +160,6 @@ const MyPage = () => {
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
   const email = location.state.email.userEmail;
-  console.log(email);
 
   // 이메일로 유저 정보 받아오기
   const getUserInfo = async () => {
