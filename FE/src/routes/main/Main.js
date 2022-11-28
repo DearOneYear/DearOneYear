@@ -53,7 +53,7 @@ function Main() {
           setIsLoggedIn(true);
         } else {
           console.log("login");
-          navigate("/login");
+          // navigate("/login");
         }
       } catch (error) {
         console.log(error);
@@ -67,6 +67,18 @@ function Main() {
     if (access_token === "") {
       navigate("/login");
     }
+  };
+
+  // 편지하러 가기 클릭 시,
+  // 로그인 안되어 있으면 로그인 페이지
+  // 로그인되어 있으면 편지 작성 페이지
+  const writeLetter = () => {
+    if (access_token === "") {
+      navigate("/login");
+    }
+    // else {
+    //   navigate('편지쓰는 url');
+    // }
   };
 
   // 편지함, 마이페이지 이동
@@ -109,7 +121,7 @@ function Main() {
         <p>유리병을 눌러 익명의 편지를 읽어보세요</p>
       </div>
       <div>
-        <button>편지하러 가기</button>
+        <button onClick={writeLetter}>편지하러 가기</button>
       </div>
     </div>
   );
