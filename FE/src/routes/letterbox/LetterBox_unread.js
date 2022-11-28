@@ -130,79 +130,8 @@ const ClosedBottle = styled.img`
 
 const LetterBoxUnread = () => {
   // 백 없이 작업 (더미)
-  let unOpenedLetters = [new_dummy];
-  unOpenedLetters.map((e) => {
-    let open = e.openAt.split("T")[0].split("-");
-    e.openYear = open[0];
-    e.openMonth = open[1];
-    e.openDate = open[2];
-
-    let send = e.sendAt.split("T")[0].split("-");
-    e.sendYear = send[0];
-    e.sendMonth = send[1];
-    e.sendDate = send[2];
-  });
-
-  // 백 연결시
-
-  // 1127
-  // const location = useLocation();
-  // const email = location.state.email.userEmail;
-
-  // console.log(email);
-
-  // let [dbLetter, setDbLetter] = useState([]);
-  // let [accessToken, setAccessToken] = useState("");
-
-  // const getCookie = () => {
-  //  let cookie = document.cookie.split(";");
-  //  let cookieArr = [];
-  //  cookie.map((e) => {
-  //    let c = e.split("=");
-  //    cookieArr.push(c);
-  //  });
-  //  setAccessToken(cookieArr[2][1]);
-  //};
-
-  // const getLetter = async () => {
-  //  await axios
-  //   .get("http://localhost:8000/letter/letterbox/", {
-  //     headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
-  //   })
-  //    .then((res) => {
-  //     setDbLetter([...res.data]);
-  //   })
-  //   .catch(function (err) {
-  //      console.log(err);
-  //    });
-  //  };
-  // let [dbLetter, setDbLetter] = useState([]);
-  // let [accessToken, setAccessToken] = useState("");
-
-  // const getCookie = () => {
-  //   let cookie = document.cookie.split(";");
-  //   let cookieArr = [];
-  //   cookie.map((e) => {
-  //     let c = e.split("=");
-  //     cookieArr.push(c);
-  //   });
-  //   setAccessToken(cookieArr[2][1]);
-  // };
-
-  // const getLetter = async () => {
-  //   await axios
-  //     .get("http://localhost:8000/letter/postbox/", {
-  //       headers: { Authorization: `Bearer ${accessToken}` },
-  //     })
-  //     .then((res) => {
-  //       setDbLetter([...res.data]);
-  //     })
-  //     .catch(function (err) {
-  //       console.log(err);
-  //     });
-  // };
-
-  // dbLetter.map((e) => {
+  // let unOpenedLetters = [new_dummy];
+  // unOpenedLetters.map((e) => {
   //   let open = e.openAt.split("T")[0].split("-");
   //   e.openYear = open[0];
   //   e.openMonth = open[1];
@@ -214,23 +143,70 @@ const LetterBoxUnread = () => {
   //   e.sendDate = send[2];
   // });
 
-  // useEffect(() => {
-  //   getCookie();
-  //   getLetter();
-  // }, []);
+  // 백 연결시
+  const location = useLocation();
+  const email = location.state.email.userEmail;
 
-  // let unOpenedLetters = [];
-  // dbLetter.map((l) => {
-  //   if (l.isOpend !== true) {
-  //     unOpenedLetters.push(l);
-  //   }
-  // });
+  console.log(email);
+
+  let [dbLetter, setDbLetter] = useState([]);
+  let [accessToken, setAccessToken] = useState("");
+
+  const getCookie = () => {
+    let cookie = document.cookie.split(";");
+    let cookieArr = [];
+    cookie.map((e) => {
+      let c = e.split("=");
+      cookieArr.push(c);
+    });
+    setAccessToken(cookieArr[2][1]);
+  };
+
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/letterbox/", {
+        headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+      })
+      .then((res) => {
+        setDbLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+
+  dbLetter.map((e) => {
+    let open = e.openAt.split("T")[0].split("-");
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
+
+    let send = e.sendAt.split("T")[0].split("-");
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
+  });
+
+  // console.log(dbLetter);
+
+  useEffect(() => {
+    getCookie();
+    getLetter();
+  }, []);
+
+  let unOpenedLetters = [];
+  dbLetter.map((l) => {
+    if (l.isOpend !== true) {
+      unOpenedLetters.push(l);
+    }
+  });
+
+  console.log(unOpenedLetters);
 
   //링크 공유하기
-  let url = document.location.href.split("/").splice(0, 3).join("/");
-  console.log(url);
+  let url = document.location.href;
   const onShareClick = (e) => {
-    let shareUrl = url + "/detail/" + e.target.id;
+    let shareUrl = url + "/" + e.target.id;
     console.log(shareUrl);
     let textArea = document.createElement("textarea");
     document.body.appendChild(textArea);
