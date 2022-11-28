@@ -1,5 +1,7 @@
 # Django Secret Key
 secrets.json
+# aws
+.ssh/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
