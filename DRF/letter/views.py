@@ -94,9 +94,9 @@ class LetterDetail(APIView):
             return Response(serializer.data, status = status.HTTP_200_OK)
         elif dday.days > 0:
             #날짜 남은 것
-            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt})
+            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "available":False})
         elif thour > 0 or tminute > 0 or dday.seconds > 0:
-            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt})        
+            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "available":False})      
 
     def post(self, request, pk):
         letter = self.get_object(pk)
