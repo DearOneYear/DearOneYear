@@ -25,6 +25,7 @@ const useConfirm = (message = null, onConfirm, onCancel) => {
 function Write6() {
     const location = useLocation();
     const selectedDate = location.state.selectedDate;
+    const finalImage = location.state.finalImage;
     console.log(selectedDate);
     const [finalToName, setFinalToName] = useState('');
     const [finalText, setFinalText] = useState('');
@@ -118,7 +119,7 @@ function Write6() {
     const confirmSend = async () => {
         await axios.post('http://localhost:8000/letter/letterbox/', 
         {
-            'email':userEmail, 'from_name': '여기바꿔', 'to_name': '바꿔', 'image':'이미지가져와', 
+            'email':userEmail, 'from_name': '여기바꿔', 'to_name': '바꿔', 'image':'finalImage', 
             'recipient':finalToName, 'message': finalText, 'sender': finalFromName, 'openAt':selectedDate
         } )
         . then((res)=> {

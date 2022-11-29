@@ -10,16 +10,18 @@ function Write4() {
 
     const location = useLocation();
     const selectedDate = location.state.selectedDate;
+    const toname = location.state.toname;
+    const toyou = location.state.toyou;
     console.log(selectedDate);
     const ToWrite5 = useNavigate();
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite5(`/write/write5/tome`, { state: {selectedDate : selectedDate} });
+            ToWrite5(`/write/write5/tome`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}}});
             console.log('tome write3로 갑시다')
         }
         else if (who === 'toyou'){
-            ToWrite5(`/write/write5/toyou`, { state: {selectedDate : selectedDate} });
+            ToWrite5(`/write/write5/toyou`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}}});
             console.log('toyou write3로 갑시다')
         }
     }

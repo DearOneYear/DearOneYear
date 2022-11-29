@@ -5,7 +5,11 @@ function Write5() {
 
     const location = useLocation();
     const selectedDate = location.state.selectedDate;
+    const toname = location.state.toname;
+    const toyou = location.state.toyou;
+
     console.log(selectedDate);
+    let finalImage;
     function setThumbnail(event) {
         var reader = new FileReader();
 
@@ -14,9 +18,11 @@ function Write5() {
         img.setAttribute("src", event.target.result);
         document.querySelector("div#image_container").appendChild(img);
         }
+        console.log(event.target.files[0])
+        finalImage = event.target.files[0];
         reader.readAsDataURL(event.target.files[0]);
     }
-
+    
     let currUrl = window.document.location.href;
     let urlArr = currUrl.split('/');
     let who = urlArr[urlArr.length - 1];
@@ -25,7 +31,7 @@ function Write5() {
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite6(`/write/write6/tome`, { state: {selectedDate : selectedDate} });
+            ToWrite6(`/write/write6/tome`, { state: {selectedDate : selectedDate, finalImage : {finalImage}} });
             console.log('tome write3로 갑시다')
         }
         else if (who === 'toyou'){
