@@ -1,5 +1,5 @@
 import new_dummy from "./dummy/new_dummy.json";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import LetterBoxNav from "./LetterBoxNav";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -130,46 +130,8 @@ const ClosedBottle = styled.img`
 
 const LetterBoxRead = () => {
   // 백 없이 작업 (더미)
-  let openedLetters = [new_dummy];
-  openedLetters.map((e) => {
-    let open = e.openAt.split("T")[0].split("-");
-    e.openYear = open[0];
-    e.openMonth = open[1];
-    e.openDate = open[2];
-
-    let send = e.sendAt.split("T")[0].split("-");
-    e.sendYear = send[0];
-    e.sendMonth = send[1];
-    e.sendDate = send[2];
-  });
-
-  // let [dbLetter, setDbLetter] = useState([]);
-  // let [accessToken, setAccessToken] = useState("");
-
-  // const getCookie = () => {
-  //   let cookie = document.cookie.split(";");
-  //   let cookieArr = [];
-  //   cookie.map((e) => {
-  //     let c = e.split("=");
-  //     cookieArr.push(c);
-  //   });
-  //   setAccessToken(cookieArr[2][1]);
-  // };
-
-  // const getLetter = async () => {
-  //   await axios
-  //     .get("http://localhost:8000/letter/postbox/", {
-  //       headers: { Authorization: `Bearer ${accessToken}` },
-  //     })
-  //     .then((res) => {
-  //       setDbLetter([...res.data]);
-  //     })
-  //     .catch(function (err) {
-  //       console.log(err);
-  //     });
-  // };
-
-  // dbLetter.map((e) => {
+  // let openedLetters = [new_dummy];
+  // openedLetters.map((e) => {
   //   let open = e.openAt.split("T")[0].split("-");
   //   e.openYear = open[0];
   //   e.openMonth = open[1];
@@ -181,21 +143,62 @@ const LetterBoxRead = () => {
   //   e.sendDate = send[2];
   // });
 
-  // // console.log(dbLetter);
+  // 백 연결시
+  // navigate
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   getCookie();
-  //   getLetter();
-  // }, []);
+  // 전역 변수
+  let [dbLetter, setDbLetter] = useState([]);
+  let [accessToken, setAccessToken] = useState("");
 
-  // let openedLetters = [];
-  // dbLetter.map((l) => {
-  //   if (l.isOpend === true) {
-  //     openedLetters.push(l);
-  //   }
-  // });
+  // 쿠키 받기
+  const getCookie = () => {
+    let cookie = document.cookie.split(";");
+    let cookieArr = [];
+    cookie.map((e) => {
+      let c = e.split("=");
+      cookieArr.push(c);
+    });
+    setAccessToken(cookieArr[2][1]);
+  };
 
-  // console.log(openedLetters);
+  // 이전 페이지에서 넘겨준 email 값 가져오기
+  const location = useLocation();
+  const email = location.state.email.userEmail;
+
+  // 이메일로 편지 목록 가져오기
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/letterbox/", {
+        headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+      })
+      .then((res) => {
+        setDbLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+
+  dbLetter.map((e) => {
+    let open = e.openAt.split("T")[0].split("-");
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
+
+    let send = e.sendAt.split("T")[0].split("-");
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
+  });
+
+  // 읽은 편지만 분류
+  let openedLetters = [];
+  dbLetter.map((l) => {
+    if (l.isOpend === true) {
+      openedLetters.push(l);
+    }
+  });
 
   //링크 공유하기
   let url = document.location.href;
@@ -211,10 +214,15 @@ const LetterBoxRead = () => {
     alert("링크가 복사되었습니다.");
   };
 
-  const navigate = useNavigate();
-  const goBack = () => {
-    navigate(-1);
+  // 편지 열어보기
+  const openLetter = (e) => {
+    navigate(`/detail/${e.target.id}`);
   };
+
+  useEffect(() => {
+    getCookie();
+    getLetter();
+  }, []);
 
   return (
     <Container>
@@ -246,20 +254,21 @@ const LetterBoxRead = () => {
 
       {openedLetters.map((letter) => (
         <Letter key={letter.id} id={letter.id}>
-          {letter.isOpend === true ? (
-            <img style={{ width: "10%" }} src="/img/open.png" alt="open" />
-          ) : (
-            <ClosedBottle src="/img/letter.png" alt="close" id={letter.id} />
-          )}
+          <div onClick={openLetter} id={letter.id}>
+            {letter.isOpend === true ? (
+              <img style={{ width: "10%" }} src="/img/open.png" alt="open" />
+            ) : (
+              <ClosedBottle src="/img/letter.png" alt="close" id={letter.id} />
+            )}
 
-          {letter.to_name !== letter.from_name ? (
-            <LetterTitle id={letter.id}>
-              D - {letter.dday} {letter.to_name}에게
-            </LetterTitle>
-          ) : (
-            <LetterTitle id={letter.id}>나에게</LetterTitle>
-          )}
-
+            {letter.to_name !== letter.from_name ? (
+              <LetterTitle id={letter.id}>
+                D - {letter.dday} {letter.to_name}에게
+              </LetterTitle>
+            ) : (
+              <LetterTitle id={letter.id}>나에게</LetterTitle>
+            )}
+          </div>
           {letter.to_name !== letter.from_name ? (
             <BsLink45Deg
               style={{

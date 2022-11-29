@@ -144,14 +144,14 @@ const LetterBoxUnread = () => {
   // });
 
   // 백 연결시
-  const location = useLocation();
-  const email = location.state.email.userEmail;
+  // navigate
+  const navigate = useNavigate();
 
-  console.log(email);
-
+  // 전역 변수
   let [dbLetter, setDbLetter] = useState([]);
   let [accessToken, setAccessToken] = useState("");
 
+  // 쿠키 받기
   const getCookie = () => {
     let cookie = document.cookie.split(";");
     let cookieArr = [];
@@ -162,6 +162,11 @@ const LetterBoxUnread = () => {
     setAccessToken(cookieArr[2][1]);
   };
 
+  // 이전 페이지에서 넘겨준 email 값 가져오기
+  const location = useLocation();
+  const email = location.state.email.userEmail;
+
+  // 이메일로 편지 목록 가져오기
   const getLetter = async () => {
     await axios
       .get("http://localhost:8000/letter/letterbox/", {
@@ -187,21 +192,13 @@ const LetterBoxUnread = () => {
     e.sendDate = send[2];
   });
 
-  // console.log(dbLetter);
-
-  useEffect(() => {
-    getCookie();
-    getLetter();
-  }, []);
-
+  // 안 읽은 편지만 분류
   let unOpenedLetters = [];
   dbLetter.map((l) => {
     if (l.isOpend !== true) {
       unOpenedLetters.push(l);
     }
   });
-
-  console.log(unOpenedLetters);
 
   //링크 공유하기
   let url = document.location.href;
@@ -217,13 +214,15 @@ const LetterBoxUnread = () => {
     alert("링크가 복사되었습니다.");
   };
 
-  const navigate = useNavigate();
-
+  // 편지 열어보기
   const openLetter = (e) => {
-    console.log("클릭됨");
-    console.log(e.target.id);
     navigate(`/detail/${e.target.id}`);
   };
+
+  useEffect(() => {
+    getCookie();
+    getLetter();
+  }, []);
 
   return (
     <>
