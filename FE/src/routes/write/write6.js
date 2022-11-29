@@ -41,11 +41,11 @@ function Write6() {
         }
     }
 
-    const deleteConfirm = () => console.log("삭제했습니다.");
+    const confirmSend = () => console.log("");
     const cancelConfirm = () => console.log("취소했습니다.");
     const confirmDelete = useConfirm(
     "편지를 보낸 후에는 수정 및 삭제가 불가능합니다.편지를 보내시겠어요?",
-    deleteConfirm,
+    confirmSend,
     cancelConfirm
     
 );
