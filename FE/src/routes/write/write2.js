@@ -7,18 +7,20 @@ const Title = styled.h2`
 
 function Write2() {
     const navigate = useNavigate();
+    let text1 = '';
+    let text2 = '';
 
     function Navigate() {
-        navigate(`/write/write3/toyou`);
+        navigate(`/write/write3/toyou`, { state : { whoName1 : text1, whoName2 : text2 }});
     };
 
     function printText1() {
-        const text1 = document.getElementById('toname').value;
+        text1 = document.getElementById('toname').value;
         document.getElementById("result1").innerText = text1
     };
 
     function printText2() {
-        const text2 = document.getElementById('toyou').value;
+        text2 = document.getElementById('toyou').value;
         document.getElementById("result2").innerText = text2
     };
 
