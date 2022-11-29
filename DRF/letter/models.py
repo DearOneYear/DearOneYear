@@ -18,7 +18,7 @@ class Letter(models.Model):
     to_name = models.CharField(max_length=10)
     sender = models.CharField(max_length=50)
     recipient = models.CharField(max_length=50)    
-    message = models.CharField(max_length=200)
+    message = models.CharField(max_length=1000)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
 
     KST = timezone('Asia/Seoul')
@@ -27,6 +27,6 @@ class Letter(models.Model):
     sendAt = models.DateTimeField(default = localNow)
     openAt = models.DateTimeField(default = localNow + timedelta(days=365)-timedelta(hours=localNow.hour, minutes=localNow.minute, seconds=localNow.second))
     isOpened = models.BooleanField(default=False)
-    dday = models.PositiveSmallIntegerField(default=365)
+    travel_day = models.PositiveSmallIntegerField(default=365)
     def __str__(self):
         return "편지 " + self.from_name + "->" + self.to_name

@@ -51,7 +51,7 @@ class LetterList(APIView):
         calc_dday = openDay - datetime.datetime.now()
         print(calc_dday)
         print(calc_dday.days)
-        serializer.dday = calc_dday.days
+        serializer.travel_day = calc_dday.days
         # image 확장자 검사
         if request.FILES['image']:
             image = request.FILES['image']
