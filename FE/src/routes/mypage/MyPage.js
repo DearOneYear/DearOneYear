@@ -25,7 +25,7 @@ const Title = styled.p`
   position: relative;
   left: 4.5rem;
   top: 0rem;
-  width: 20rem;
+  width: 10rem;
 
   font-style: normal;
   font-weight: 400;
@@ -40,7 +40,8 @@ const Title = styled.p`
 const LogoutBtn = styled.p`
   position: relative;
   height: 1.5rem;
-  left: -2rem;
+  width: 7rem;
+  left: 15rem;
   top: -2.9rem;
 
   font-family: "MapoGoldenPier";
@@ -160,6 +161,7 @@ const MyPage = () => {
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
   const email = location.state.email.userEmail;
+  console.log(location.state);
 
   // 이메일로 유저 정보 받아오기
   const getUserInfo = async () => {
@@ -238,7 +240,7 @@ const MyPage = () => {
     <Container>
       <Header>
         <IoIosArrowBack
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/')}
           style={{
             position: "relative",
             width: "2.125rem",
@@ -255,7 +257,7 @@ const MyPage = () => {
 
       <Welcome>
         <Bottle src="img/closedbottle.png" alt="closedbottle" />
-        <WelcomeTxt>안녕하세요, 이름 님.</WelcomeTxt>
+        <WelcomeTxt>안녕하세요, {dbUserInfo.name} 님.</WelcomeTxt>
         <WelcomeTxt>당신만의 유리병을 찾으셨나요?</WelcomeTxt>
       </Welcome>
 

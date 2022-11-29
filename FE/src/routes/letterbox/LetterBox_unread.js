@@ -164,7 +164,10 @@ const LetterBoxUnread = () => {
 
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
+  console.log(location.state.email.userEmail);
   const email = location.state.email.userEmail;
+  // const email = 'wleowldms@naver.com';
+  console.log(email);
 
   // 이메일로 편지 목록 가져오기
   const getLetter = async () => {
@@ -199,6 +202,8 @@ const LetterBoxUnread = () => {
       unOpenedLetters.push(l);
     }
   });
+
+  console.log(unOpenedLetters);
 
   //링크 공유하기
   let url = document.location.href;
@@ -240,7 +245,7 @@ const LetterBoxUnread = () => {
           }}
         />
         <BsFillPersonFill
-          onClick={() => navigate("/mypage")}
+          onClick={() => navigate("/mypage", { state: { email: { userEmail: email } } })}
           style={{
             color: "white",
             position: "relative",
@@ -250,8 +255,9 @@ const LetterBoxUnread = () => {
             top: "2rem",
           }}
         />
-        <LetterBoxNav />
-
+        {/* <LetterBoxNav /> */}
+        <button>기다리는 중</button>
+        <button onClick={() => navigate('/letterbox/read', { state: { email: { email } } })}>읽은 편지함</button>
         {unOpenedLetters.map((letter) => (
           <Letter key={letter.id} id={letter.id}>
             <div onClick={openLetter} id={letter.id}>

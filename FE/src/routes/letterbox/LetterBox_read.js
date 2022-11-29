@@ -1,8 +1,8 @@
-import new_dummy from "./dummy/new_dummy.json";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import LetterBoxNav from "./LetterBoxNav";
-import { useState, useEffect } from "react";
+import new_dummy from "./dummy/new_dummy.json";
 import axios from "axios";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { AiFillHome } from "react-icons/ai";
 import { BsFillPersonFill, BsLink45Deg } from "react-icons/bs";
@@ -128,10 +128,10 @@ const ClosedBottle = styled.img`
   top: 2.5rem;
 `;
 
-const LetterBoxRead = () => {
+const LetterBoxUnread = () => {
   // 백 없이 작업 (더미)
-  // let openedLetters = [new_dummy];
-  // openedLetters.map((e) => {
+  // let unOpenedLetters = [new_dummy];
+  // unOpenedLetters.map((e) => {
   //   let open = e.openAt.split("T")[0].split("-");
   //   e.openYear = open[0];
   //   e.openMonth = open[1];
@@ -164,7 +164,9 @@ const LetterBoxRead = () => {
 
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
-  const email = location.state.email.userEmail;
+  console.log(location);
+  const email = location.state.email.email;
+  console.log(email);
 
   // 이메일로 편지 목록 가져오기
   const getLetter = async () => {
@@ -192,11 +194,11 @@ const LetterBoxRead = () => {
     e.sendDate = send[2];
   });
 
-  // 읽은 편지만 분류
-  let openedLetters = [];
+  // 안 읽은 편지만 분류
+  let unOpenedLetters = [];
   dbLetter.map((l) => {
     if (l.isOpend === true) {
-      openedLetters.push(l);
+      unOpenedLetters.push(l);
     }
   });
 
@@ -225,79 +227,90 @@ const LetterBoxRead = () => {
   }, []);
 
   return (
-    <Container>
-      <Title>편지함</Title>
-      <AiFillHome
-        onClick={() => navigate("/")}
-        style={{
-          color: "white",
-          position: "relative",
-          width: "2.125rem",
-          height: "2.125rem",
-          left: "19.3rem",
-          top: "2rem",
-        }}
-      />
-      <BsFillPersonFill
-        onClick={() => navigate("/mypage")}
-        style={{
-          color: "white",
-          position: "relative",
-          width: "2.125rem",
-          height: "2.125rem",
-          left: "20rem",
-          top: "2rem",
-        }}
-      />
+    <>
+      <Container>
+        <Title>편지함</Title>
+        <AiFillHome
+          onClick={() => navigate("/")}
+          style={{
+            color: "white",
+            position: "relative",
+            width: "2.125rem",
+            height: "2.125rem",
+            left: "19.3rem",
+            top: "2rem",
+          }}
+        />
+        <BsFillPersonFill
+          onClick={() => navigate("/mypage", { state: { email: { userEmail: email } } })}
+          style={{
+            color: "white",
+            position: "relative",
+            width: "2.125rem",
+            height: "2.125rem",
+            left: "20rem",
+            top: "2rem",
+          }}
+        />
+        {/* <LetterBoxNav /> */}
+        <button onClick={() => navigate('/letterbox/unread', { state: { email: { userEmail: email } } })}>기다리는 중</button>
+        <button>읽은 편지함</button>
+        {unOpenedLetters.map((letter) => (
+          <Letter key={letter.id} id={letter.id}>
+            <div onClick={openLetter} id={letter.id}>
+              {letter.isOpend === true ? (
+                <img
+                  style={{ width: "10%" }}
+                  src="/img/opendbottle.png"
+                  alt="open"
+                  id={letter.id}
+                />
+              ) : (
+                <ClosedBottle
+                  src="/img/closedbottle.png"
+                  alt="close"
+                  id={letter.id}
+                />
+              )}
 
-      <LetterBoxNav />
-
-      {openedLetters.map((letter) => (
-        <Letter key={letter.id} id={letter.id}>
-          <div onClick={openLetter} id={letter.id}>
-            {letter.isOpend === true ? (
-              <img style={{ width: "10%" }} src="/img/open.png" alt="open" />
-            ) : (
-              <ClosedBottle src="/img/letter.png" alt="close" id={letter.id} />
-            )}
-
+              {letter.to_name !== letter.from_name ? (
+                <LetterTitle id={letter.id}>
+                  D - {letter.dday} {letter.to_name}에게
+                </LetterTitle>
+              ) : (
+                <LetterTitle id={letter.id}>나에게</LetterTitle>
+              )}
+            </div>
             {letter.to_name !== letter.from_name ? (
-              <LetterTitle id={letter.id}>
-                D - {letter.dday} {letter.to_name}에게
-              </LetterTitle>
+              <BsLink45Deg
+                style={{
+                  color: "white",
+                  position: "relative",
+                  width: "2.125rem",
+                  height: "2.125rem",
+                  left: "20rem",
+                  top: "-6rem",
+                }}
+                onClick={onShareClick}
+                id={letter.id}
+              />
             ) : (
-              <LetterTitle id={letter.id}>나에게</LetterTitle>
+              <></>
             )}
-          </div>
-          {letter.to_name !== letter.from_name ? (
-            <BsLink45Deg
-              style={{
-                color: "white",
-                position: "relative",
-                width: "2.125rem",
-                height: "2.125rem",
-                left: "20rem",
-                top: "-6rem",
-              }}
-              onClick={onShareClick}
-              id={letter.id}
-            />
-          ) : (
-            <></>
-          )}
 
-          <LetterPeriod>
-            {`${letter.sendYear}.${letter.sendMonth}.${letter.sendDate}.`} →{" "}
-            {`${letter.openYear}.${letter.openMonth}.${letter.openDate}.`}
-          </LetterPeriod>
-        </Letter>
-      ))}
-      <center>
-        <NewLetterTxt>새로운 편지하러 가기</NewLetterTxt>
-        <NewLetterBtn></NewLetterBtn>
-      </center>
-    </Container>
+            <LetterPeriod>
+              {`${letter.sendYear}.${letter.sendMonth}.${letter.sendDate}.`} →{" "}
+              {`${letter.openYear}.${letter.openMonth}.${letter.openDate}.`}
+            </LetterPeriod>
+          </Letter>
+        ))}
+        <center>
+          <NewLetterTxt>새로운 편지하러 가기</NewLetterTxt>
+          <NewLetterBtn></NewLetterBtn>
+        </center>
+      </Container>
+    </>
   );
 };
 
-export default LetterBoxRead;
+export default LetterBoxUnread;

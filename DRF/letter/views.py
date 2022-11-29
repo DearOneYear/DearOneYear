@@ -46,6 +46,12 @@ class LetterList(APIView):
         # request에서 data 받아서 편지에 넣는다
         serializer = LetterSerializer(data = request.data)
         serializer.author = author
+
+        openDay = data.get('openAt').replace(tzinfo=None)
+        calc_dday = openDay - datetime.datetime.now()
+        print(calc_dday)
+        print(calc_dday.days)
+        serializer.dday = calc_dday.days
         # image 확장자 검사
         if request.FILES['image']:
             image = request.FILES['image']
@@ -94,9 +100,9 @@ class LetterDetail(APIView):
             return Response(serializer.data, status = status.HTTP_200_OK)
         elif dday.days > 0:
             #날짜 남은 것
-            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "available":False})
+            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "available":False})
         elif thour > 0 or tminute > 0 or dday.seconds > 0:
-            return Response({"msg": "아직!", "remaining_days":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "available":False})      
+            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "available":False})      
 
     def post(self, request, pk):
         letter = self.get_object(pk)
