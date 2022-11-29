@@ -40,14 +40,18 @@ class LetterList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+             
         data = json.loads(request.body)
+        print(data)   
+        print(request.FILES.get('file'))
         # 유저 정보 받는 부분 고쳐야 해~~~~
         author = User.objects.filter(email = data['email'])[0]
         # request에서 data 받아서 편지에 넣는다
         serializer = LetterSerializer(data = request.data)
         serializer.author = author
 
-        openDay = data.get('openAt').replace(tzinfo=None)
+        print(data['openAt'])
+        openDay = datetime.datetime.strptime(data.get('openAt').get('selectedDate'), "%Y-%m-%d").replace(tzinfo=None)
         calc_dday = openDay - datetime.datetime.now()
         print(calc_dday)
         print(calc_dday.days)
