@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const url = "/img/clear.png";
@@ -176,7 +176,6 @@ function Main() {
 
   // 로그인 상태 체크
   const userCheck = () => {
-    console.log(access_token);
     let tokenVerifyUrl = "http://localhost:8000/accounts/verify/";
     const getDB = async () => {
       try {
@@ -200,6 +199,7 @@ function Main() {
     };
     getDB();
   };
+
 
   // 로그인 버튼 클릭 시, 카카오 로그인하기 페이지로 이동
   const login = () => {
