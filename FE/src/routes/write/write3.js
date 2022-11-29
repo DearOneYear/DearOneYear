@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Write3() {
-    const location = useLocation();
-    const whoName3_1 = location.state.whoName1;
-    // const whoName3_2 = 
-    console.log(location.state.whoName1);
-    //Navigator
+    // const location = useLocation();
+    // const whoName3_1 = location.state.whoName1;
+    // const whoName3_2 = location.state.whoName2;
+    // console.log(location.state.whoName1);
+    // Navigator
 
     
     let currUrl = window.document.location.href;
@@ -17,11 +17,11 @@ function Write3() {
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite4(`/write/write4/tome`);
+            ToWrite4(`/write/write4/tome`, {state : {selectedDate : {selectedDate}}});
             console.log('tome write3로 갑시다')
         }
         else if (who === 'toyou'){
-            ToWrite4(`/write/write4/toyou`);
+            ToWrite4(`/write/write4/toyou`, {state : {selectedDate : {selectedDate}});
             console.log('toyou write3로 갑시다')
         }
     }

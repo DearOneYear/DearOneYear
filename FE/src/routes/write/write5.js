@@ -1,7 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation} from "react-router-dom";
 
 function Write5() {
 
+
+    const location = useLocation();
+    const selectedDate = location.state.selectedDate;
+    console.log(selectedDate);
     function setThumbnail(event) {
         var reader = new FileReader();
 
@@ -21,11 +25,11 @@ function Write5() {
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite6(`/write/write6/tome`);
+            ToWrite6(`/write/write6/tome`, { state: {selectedDate : selectedDate} });
             console.log('tome write3로 갑시다')
         }
         else if (who === 'toyou'){
-            ToWrite6(`/write/write6/toyou`);
+            ToWrite6(`/write/write6/toyou`, { state: {selectedDate : selectedDate} });
             console.log('toyou write3로 갑시다')
         }
     }
