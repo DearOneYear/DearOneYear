@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Write3() {
-
+    const location = useLocation();
+    const whoName3_1 = location.state.whoName1;
+    // const whoName3_2 = 
+    console.log(location.state.whoName1);
     //Navigator
 
     
