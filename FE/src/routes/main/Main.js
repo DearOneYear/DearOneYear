@@ -268,8 +268,9 @@ function Main() {
     cookieArr.map((e) => {
       key.push(e[0]);
     });
+    console.log(cookieArr);
     if (key.includes(" access_token") === true) {
-      let indexAccessToken = key.indexOf(" my_access_token");
+      let indexAccessToken = key.indexOf("my_access_token");
       access_token = cookieArr[indexAccessToken][1];
     }
   };
