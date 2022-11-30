@@ -226,7 +226,7 @@ function Main() {
     console.log(e.target.id);
     {
       e.target.id === "letterbox" &&
-        navigate("/letterbox/unread", { state: { email:  userEmail } } });
+        navigate("/letterbox/unread", { state: { email:  userEmail } });
     }
     {
       e.target.id === "mypage" &&
