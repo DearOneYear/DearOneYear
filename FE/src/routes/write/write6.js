@@ -22,15 +22,22 @@ const useConfirm = (message = null, onConfirm, onCancel) => {
 
 };
 
+
 function Write6() {
     const location = useLocation();
+    const toname = location.state.toname;
+    const toyou = location.state.toyou;
+    const emotion = location.state.emotion;
     const selectedDate = location.state.selectedDate;
     const finalImage = location.state.finalImage;
+
     console.log(selectedDate);
     const [finalToName, setFinalToName] = useState('');
     const [finalText, setFinalText] = useState('');
     const [finalFromName, setFinalFromName]=useState('');
     let [userEmail, setUserEmail] = useState("");
+    const navigate = useNavigate();
+    
 
     function FinalToName(e) {
         // const finalToName = document.getElementById('finaltoname').value;
@@ -116,15 +123,23 @@ function Write6() {
       userCheck();
   },[]);
 
+  function Navigate() {
+      navigate(`/write/confirm1`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}}});
+      console.log('confirm1으로 갑시다')
+
+  };
     const confirmSend = async () => {
         await axios.post('http://localhost:8000/letter/letterbox/', 
         {
-            'email':userEmail, 'from_name': '여기바꿔', 'to_name': '바꿔', 'image':'finalImage', 
-            'recipient':finalToName, 'message': finalText, 'sender': finalFromName, 'openAt':selectedDate
+            'email':userEmail, 'from_name': toyou, 'to_name': toname, 'image':finalImage, 
+            'recipient':finalToName, 'message': finalText, 'sender': finalFromName, 'openAt':selectedDate, 'emotion' : emotion
         } )
         . then((res)=> {
             console.log('편지 쓰기 성공');
             console.log(res);
+            Navigate();
+
+
         }).catch(function(err){
             console.log(err);
         })

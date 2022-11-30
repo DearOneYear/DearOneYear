@@ -1,60 +1,184 @@
-// // import dummyLetter from "../letterbox/dummy/dummyLetter.json";
-// import new_dummy from "../letterbox/dummy/new_dummy.json";
+import new_dummy from "../letterbox/dummy/new_dummy.json";
+import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import styled from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
 
-// import { useNavigate, Link } from "react-router-dom";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
+const url = "/img/beach.png";
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url(${url});
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-size: cover;
+`;
+const Header = styled.div`
+  width: 100vw;
+`;
+const Title = styled.p`
+  position: relative;
+  left: 4.5rem;
+  top: 3rem;
+  width: 15rem;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 28px;
+
+  letter-spacing: 0.02em;
+
+  color: black;
+`;
+const Text1 = styled.p`
+  width: 13.063rem;
+  height: 2rem;
+
+  position: relative;
+  top: 5rem;
+
+  font-size: 1.5rem;
+  line-height: 2rem;
+
+  color: #060606;
+`;
+const Text2 = styled.p`
+  width: 90%;
+  height: 2rem;
+
+  position: relative;
+  top: 7rem;
+  margin: 0rem;
+
+  font-size: 1.25rem;
+
+  color: #060606;
+`;
+const Text3 = styled.p`
+  width: 90%;
+  height: 2rem;
+
+  position: relative;
+  top: 9rem;
+
+  font-size: 1.25rem;
+  line-height: 2rem;
+
+  color: #060606;
+`;
+const Bottle = styled.img`
+  width: 10.438rem;
+  height: 13.063rem;
+
+  position: relative;
+  top: 10rem;
+  filter: drop-shadow(0.25rem 0.25rem 0.625rem rgba(0, 0, 0, 0.15));
+  &: hover {
+    transform: rotate(30deg);
+  }
+`;
 
 const LetterOpen = () => {
-//   let currUrl = window.document.location.href;
-//   let urlArr = currUrl.split("/");
-//   let letterId = parseInt(urlArr[urlArr.length - 1]);
+  // navigate
+  const navigate = useNavigate();
 
-  
+  //현재 편지 id 받아오기
+  let currUrl = window.document.location.href;
+  let urlArr = currUrl.split("/");
+  let letterId = parseInt(urlArr[urlArr.length - 1]);
 
-//   // 뒤로 가기
-//   const navigate = useNavigate();
-//   const handleGoBack = () => {
-//     navigate(-1);
-//   };
+  // 백 없이 더미로 작업
+  // let currLetter = new_dummy;
+  // let send = currLetter.sendAt.split("T")[0].split("-");
+  // currLetter.sendYear = send[0];
+  // currLetter.sendMonth = send[1];
+  // currLetter.sendDate = send[2];
 
-//   return (
-//     <>
-//       <h1>편지가 도착했어요</h1>
-//       <button onClick={handleGoBack}>뒤로 가기</button>
-//       {currLetter.from_name === currLetter.to_name ? (
-//         <>
-//           <p>
-//             {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
-//             {currLetter.sendDate}일,
-//           </p>
+  // 백 연결
+  let [currLetter, setCurrLetter] = useState([]);
 
-//           <p>
-//             뭐뭐하고 싶었던 당신이 보낸 유리병이 --- 일 동안 세상을 여행하고
-//             당신께 돌아왔어요.
-//           </p>
-//         </>
-//       ) : (
-//         <>
-//           <p>
-//             {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
-//             {currLetter.sendDate}일,
-//           </p>
-//           <p>
-//             {currLetter.sender} {currLetter.from_name} 님이 보낸 유리병이 ---일
-//             동안 세상을 여행하고 {currLetter.to_name} 님께 도착했어요.
-//           </p>
-//         </>
-//       )}
-//       <p>유리병을 눌러 편지를 열어볼까요?</p>
+  // 이메일로 편지 목록 가져오기
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/letterbox/", {
+        headers: { letterId: `Bearer ${letterId}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+      })
+      .then((res) => {
+        setCurrLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+  // 날짜 자르기
+  currLetter.map((e) => {
+    let open = e.openAt.split("T")[0].split("-");
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
 
-//       <Link to={`/detail/${currLetter.id}/gift`}>
-//         <button>유리병</button>
-//       </Link>
+    let send = e.sendAt.split("T")[0].split("-");
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
+  });
 
-//       <br />
-//     </>
-//   );
+  useEffect(() => {
+    getLetter();
+  }, []);
+
+  return (
+    <Container>
+      <Header>
+        <Title>편지 읽기</Title>
+        <IoIosArrowBack
+          onClick={() => navigate(-1)}
+          style={{
+            position: "relative",
+            width: "2.125rem",
+            height: "2.125rem",
+            left: "1.5rem",
+            top: "0rem",
+            color: "black",
+          }}
+        />
+      </Header>
+      <center>
+        <Text1>편지가 도착했어요!</Text1>
+        {currLetter.from_name === currLetter.to_name ? (
+          <>
+            <Text2>
+              {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
+              {currLetter.sendDate}일,
+            </Text2>
+            <Text2>당신이 보낸 유리병이</Text2>
+            <Text2>{currLetter.travel_day} 일 동안 세상을 여행하고</Text2>
+            <Text2>당신께 돌아왔어요.</Text2>
+          </>
+        ) : (
+          <>
+            <Text2>
+              {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
+              {currLetter.sendDate}일,
+            </Text2>
+            <Text2>{currLetter.from_name} 님이 보낸 유리병이 </Text2>
+            <Text2>{currLetter.travel_day}일 동안 세상을 여행하고 </Text2>
+            <Text2>{currLetter.to_name} 님께 도착했어요.</Text2>
+          </>
+        )}
+        <Text3>유리병을 눌러 편지를 열어볼까요?</Text3>
+        <Link to={`/detail/${currLetter.id}/gift`}>
+          <Bottle src="/img/closedbottle.png" alt="bottle"></Bottle>
+        </Link>
+      </center>
+    </Container>
+  );
 };
 
 export default LetterOpen;

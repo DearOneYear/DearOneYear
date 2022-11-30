@@ -245,7 +245,9 @@ const LetterBoxUnread = () => {
           }}
         />
         <BsFillPersonFill
-          onClick={() => navigate("/mypage", { state: { email: { userEmail: email } } })}
+          onClick={() =>
+            navigate("/mypage", { state: { email: { userEmail: email } } })
+          }
           style={{
             color: "white",
             position: "relative",
@@ -257,7 +259,13 @@ const LetterBoxUnread = () => {
         />
         {/* <LetterBoxNav /> */}
         <button>기다리는 중</button>
-        <button onClick={() => navigate('/letterbox/read', { state: { email: { email } } })}>읽은 편지함</button>
+        <button
+          onClick={() =>
+            navigate("/letterbox/read", { state: { email: { email } } })
+          }
+        >
+          읽은 편지함
+        </button>
         {unOpenedLetters.map((letter) => (
           <Letter key={letter.id} id={letter.id}>
             <div onClick={openLetter} id={letter.id}>

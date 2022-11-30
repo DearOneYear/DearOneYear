@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, } from "react-router-dom";
 
-function Write3() {
-    const location = useLocation();
-    const toname = location.state.toname;
-    const toyou = location.state.toyou;
+function Write3tome() {
     
     let currUrl = window.document.location.href;
     let urlArr = currUrl.split('/');
     let who = urlArr[urlArr.length - 1];
     console.log(who);
     const ToWrite4 = useNavigate();
+
+    const toname='';
+    const toyou ='';
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
@@ -62,7 +62,7 @@ function Write3() {
     <button onClick={Oneyearlater}>1년 후</button> <br></br>
     {/* <button>다음 내 생일</button><br></br> */}
     <span> 다른 날짜 선택하기 :</span>
-    <input type="date" id="input_date" onChange={input}></input><br></br>
+    <input type="date" id="input_date" onChange={input} ></input><br></br>
     <p>{selectedDate}</p>
     <button onClick={Navigate}>다음으로</button>
 
@@ -70,4 +70,4 @@ function Write3() {
     );
 };
 
-export default Write3;
+export default Write3tome;

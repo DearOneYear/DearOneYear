@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { BsFillPersonFill } from "react-icons/bs";
+import Modal from "./Modal";
 
 const url = "/img/beach.png";
 const Container = styled.div`
@@ -119,29 +120,14 @@ const NewLetterBtn1 = styled.button`
   width: 90vw;
   height: 3.563rem;
   top: 35vh;
-
+  color: white;
+  font-size: 1.25rem;
   background: rgba(50, 50, 50, 0.7);
   border: 0.075rem solid #ffffff;
   box-shadow: 0px 0.25rem 1.5rem -0.063rem rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(0.625rem);
+  background-filter: blur(0.625rem);
 
   border-radius: 0.625rem;
-`;
-
-const NewLetterTxt1 = styled.p`
-  position: relative;
-  width: 12.188rem;
-  height: 1.5rem;
-  top: 42vh;
-  z-index: 3;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-
-  color: #ffffff;
 `;
 
 const NewLetterBtn2 = styled.button`
@@ -149,29 +135,15 @@ const NewLetterBtn2 = styled.button`
   width: 90vw;
   height: 3.563rem;
   top: 2rem;
+  color: white;
+  font-size: 1.25rem;
 
   background: rgba(50, 50, 50, 0.7);
   border: 0.075rem solid #ffffff;
   box-shadow: 0px 0.25rem 1.5rem -0.063rem rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(0.625rem);
+  background-filter: blur(0.625rem);
 
   border-radius: 0.625rem;
-`;
-
-const NewLetterTxt2 = styled.p`
-  position: relative;
-  width: 12.188rem;
-  height: 1.5rem;
-  top: 5.7rem;
-  z-index: 3;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-
-  color: #ffffff;
 `;
 
 const LetterBox = styled.img`
@@ -331,7 +303,6 @@ function Main() {
     getDB();
   };
 
-
   // 로그인 버튼 클릭 시, 카카오 로그인하기 페이지로 이동
   const login = () => {
     if (access_token === "") {
@@ -345,9 +316,8 @@ function Main() {
   const writeLetter = () => {
     if (access_token === "") {
       navigate("/login");
-    }
-    else {
-      navigate('/write/write1');
+    } else {
+      navigate("/write/write1");
     }
   };
 
@@ -425,8 +395,7 @@ function Main() {
             <Text3>익명의 편지를 읽어보세요</Text3>
           </center>
           <center>
-            <NewLetterTxt1 onClick={writeLetter}>편지하러 가기</NewLetterTxt1>
-            <NewLetterBtn1></NewLetterBtn1>
+            <NewLetterBtn1 onClick={writeLetter}>편지하러 가기</NewLetterBtn1>
           </center>
         </>
       ) : (
@@ -471,12 +440,14 @@ function Main() {
               <center>
                 <T3>유리병을 눌러</T3>
                 <T4>당신의 편지를 읽어보세요.</T4>
+                <>
+                  <Modal />
+                </>
               </center>
             </>
           )}
           <center>
-            <NewLetterTxt2 onClick={writeLetter}>편지하러 가기</NewLetterTxt2>
-            <NewLetterBtn2></NewLetterBtn2>
+            <NewLetterBtn2 onClick={writeLetter}>편지하러 가기</NewLetterBtn2>
           </center>
         </>
       )}
