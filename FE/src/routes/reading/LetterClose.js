@@ -1,19 +1,126 @@
-import dummyLetter from "../letterbox/dummy/dummyLetter.json";
+import new_dummy from "../letterbox/dummy/new_dummy.json";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
+import { BsLink45Deg } from "react-icons/bs";
+
+const url = "/img/ocean.png";
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url(${url});
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-size: cover;
+`;
+const Header = styled.div`
+  width: 100vw;
+`;
+const Title = styled.p`
+  position: relative;
+  left: 4.5rem;
+  top: 3rem;
+  width: 15rem;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 28px;
+
+  letter-spacing: 0.02em;
+
+  color: white;
+`;
+const Text1 = styled.p`
+  width: 13.063rem;
+  height: 2rem;
+
+  position: relative;
+  top: 2rem;
+
+  font-size: 1.5rem;
+  line-height: 2rem;
+
+  color: white;
+`;
+const Text2 = styled.p`
+  width: 90%;
+  height: 2rem;
+
+  position: relative;
+  top: 4rem;
+  margin: 0rem;
+
+  font-size: 1.25rem;
+
+  color: white;
+`;
+const Text3 = styled.p`
+  width: 90%;
+  height: 2rem;
+
+  position: relative;
+  top: 7rem;
+
+  font-size: 1.25rem;
+  line-height: 2rem;
+  margin: 0;
+
+  color: white;
+`;
+const Bottle = styled.img`
+  width: 10.438rem;
+  height: 13.063rem;
+
+  position: relative;
+  top: 10rem;
+  filter: drop-shadow(0.25rem 0.25rem 0.625rem rgba(0, 0, 0, 0.15));
+`;
+const Input = styled.input`
+  width: 13rem;
+  height: 2.75rem;
+  position: relative;
+  left: 0;
+  top: 13rem;
+  background: none;
+  border: none;
+  color: white;
+  border-bottom: 0.1rem solid white;
+  margin: 1rem;
+`;
+const Btn = styled.button`
+  padding: 1rem 1rem;
+  color: white;
+
+  position: relative;
+  width: 8rem;
+  height: 3.188rem;
+  left: 0rem;
+  top: 13rem;
+
+  background: rgba(50, 50, 50, 0.7);
+  border: 0.075rem solid #ffffff;
+  box-shadow: 0px 0.25rem 1.25rem -0.0625rem rgba(0, 0, 0, 0.2);
+  background-filter: blur(0.625rem);
+
+  border-radius: 0.625rem;
+`;
 
 const LetterClose = () => {
   let currUrl = window.document.location.href;
   let urlArr = currUrl.split("/");
   let letterId = parseInt(urlArr[urlArr.length - 1]);
 
-  let letters = dummyLetter.letters;
-  let currLetter;
-
-  letters.map((l) => {
-    if (l.id === letterId) {
-      currLetter = l;
-    }
-  });
+  // 백 없이 더미로 작업
+  let currLetter = new_dummy;
+  let send = currLetter.sendAt.split("T")[0].split("-");
+  currLetter.sendYear = send[0];
+  currLetter.sendMonth = send[1];
+  currLetter.sendDate = send[2];
 
   //링크 공유하기
   let url = document.location.href;
@@ -29,51 +136,72 @@ const LetterClose = () => {
 
   // 뒤로 가기
   const navigate = useNavigate();
-  const handleGoBack = () => {
-    navigate(-1);
-  };
 
   return (
-    <>
-      <h1>편지를 기다리는 중..</h1>
-      <button onClick={handleGoBack}>뒤로 가기</button>
-      {currLetter.sender === currLetter.recipient ? (
+    <Container>
+      <Header>
+        <Title>편지 기다리는 중...</Title>
+        <IoIosArrowBack
+          onClick={() => navigate(-1)}
+          style={{
+            position: "relative",
+            width: "2.125rem",
+            height: "2.125rem",
+            left: "1.5rem",
+            top: "0rem",
+            color: "white",
+          }}
+        />
+      </Header>
+      {currLetter.from_name === currLetter.to_name ? (
         <></>
       ) : (
-        <button onClick={onShareClick}>공유하기 🔗</button>
+        <BsLink45Deg
+          style={{
+            color: "white",
+            position: "relative",
+            width: "2.125rem",
+            height: "2.125rem",
+            left: "23rem",
+            top: "-2.5rem",
+          }}
+          onClick={onShareClick}
+          id={currLetter.id}
+        />
       )}
+      <center>
+        <Text1>도착까지, D - {currLetter.dday}</Text1>
+        {currLetter.from_name === currLetter.to_name ? (
+          <>
+            <Text2>
+              {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
+              {currLetter.sendDate}일에 당신이 보낸 유리병이 아직 세상을
+              여행하고 있어요.
+            </Text2>
+            <Text3>유리병이 도착하면 이메일로 알려드릴게요!</Text3>
+            <Bottle src="/img/closedbottle.png" alt="bottle"></Bottle>
+          </>
+        ) : (
+          <>
+            <Text2>
+              {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
+              {currLetter.sendDate}일,
+            </Text2>
+            <Text2>{currLetter.sender} 님이</Text2>
+            <Text2>{currLetter.recipient} 님께 보낸 유리병이</Text2>
+            <Text2>아직 세상을 여행하고 있어요.</Text2>
+            <Text3>아래에 이메일을 남겨주시면</Text3>
+            <Text3>유리병이 도착할 때 이메일로 알려드릴게요!</Text3>
+            <Bottle src="/img/closedbottle.png" alt="bottle"></Bottle>
 
-      <br />
-      <h4>도착까지 D - {currLetter.dday}</h4>
-      {currLetter.sender === currLetter.recipient ? (
-        <>
-          <p>
-            {currLetter.sendAt[0]}년 {currLetter.sendAt[1]}월{" "}
-            {currLetter.sendAt[2]}일에 당신이 보낸 유리병이 아직 세상을 여행하고
-            있어요.
-          </p>
-          <p>유리병이 도착하면 이메일로 알려드릴게요!</p>
-        </>
-      ) : (
-        <>
-          <p>
-            {currLetter.sendAt[0]}년 {currLetter.sendAt[1]}월{" "}
-            {currLetter.sendAt[2]}일,
-          </p>
-          <p>
-            {currLetter.sender} 님이 {currLetter.recipient} 님께 보낸 유리병이
-            아직 세상을 여행하고 있어요.
-          </p>
-          <p>
-            아래에 이메일을 남겨주시면 유리병이 도착할 때 이메일로 알려드릴게요!
-          </p>
-          <form>
-            <input type="email" />
-            <button type="submit">남기기</button>
-          </form>
-        </>
-      )}
-    </>
+            <form>
+              <Input type="email" placeholder="이메일" />
+              <Btn type="submit">남기기</Btn>
+            </form>
+          </>
+        )}
+      </center>
+    </Container>
   );
 };
 
