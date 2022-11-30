@@ -20,6 +20,7 @@ class Letter(models.Model):
     recipient = models.CharField(max_length=50)    
     message = models.CharField(max_length=1000)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
+    emotion = models.CharField(max_length=100, default = '')
 
     KST = timezone('Asia/Seoul')
     now = datetime.datetime.utcnow()
@@ -32,5 +33,5 @@ class Letter(models.Model):
         return "편지 " + self.from_name + "->" + self.to_name
 
 class LetterDelievery(models.Model):
-    letter = models.OneToOneField(Letter)
+    letter = models.OneToOneField(Letter, on_delete=models.CASCADE)
     recipient_email = models.EmailField()

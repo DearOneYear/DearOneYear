@@ -40,36 +40,52 @@ class LetterList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-             
-        data = json.loads(request.body)
-        print(data)   
-        print(request.FILES.get('file'))
-        # 유저 정보 받는 부분 고쳐야 해~~~~
-        author = User.objects.filter(email = data['email'])[0]
-        # request에서 data 받아서 편지에 넣는다
-        serializer = LetterSerializer(data = request.data)
-        serializer.author = author
+        # data = request.data.dict()
+        data = request.data.dict()
+        print(data)
+        if data.get('from_name')=='' or data.get('to_name')=='':
+            data['from_name'] = "나"
+            data['to_name'] = "나"
 
-        print(data['openAt'])
-        openDay = datetime.datetime.strptime(data.get('openAt').get('selectedDate'), "%Y-%m-%d").replace(tzinfo=None)
+        author = User.objects.filter(email = data['email'])[0]
+        openDay = datetime.datetime.strptime(data['openAt'], "%Y-%m-%d").replace(tzinfo=None)
+        
         calc_dday = openDay - datetime.datetime.now()
-        print(calc_dday)
-        print(calc_dday.days)
-        serializer.travel_day = calc_dday.days
-        # image 확장자 검사
-        if request.FILES['image']:
-            image = request.FILES['image']
+        travel_day = calc_dday.days
+
+        # image 확장자 검사        
+        print(request.FILES.get('file'))
+        if request.FILES.get('file'):
+            image = request.FILES.get('file')
             allowed_ext = ['jpg', 'jpeg', 'png', 'gif']
-            ext = str(request.FILES['image']).split('.')[-1].lower()
+
+            ext = str(request.FILES.get('file')).split('.')[-1].lower()
 
             if not ext in allowed_ext:
                 return Response({"msg":'허용된 확장자가 아닙니다.'}, staus = status.HTTP_400_BAD_REQUEST)
             
-            serializer.image = image # image 넘어온 경우에만 serializer에 추가
-        
+       
+        letter = Letter.objects.create(
+            author = author,
+            from_name = data['from_name'],
+            to_name = data['to_name'],
+            sender=data['sender'],
+            recipient = data['recipient'],
+            message = data['message'],
+            emotion = data['emotion'],
+            openAt = data['openAt'],
+            travel_day = travel_day,           
+            image = image # 확장자 검사 통과한 경우에만 serializer에 추가
+        )
+
+        print(data)
+        serializer = LetterSerializer(letter)
+        print(serializer.is_valid())
+        print(serializer.errors)
 
         if serializer.is_valid():
-            serializer.save(author = author)            
+            print(serializer)
+            serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
