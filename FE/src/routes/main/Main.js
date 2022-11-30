@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { BsFillPersonFill } from "react-icons/bs";
 import Modal from "./Modal";
+import "../main/Modal.css";
 
 const url = "/img/beach.png";
 const Container = styled.div`
@@ -394,6 +395,9 @@ function Main() {
             <Text3>유리병을 눌러</Text3>
             <Text3>익명의 편지를 읽어보세요</Text3>
           </center>
+                <>
+                  <Modal />
+                </>
           <center>
             <NewLetterBtn1 onClick={writeLetter}>편지하러 가기</NewLetterBtn1>
           </center>
@@ -440,9 +444,7 @@ function Main() {
               <center>
                 <T3>유리병을 눌러</T3>
                 <T4>당신의 편지를 읽어보세요.</T4>
-                <>
-                  <Modal />
-                </>
+                
               </center>
             </>
           )}
