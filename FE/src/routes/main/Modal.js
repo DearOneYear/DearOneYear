@@ -8,11 +8,6 @@ export default function Modal() {
     setModal(!modal);
   };
 
-  //   <img
-  //     src="/img/closedbottle.png"
-  //     onClick={toggleModal}
-  //     className="btn-modal"
-  //   />;
 
   return (
     <>
@@ -22,6 +17,7 @@ export default function Modal() {
         onClick={toggleModal}
         className="btn-modal"
       />
+
 
       {modal && (
         <div className="modal">

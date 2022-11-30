@@ -5,7 +5,7 @@ from django.views import View
 # from django.contrib.auth.models import User
 from letter.models import Letter
 from accounts.models import User
-from .serializers import LetterSerializer
+from .serializers import (LetterSerializer, LetterDelieverySerializer,)
 # Response code
 from django.shortcuts import get_object_or_404
 # API View
@@ -40,18 +40,22 @@ class LetterList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+             
         data = json.loads(request.body)
+        print(data)   
+        print(request.FILES.get('file'))
         # 유저 정보 받는 부분 고쳐야 해~~~~
         author = User.objects.filter(email = data['email'])[0]
         # request에서 data 받아서 편지에 넣는다
         serializer = LetterSerializer(data = request.data)
         serializer.author = author
 
-        openDay = data.get('openAt').replace(tzinfo=None)
+        print(data['openAt'])
+        openDay = datetime.datetime.strptime(data.get('openAt').get('selectedDate'), "%Y-%m-%d").replace(tzinfo=None)
         calc_dday = openDay - datetime.datetime.now()
         print(calc_dday)
         print(calc_dday.days)
-        serializer.dday = calc_dday.days
+        serializer.travel_day = calc_dday.days
         # image 확장자 검사
         if request.FILES['image']:
             image = request.FILES['image']
@@ -81,7 +85,10 @@ class LetterDetail(APIView):
     def days_hours_minutes(self, td):
         return td.days, td.seconds//3600, (td.seconds//60)%60
 
-    def get(self, request, pk):
+    def get(self, request):
+        print(request.headers)
+
+        pk = request.headers.get('letterid')
         letter = self.get_object(pk)
         print(type(letter.openAt))
         print(type(self.get_now()))
@@ -114,4 +121,26 @@ class LetterDetail(APIView):
         return Response({"msg": "Letter read failed."}, status = status.HTTP_400_BAD_REQUEST)
 
     # edit, delete is not allowed
-# class LetterResult(APIView):
+class LetterDeliever(APIView):
+    permission_classes = [AllowAny,]
+    def get(self, request):
+        pk = request.headers.get('letterid')
+        letter = Letter.objects.get(pk=pk)
+
+        deliever = LetterDeliever.objects.filter(letter=letter)
+        if deliever.exists():
+            recipient_email = deliever[0].recipient_email
+            return Response({"msg":"success", "recipient_email":recipient_email, "result":True}, status = status.HTTP_200_OK)
+        return Response({"msg":"Failed to find letter deliever object."}, status = status.HTTP_400_BAD_REQUEST)
+    
+    def post(self, request):
+        # email = request.headers.get('email').split(' ')[-1]
+        # pk = request.headers.get('letterid')
+
+        # letter = Letter.objects.get(pk=pk)       
+        # serializer = LetterDelieverySerializer(letter = letter, recipient_email = email)
+        serializer = LetterDelieverySerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"msg":"Letter recipient's email is saved."}, status=status.HTTP_200_OK)
+        return Response({"msg":"Failed to save recipient's email"}, status=status.HTTP_400_BAD_REQUEST)

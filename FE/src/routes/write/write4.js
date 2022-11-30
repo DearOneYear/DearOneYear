@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Write4() {
 
@@ -8,15 +8,20 @@ function Write4() {
     let who = urlArr[urlArr.length - 1];
     console.log(who);
 
+    const location = useLocation();
+    const selectedDate = location.state.selectedDate;
+    const toname = location.state.toname;
+    const toyou = location.state.toyou;
+    console.log(selectedDate);
     const ToWrite5 = useNavigate();
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite5(`/write/write5/tome`);
+            ToWrite5(`/write/write5/tome`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}}});
             console.log('tome write3로 갑시다')
         }
         else if (who === 'toyou'){
-            ToWrite5(`/write/write5/toyou`);
+            ToWrite5(`/write/write5/toyou`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}}});
             console.log('toyou write3로 갑시다')
         }
     }

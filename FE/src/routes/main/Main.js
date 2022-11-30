@@ -256,7 +256,7 @@ function Main() {
 
   // 쿠키 받기
   const getCookie = () => {
-    let cookie = document.cookie.split(";");
+    let cookie = document.cookie.split("; ");
     let cookieArr = [];
     if (cookie.length !== 0) {
       cookie.map((e) => {
@@ -270,8 +270,9 @@ function Main() {
     cookieArr.map((e) => {
       key.push(e[0]);
     });
-    if (key.includes(" access_token") === true) {
-      let indexAccessToken = key.indexOf(" my_access_token");
+    console.log(cookieArr);
+    if (key.includes("access_token") === true) {
+      let indexAccessToken = key.indexOf("my_access_token");
       access_token = cookieArr[indexAccessToken][1];
     }
   };
@@ -395,6 +396,9 @@ function Main() {
             <Text3>익명의 편지를 읽어보세요</Text3>
             <Modal />
           </center>
+                <>
+                  <Modal />
+                </>
           <center>
             <NewLetterBtn1 onClick={writeLetter}>편지하러 가기</NewLetterBtn1>
           </center>
@@ -441,7 +445,6 @@ function Main() {
               <center>
                 <T3>유리병을 눌러</T3>
                 <T4>당신의 편지를 읽어보세요.</T4>
-                <Modal />
               </center>
             </>
           )}
