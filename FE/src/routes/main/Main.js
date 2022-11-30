@@ -256,7 +256,7 @@ function Main() {
 
   // 쿠키 받기
   const getCookie = () => {
-    let cookie = document.cookie.split(";");
+    let cookie = document.cookie.split("; ");
     let cookieArr = [];
     if (cookie.length !== 0) {
       cookie.map((e) => {
@@ -271,7 +271,7 @@ function Main() {
       key.push(e[0]);
     });
     console.log(cookieArr);
-    if (key.includes(" access_token") === true) {
+    if (key.includes("access_token") === true) {
       let indexAccessToken = key.indexOf("my_access_token");
       access_token = cookieArr[indexAccessToken][1];
     }
