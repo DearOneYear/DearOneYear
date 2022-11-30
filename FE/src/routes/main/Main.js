@@ -314,10 +314,9 @@ function Main() {
   const writeLetter = () => {
     if (access_token === "") {
       navigate("/login");
+    } else {
+      navigate("/write/write1");
     }
-    // else {
-    //   navigate('편지쓰는 url');
-    // }
   };
 
   // 편지함, 마이페이지 이동
