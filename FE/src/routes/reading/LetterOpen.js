@@ -72,7 +72,6 @@ const Text3 = styled.p`
 
   color: #060606;
 `;
-
 const Bottle = styled.img`
   width: 10.438rem;
   height: 13.063rem;
@@ -95,11 +94,44 @@ const LetterOpen = () => {
   let letterId = parseInt(urlArr[urlArr.length - 1]);
 
   // 백 없이 더미로 작업
-  let currLetter = new_dummy;
-  let send = currLetter.sendAt.split("T")[0].split("-");
-  currLetter.sendYear = send[0];
-  currLetter.sendMonth = send[1];
-  currLetter.sendDate = send[2];
+  // let currLetter = new_dummy;
+  // let send = currLetter.sendAt.split("T")[0].split("-");
+  // currLetter.sendYear = send[0];
+  // currLetter.sendMonth = send[1];
+  // currLetter.sendDate = send[2];
+
+  // 백 연결
+  let [currLetter, setCurrLetter] = useState([]);
+
+  // 이메일로 편지 목록 가져오기
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/letterbox/", {
+        headers: { letterId: `Bearer ${letterId}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+      })
+      .then((res) => {
+        setCurrLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+  // 날짜 자르기
+  currLetter.map((e) => {
+    let open = e.openAt.split("T")[0].split("-");
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
+
+    let send = e.sendAt.split("T")[0].split("-");
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
+  });
+
+  useEffect(() => {
+    getLetter();
+  }, []);
 
   return (
     <Container>
@@ -125,10 +157,8 @@ const LetterOpen = () => {
               {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
               {currLetter.sendDate}일,
             </Text2>
-            <Text2>
-              뭐뭐하고 싶었던 당신이 보낸 유리병이 {currLetter.travel_day} 일
-              동안 세상을 여행하고
-            </Text2>
+            <Text2>당신이 보낸 유리병이</Text2>
+            <Text2>{currLetter.travel_day} 일 동안 세상을 여행하고</Text2>
             <Text2>당신께 돌아왔어요.</Text2>
           </>
         ) : (
@@ -137,9 +167,7 @@ const LetterOpen = () => {
               {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
               {currLetter.sendDate}일,
             </Text2>
-            <Text2>
-              {currLetter.sender} {currLetter.from_name} 님이 보낸 유리병이{" "}
-            </Text2>
+            <Text2>{currLetter.from_name} 님이 보낸 유리병이 </Text2>
             <Text2>{currLetter.travel_day}일 동안 세상을 여행하고 </Text2>
             <Text2>{currLetter.to_name} 님께 도착했어요.</Text2>
           </>

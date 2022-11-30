@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { BsLink45Deg } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const url = "/img/ocean.png";
 const Container = styled.div`
@@ -116,11 +118,44 @@ const LetterClose = () => {
   let letterId = parseInt(urlArr[urlArr.length - 1]);
 
   // 백 없이 더미로 작업
-  let currLetter = new_dummy;
-  let send = currLetter.sendAt.split("T")[0].split("-");
-  currLetter.sendYear = send[0];
-  currLetter.sendMonth = send[1];
-  currLetter.sendDate = send[2];
+  // let currLetter = new_dummy;
+  // let send = currLetter.sendAt.split("T")[0].split("-");
+  // currLetter.sendYear = send[0];
+  // currLetter.sendMonth = send[1];
+  // currLetter.sendDate = send[2];
+
+  // 백 연결
+  let [currLetter, setCurrLetter] = useState([]);
+
+  // 이메일로 편지 목록 가져오기
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/letterbox/", {
+        headers: { letterId: `Bearer ${letterId}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+      })
+      .then((res) => {
+        setCurrLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+  // 날짜 자르기
+  currLetter.map((e) => {
+    let open = e.openAt.split("T")[0].split("-");
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
+
+    let send = e.sendAt.split("T")[0].split("-");
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
+  });
+
+  useEffect(() => {
+    getLetter();
+  }, []);
 
   //링크 공유하기
   let url = document.location.href;
