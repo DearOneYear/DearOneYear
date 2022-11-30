@@ -24,6 +24,7 @@ import OpenPhoto from "../routes/reading/OpenPhoto";
 import Write1 from "../routes/write/write1";
 import Write2 from "../routes/write/write2";
 import Write3 from "../routes/write/write3";
+import Write3tome from "../routes/write/write3tome";
 import Write4 from "../routes/write/write4";
 import Write5 from "../routes/write/write5";
 import Write6 from "../routes/write/write6";
@@ -57,7 +58,7 @@ const AppRouter = () => {
         {/* 편지 작성 */}
         <Route path="/write/write1" element={<Write1 />} />
         <Route path="/write/write2" element={<Write2 />} />
-        <Route path="/write/write3/tome" element={<Write3 />} />
+        <Route path="/write/write3/tome" element={<Write3tome />} />
         <Route path="/write/write3/toyou" element={<Write3 />} />
         <Route path="/write/write4/tome" element={<Write4 />} />
         <Route path="/write/write4/toyou" element={<Write4 />} />
@@ -65,8 +66,7 @@ const AppRouter = () => {
         <Route path="/write/write5/toyou" element={<Write5 />} />
         <Route path="/write/write6/tome" element={<Write6 />} />
         <Route path="/write/write6/toyou" element={<Write6 />} />
-        <Route path="/write/confirm1/tome" element={<Confirm1 />} />
-        <Route path="/write/confirm1/toyou" element={<Confirm1 />} />
+        <Route path="/write/confirm1" element={<Confirm1 />} />
 
       </Routes>
     </BrowserRouter>
