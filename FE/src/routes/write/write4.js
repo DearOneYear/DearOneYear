@@ -17,11 +17,11 @@ function Write4() {
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite5(`/write/write5/tome`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}}});
+            ToWrite5(`/write/write5/tome`, {state : {selectedDate : selectedDate, toname : toname, toyou: toyou, emotion :emotion}});
             console.log('tome write3로 갑시다')
         }
         else if (who === 'toyou'){
-            ToWrite5(`/write/write5/toyou`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}}});
+            ToWrite5(`/write/write5/toyou`, {state : {selectedDate : selectedDate, toname : toname, toyou: toyou, emotion :emotion}});
             console.log('toyou write3로 갑시다')
         }
     }
