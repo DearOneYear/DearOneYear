@@ -120,7 +120,7 @@ const NewLetterBtn1 = styled.button`
   position: relative;
   width: 90vw;
   height: 3.563rem;
-  top: 35vh;
+  top: 10vh;
   color: white;
   font-size: 1.25rem;
   background: rgba(50, 50, 50, 0.7);
@@ -176,9 +176,9 @@ const LetterNum = styled.p`
 
 const T1 = styled.p`
   position: relative;
-  width: 17.313rem;
+  width: 100%;
   height: 4.875rem;
-  left: 7rem;
+  left: -1rem;
   top: -2.875rem;
 
   font-family: "MapoGoldenPier";
@@ -243,6 +243,12 @@ const T4 = styled.p`
   color: #ffffff;
 
   text-shadow: 0px 0px 0.313rem rgba(0, 0, 0, 0.25);
+`;
+
+const LetterBoxBottle = styled.img`
+  position: relative;
+  width: 10rem;
+  top: -3rem;
 `;
 
 function Main() {
@@ -441,7 +447,11 @@ function Main() {
               <center>
                 <T3>유리병을 눌러</T3>
                 <T4>당신의 편지를 읽어보세요.</T4>
-                <Modal />
+                <LetterBoxBottle
+                  src="/img/closedbottle.png"
+                  alt="편지함 가기"
+                  onClick={() => navigate("/letterbox/unread")}
+                />
               </center>
             </>
           )}
