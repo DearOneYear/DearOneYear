@@ -47,7 +47,8 @@ const Title = styled.p`
 const LoginBtn = styled.p`
   position: relative;
   height: 1.5rem;
-  left: -2rem;
+  width: 10rem;
+  left:18rem;
   top: -1.3rem;
 
   font-family: "MapoGoldenPier";
@@ -57,7 +58,7 @@ const LoginBtn = styled.p`
   line-height: 1.5rem;
   /* identical to box height */
 
-  text-align: right;
+  // text-align: right;
 
   color: #ffffff;
 `;
@@ -150,10 +151,10 @@ const NewLetterBtn2 = styled.button`
 const LetterBox = styled.img`
   position: relative;
 
-  left: 16.625rem;
-  top: -1.7rem;
-  width: 2.125rem;
-  height: 2.75rem;
+  left: 14.625rem;
+  top: -1.9rem;
+  width: 3.125rem;
+  height: 3.75rem;
 
   filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.2));
 `;
@@ -161,8 +162,8 @@ const LetterBox = styled.img`
 const LetterNum = styled.p`
   position: relative;
 
-  left: 19.625rem;
-  top: -5.5rem;
+  left: 17.8rem;
+  top: -5.9rem;
   width: 2.125rem;
   height: 2.75rem;
 
@@ -285,6 +286,7 @@ function Main() {
   // 로그인 상태 체크
   const userCheck = () => {
     let tokenVerifyUrl = "http://localhost:8000/accounts/verify/";
+    
     const getDB = async () => {
       try {
         const response = await axios.get(`${tokenVerifyUrl}`, {
@@ -329,7 +331,7 @@ function Main() {
 
   // 편지함, 마이페이지 이동
   const moveTo = (e) => {
-    console.log(e.target.id);
+    console.log(e.target);
     {
       e.target.id === "letterbox" &&
         navigate("/letterbox/unread", { state: { email: { userEmail } } });
@@ -345,7 +347,7 @@ function Main() {
   const getLetter = async () => {
     await axios
       .get("http://localhost:8000/letter/letterbox/", {
-        headers: { Email: `Bearer ${userEmail}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+        headers: { Email: `Bearer ${userEmail}` },
       })
       .then((res) => {
         setDbLetter([...res.data]);
@@ -401,9 +403,12 @@ function Main() {
             <Text3>익명의 편지를 읽어보세요</Text3>
             <Modal />
           </center>
-          <center>
+                <>
+                  <Modal />
+                </>
+          {/* <center>
             <NewLetterBtn1 onClick={writeLetter}>편지하러 가기</NewLetterBtn1>
-          </center>
+          </center> */}
         </>
       ) : (
         <>
@@ -422,10 +427,10 @@ function Main() {
               style={{
                 color: "white",
                 position: "relative",
-                width: "2.125rem",
-                height: "2.125rem",
-                left: "22rem",
-                top: "-10rem",
+                width: "3.125rem",
+                height: "3.125rem",
+                left: "20rem",
+                top: "-11rem",
               }}
             />
           </Header>

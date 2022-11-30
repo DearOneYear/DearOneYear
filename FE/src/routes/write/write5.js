@@ -32,11 +32,12 @@ function Write5() {
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite6(`/write/write6/tome`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}, finalImage : {finalImage}}});
+            ToWrite6(`/write/write6/tome`, {state : {selectedDate : selectedDate, toname : toname, toyou: toyou, emotion :emotion, finalImage: finalImage}});
             console.log('tome write6로 갑시다')
         }
-        else if (who === 'toyou'){
-            ToWrite6(`/write/write6/toyou`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}, emotion :{emotion}, finalImage : {finalImage}}});
+        else if (who === 'toyou') {
+            
+            ToWrite6(`/write/write6/toyou`, {state : {selectedDate : selectedDate, toname : toname, toyou: toyou, emotion :emotion, finalImage:finalImage}});
             console.log('toyou write6로 갑시다')
         }
     }
