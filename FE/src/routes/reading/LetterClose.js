@@ -130,8 +130,8 @@ const LetterClose = () => {
   // 이메일로 편지 목록 가져오기
   const getLetter = async () => {
     await axios
-      .get("http://localhost:8000/letter/letterbox/", {
-        headers: { letterId: `Bearer ${letterId}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+      .get("http://localhost:8000/letter/letter/", {
+        headers: { LetterId: `${letterId}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
       })
       .then((res) => {
         setCurrLetter([...res.data]);
