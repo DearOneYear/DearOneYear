@@ -96,8 +96,10 @@ const OpenGift = () => {
   // navigate
   const navigate = useNavigate();
 
-  // 백 없이 더미로 작업
-  let currLetter = new_dummy;
+  //현재 편지 id 받아오기
+  let currUrl = window.document.location.href;
+  let urlArr = currUrl.split("/");
+  let letterId = parseInt(urlArr[urlArr.length - 2]);
 
   return (
     <Container>
@@ -120,10 +122,10 @@ const OpenGift = () => {
         <Text2>편지 혹은 사진을 눌러</Text2>
         <Text2>그때를 추억해 볼까요?</Text2>
       </center>
-      <Link to={`/detail/${currLetter.id}/bottle`}>
+      <Link to={`/detail/${letterId}/bottle`}>
         <Letter src="/img/letter.png" alt="편지 읽기" />
       </Link>
-      <Link to={`/detail/${currLetter.id}/photo`}>
+      <Link to={`/detail/${letterId}/photo`}>
         <Camera src="/img/camera.png" alt="사진 보기" />
       </Link>
       <Bottle src="/img/opendbottle.png" alt="빈 유리병" />

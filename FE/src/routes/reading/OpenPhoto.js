@@ -78,8 +78,40 @@ const OpenPhoto = () => {
   let urlArr = currUrl.split("/");
   let letterId = parseInt(urlArr[urlArr.length - 2]);
 
-  // 백 없이 더미로 작업
-  let currLetter = new_dummy;
+  // // 백 없이 더미로 작업
+  // let currLetter = new_dummy;
+  // 백 연결
+  let [currLetter, setCurrLetter] = useState([]);
+
+  // 이메일로 편지 목록 가져오기
+  const getLetter = async () => {
+    await axios
+      .get("http://localhost:8000/letter/letterbox/", {
+        headers: { letterId: `Bearer ${letterId}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+      })
+      .then((res) => {
+        setCurrLetter([...res.data]);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+  // 날짜 자르기
+  currLetter.map((e) => {
+    let open = e.openAt.split("T")[0].split("-");
+    e.openYear = open[0];
+    e.openMonth = open[1];
+    e.openDate = open[2];
+
+    let send = e.sendAt.split("T")[0].split("-");
+    e.sendYear = send[0];
+    e.sendMonth = send[1];
+    e.sendDate = send[2];
+  });
+
+  useEffect(() => {
+    getLetter();
+  }, []);
 
   return (
     <Container>
@@ -99,8 +131,7 @@ const OpenPhoto = () => {
       </Header>
       <center>
         <Frame>
-          {/* <Photo alt="gift_photo" src={currLetter.image} /> */}
-          <Photo src="/img/beach.png" alt="gift_phto" />
+          <Photo alt="gift_photo" src={currLetter.image} />
         </Frame>
         <NewLetterBtn onClick={() => navigate("/write/write1")}>
           새로운 편지 하러 가기
