@@ -2,19 +2,22 @@ import React, { useState } from "react";
 import "../main/Modal.css";
 
 export default function Modal() {
-  
   const [modal, setModal] = useState(false);
 
   const toggleModal = () => {
     setModal(!modal);
   };
 
-  // <img src='/img/closedbottle.png' onClick={toggleModal} className="btn-modal"/>
 
   return (
     <>
-      
-      <img src='/img/closedbottle.png' onClick={toggleModal} className="btn-modal"/>
+      <img
+        src="/img/closedbottle.png"
+        alt="유리병"
+        onClick={toggleModal}
+        className="btn-modal"
+      />
+
 
       {modal && (
         <div className="modal">
