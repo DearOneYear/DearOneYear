@@ -30,3 +30,7 @@ class Letter(models.Model):
     travel_day = models.PositiveSmallIntegerField(default=365)
     def __str__(self):
         return "편지 " + self.from_name + "->" + self.to_name
+
+class LetterDelievery(models.Model):
+    letter = models.OneToOneField(Letter)
+    recipient_email = models.EmailField()
