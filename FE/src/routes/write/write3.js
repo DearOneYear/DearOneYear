@@ -14,12 +14,12 @@ function Write3() {
     function Navigate() {
         console.log(who);
         if (who ==='tome'){
-            ToWrite4(`/write/write4/tome`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}}});
+            ToWrite4(`/write/write4/tome`, {state : {selectedDate : selectedDate, toname : toname, toyou: toyou}});
             console.log('tome write3로 갑시다')
         }
         else if (who === 'toyou'){
 
-            ToWrite4(`/write/write4/toyou`, {state : {selectedDate : {selectedDate}, toname : {toname}, toyou: {toyou}}});
+            ToWrite4(`/write/write4/toyou`, {state : {selectedDate : selectedDate, toname : toname, toyou: toyou}});
             console.log('toyou write3로 갑시다')
         }
     }

@@ -11,7 +11,7 @@ function Write2() {
     let toyou = '';
 
     function Navigate() {
-        navigate(`/write/write3/toyou`, { state : { toname : {toname}, toyou : {toyou} }});
+        navigate(`/write/write3/toyou`, { state : { toname : toname, toyou : toyou }});
     };
 
     function printToName() {
