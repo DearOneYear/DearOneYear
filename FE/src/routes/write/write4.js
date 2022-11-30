@@ -12,6 +12,7 @@ function Write4() {
     const selectedDate = location.state.selectedDate;
     const toname = location.state.toname;
     const toyou = location.state.toyou;
+
     console.log(selectedDate);
     const ToWrite5 = useNavigate();
     function Navigate() {

@@ -334,11 +334,11 @@ function Main() {
     console.log(e.target);
     {
       e.target.id === "letterbox" &&
-        navigate("/letterbox/unread", { state: { email: { userEmail } } });
+        navigate("/letterbox/unread", { state: { email:  userEmail } });
     }
     {
       e.target.id === "mypage" &&
-        navigate("/mypage", { state: { email: { userEmail } } });
+        navigate("/mypage", { state: { email:  userEmail } });
     }
   };
 
