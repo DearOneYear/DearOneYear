@@ -4,10 +4,10 @@ body.active-modal {
 
 .btn-modal {
   width: 10rem;
-  padding: 10px 20px;
   display: block;
-  margin: 100px auto 0;
-  font-size: 18px;
+  margin: 6.25rem auto 0;
+  font-size: 1.125rem;
+  border-radius: 0.625px;
 }
 
 .modal,
@@ -25,21 +25,48 @@ body.active-modal {
   background: rgba(49, 49, 49, 0.8);
 }
 .modal-content {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1.4;
-  background: #f1f1f1;
-  padding: 14px 28px;
-  border-radius: 3px;
-  max-width: 600px;
-  min-width: 300px;
+  position: relative;
+  top: 16.625rem;
+  left: 1.5rem;
+  background: #DAB773;
+  width: 23.875rem;
+  height: 25rem;
+  box-shadow: 0px 4px 24px -1px rgba(0, 0, 0, 0.2);
+  border-radius: 0.625rem;
+  text-decoration : underline;
+  text-underline-position : under;
+  font-size: 1rem;
+  line-height: 2rem;
 }
+.myunderline1 {
+  
+  width: 21rem;
+  
+  left: 3rem;
+  top: 20rem;
+  font-style: normal;
+  font-size: 1rem;
+  line-height: 2rem;
+ color: #060606;
+}
+/* .myunderline2 {
+  position: relative;
+  text-decoration : underline;
+  text-underline-position : under;
+  width: 21rem;
+  height: 18rem;
+  left: 3rem;
+  top: 20rem;
+  font-style: normal;
+  
+  font-size: 1rem;
+  line-height: 2rem;
+ color: #060606;
+}  */
 
 .close-modal {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: relative;
+  top: 0.625rem;
+  right: 0.625rem;
   padding: 5px 7px;
 }
