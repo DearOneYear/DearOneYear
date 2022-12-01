@@ -101,8 +101,6 @@ class LetterDetail(APIView):
         return td.days, td.seconds//3600, (td.seconds//60)%60
 
     def get(self, request):
-        print(request.headers)
-
         pk = request.headers.get('letterid')
         letter = self.get_object(pk)
         print(type(letter.openAt))
@@ -119,7 +117,7 @@ class LetterDetail(APIView):
 
         if dday.days < 0: 
             serializer = LetterSerializer(letter)
-            return Response(serializer.data, status = status.HTTP_200_OK)
+            return Response(data=serializer.data, status = status.HTTP_200_OK)
         elif dday.days > 0:
             #날짜 남은 것
             return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "available":False})
@@ -139,7 +137,8 @@ class LetterDetail(APIView):
 class LetterDeliever(APIView):
     permission_classes = [AllowAny,]
     def get(self, request):
-        pk = request.headers.get('letterid')
+        print(request.headers)
+        pk = request.headers.get('Letterid')
         letter = Letter.objects.get(pk=pk)
 
         deliever = LetterDeliever.objects.filter(letter=letter)

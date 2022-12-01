@@ -21,5 +21,5 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('letterbox/', LetterList.as_view()),
-    path('letter/<int:pk>', LetterDetail.as_view())
+    path('letter/', LetterDetail.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
