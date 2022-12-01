@@ -51,8 +51,9 @@ class LetterList(APIView):
         openDay = datetime.datetime.strptime(data['openAt'], "%Y-%m-%d").replace(tzinfo=None)
         
         calc_dday = openDay - datetime.datetime.now()
-        travel_day = calc_dday.days
 
+        travel_day = calc_dday.days + 1
+        print(travel_day)
         # image 확장자 검사        
         print(request.FILES.get('file'))
         if request.FILES.get('file'):
@@ -80,14 +81,12 @@ class LetterList(APIView):
 
         print(data)
         serializer = LetterSerializer(letter)
-        print(serializer.is_valid())
-        print(serializer.errors)
-
-        if serializer.is_valid():
-            print(serializer)
-            serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        print(serializer.data)
+        # if serializer.is_valid():
+            # print(serializer)
+            # serializer.save()
+        return Response(serializer.data, status = status.HTTP_201_CREATED)
+        # return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class LetterDetail(APIView):
     permission_classes = [AllowAny]
