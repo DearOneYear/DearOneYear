@@ -9,7 +9,7 @@ class LetterSerializer(sz.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['author']
 
-class LetterDelieverySerializer(sz.MosdelSerializer):
+class LetterDelieverySerializer(sz.ModelSerializer):
     class Meta:
         model = LetterDelievery
         fields = '__all__'
