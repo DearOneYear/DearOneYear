@@ -1,256 +1,12 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { React, useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { BsFillPersonFill } from "react-icons/bs";
+
 import "../main/Modal.css";
 import Modal from "../main/Modal.js";
 
-const url = "/img/beach.png";
-const Container = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-image: url(${url});
-  background-repeat: no-repeat;
-  background-origin: padding-box;
-  background-size: cover;
-`;
-const Header = styled.div`
-  width: 100vw;
-`;
-
-const Title = styled.p`
-  position: relative;
-  width: 10rem;
-  height: 2rem;
-  left: 1.5rem;
-  top: 2rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.5rem;
-  line-height: 2rem;
-
-  letter-spacing: 0.02rem;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const LoginBtn = styled.p`
-  position: relative;
-  height: 1.5rem;
-  width: 10rem;
-  left:18rem;
-  top: -1.3rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-  /* identical to box height */
-
-  // text-align: right;
-
-  color: #ffffff;
-`;
-
-const Text1 = styled.p`
-  position: relative;
-  width: 313px;
-  height: 4.875rem;
-  left: 5rem;
-  top: 4rem;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.5rem;
-  line-height: 2.5rem;
-
-  text-align: right;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.25rem rgba(0, 0, 0, 0.25);
-`;
-
-const Text2 = styled.p`
-  position: relative;
-  width: 313px;
-  left: 5rem;
-  top: 0rem;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 2rem;
-  line-height: 2.5rem;
-
-  text-align: right;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.25rem rgba(0, 0, 0, 0.25);
-`;
-const Text3 = styled.p`
-  position: relative;
-  width: 60vw;
-  height: 2rem;
-  top: 5rem;
-  margin: 0;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.75ren;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.25rem rgba(0, 0, 0, 0.25);
-`;
-
-const NewLetterBtn1 = styled.button`
-  position: relative;
-  width: 90vw;
-  height: 3.563rem;
-  top: 10vh;
-  color: white;
-  font-size: 1.25rem;
-  background: rgba(50, 50, 50, 0.7);
-  border: 0.075rem solid #ffffff;
-  box-shadow: 0px 0.25rem 1.5rem -0.063rem rgba(0, 0, 0, 0.2);
-  background-filter: blur(0.625rem);
-
-  border-radius: 0.625rem;
-`;
-
-const NewLetterBtn2 = styled.button`
-  position: relative;
-  width: 90vw;
-  height: 3.563rem;
-  top: 2rem;
-  color: white;
-  font-size: 1.25rem;
-
-  background: rgba(50, 50, 50, 0.7);
-  border: 0.075rem solid #ffffff;
-  box-shadow: 0px 0.25rem 1.5rem -0.063rem rgba(0, 0, 0, 0.2);
-  background-filter: blur(0.625rem);
-
-  border-radius: 0.625rem;
-`;
-
-const LetterBox = styled.img`
-  position: relative;
-
-  left: 14.625rem;
-  top: -1.9rem;
-  width: 3.125rem;
-  height: 3.75rem;
-
-  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.2));
-`;
-
-const LetterNum = styled.p`
-  position: relative;
-
-  left: 17.8rem;
-  top: -5.9rem;
-  width: 2.125rem;
-  height: 2.75rem;
-
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
-`;
-
-const T1 = styled.p`
-  position: relative;
-  width: 100%;
-  height: 4.875rem;
-  left: -1rem;
-  top: -2.875rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.5rem;
-  line-height: 2.5rem;
-
-  text-align: right;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.313rem rgba(0, 0, 0, 0.25);
-`;
-const T2 = styled.p`
-  position: relative;
-  width: 16.313rem;
-  height: 4.875rem;
-  left: 7.7rem;
-  top: -6.875rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 2rem;
-  line-height: 2.5rem;
-
-  text-align: right;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.313rem rgba(0, 0, 0, 0.25);
-`;
-const T3 = styled.p`
-  position: relative;
-  width: 100%;
-  height: 4.875rem;
-  top: 0rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 2.5rem;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.313rem rgba(0, 0, 0, 0.25);
-`;
-const T4 = styled.p`
-  position: relative;
-  width: 100%;
-  height: 4.875rem;
-  top: -3.5rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 2.5rem;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.313rem rgba(0, 0, 0, 0.25);
-`;
-
-const LetterBoxBottle = styled.img`
-  position: relative;
-  width: 10rem;
-  top: -3rem;
-`;
+import styled from "styled-components";
+import { BsFillPersonFill } from "react-icons/bs";
 
 function Main() {
   // navigator
@@ -263,7 +19,7 @@ function Main() {
 
   // 쿠키 받기
   const getCookie = () => {
-    let cookie = document.cookie.split(";");
+    let cookie = document.cookie.split("; ");
     let cookieArr = [];
     if (cookie.length !== 0) {
       cookie.map((e) => {
@@ -277,8 +33,8 @@ function Main() {
     cookieArr.map((e) => {
       key.push(e[0]);
     });
-    if (key.includes(" access_token") === true) {
-      let indexAccessToken = key.indexOf(" my_access_token");
+    if (key.includes("access_token") === true) {
+      let indexAccessToken = key.indexOf("my_access_token");
       access_token = cookieArr[indexAccessToken][1];
     }
   };
@@ -286,7 +42,7 @@ function Main() {
   // 로그인 상태 체크
   const userCheck = () => {
     let tokenVerifyUrl = "http://localhost:8000/accounts/verify/";
-    
+
     const getDB = async () => {
       try {
         const response = await axios.get(`${tokenVerifyUrl}`, {
@@ -302,7 +58,6 @@ function Main() {
         } else {
           console.log("login");
           getLetter();
-          // navigate("/login");
         }
       } catch (error) {
         console.log(error);
@@ -322,23 +77,18 @@ function Main() {
   // 로그인 안되어 있으면 로그인 페이지
   // 로그인되어 있으면 편지 작성 페이지
   const writeLetter = () => {
-    if (access_token === "") {
-      navigate("/login");
-    } else {
-      navigate("/write/write1");
-    }
+    navigate("/write/write1");
   };
 
   // 편지함, 마이페이지 이동
   const moveTo = (e) => {
-    console.log(e.target);
     {
       e.target.id === "letterbox" &&
-        navigate("/letterbox/unread", { state: { email:  userEmail } });
+        navigate("/letterbox/unread", { state: { email: userEmail } });
     }
     {
       e.target.id === "mypage" &&
-        navigate("/mypage", { state: { email:  userEmail } });
+        navigate("/mypage", { state: { email: userEmail } });
     }
   };
 
@@ -377,7 +127,9 @@ function Main() {
     return a.dday - b.dday;
   });
   // 백 연결 확인하고 이거 켜기
-  // latestDday = yetLetter[0].dday;
+  if (yetLetter.length > 0) {
+    latestDday = yetLetter[0].dday;
+  }
 
   useEffect(() => {
     getCookie();
@@ -385,42 +137,35 @@ function Main() {
   }, []);
 
   return (
-    <Container>
+    <>
       {isLoggedIn === false ? (
         <>
-          <Header>
-            <Title>나의 내일에게</Title>
-            <LoginBtn onClick={login}>로그인</LoginBtn>
-          </Header>
-
           <div>
-            <Text1>내일의 당신에게 편지하세요</Text1>
-            <Text2>나의 내일에게</Text2>
+            <p>나의 내일에게</p>
+            <button onClick={login}>로그인</button>
           </div>
 
-          <center>
-            <Text3>유리병을 눌러</Text3>
-            <Text3>익명의 편지를 읽어보세요</Text3>
-            <Modal />
-          </center>
-                <>
-                  <Modal />
-                </>
-          {/* <center>
-            <NewLetterBtn1 onClick={writeLetter}>편지하러 가기</NewLetterBtn1>
-          </center> */}
+          <div>
+            <p>내일의 당신에게 편지하세요</p>
+            <p>나의 내일에게</p>
+          </div>
+
+          <p>유리병을 눌러</p>
+          <p>익명의 편지를 읽어보세요</p>
+          <Modal />
+          <button>편지하러 가기</button>
         </>
       ) : (
         <>
-          <Header>
-            <Title>나의 내일에게</Title>
-            <LetterBox
+          <>
+            <p>나의 내일에게</p>
+            <img
               id="letterbox"
               onClick={moveTo}
               src="img/closedbottle.png"
               alt="letterbox"
             />
-            <LetterNum>{receivedLetter}</LetterNum>
+            <p>{receivedLetter}</p>
             <BsFillPersonFill
               id="mypage"
               onClick={moveTo}
@@ -433,39 +178,33 @@ function Main() {
                 top: "-11rem",
               }}
             />
-          </Header>
+          </>
           {dbLetter.length === 0 ? (
             <>
-              <T1>{dbLetter.length}개의 편지, 기다리는 중</T1>
-              <T2>D - {latestDday}</T2>
-              <center>
-                <T3>아직 도착한 유리병이 없어요.</T3>
-                <T4>새로운 편지를 보내보는 건 어떨까요?</T4>
-              </center>
+              <p>{dbLetter.length}개의 편지, 기다리는 중</p>
+              <p>D - {latestDday}</p>
+              <p>아직 도착한 유리병이 없어요.</p>
+              <p>새로운 편지를 보내보는 건 어떨까요?</p>
             </>
           ) : (
             <>
-              <T1>
+              <p>
                 {dbLetter.length}개의 편지 중, {receivedLetter}개가 도착했어요!
-              </T1>
-              <T2>D-DAY</T2>
-              <center>
-                <T3>유리병을 눌러</T3>
-                <T4>당신의 편지를 읽어보세요.</T4>
-                <LetterBoxBottle
-                  src="/img/closedbottle.png"
-                  alt="편지함 가기"
-                  onClick={() => navigate("/letterbox/unread")}
-                />
-              </center>
+              </p>
+              <p>D-DAY</p>
+              <p>유리병을 눌러</p>
+              <p>당신의 편지를 읽어보세요.</p>
+              <img
+                src="/img/closedbottle.png"
+                alt="편지함 가기"
+                onClick={() => navigate("/letterbox/unread")}
+              />
             </>
           )}
-          <center>
-            <NewLetterBtn2 onClick={writeLetter}>편지하러 가기</NewLetterBtn2>
-          </center>
+          <button onClick={writeLetter}>편지하러 가기</button>
         </>
       )}
-    </Container>
+    </>
   );
 }
 
