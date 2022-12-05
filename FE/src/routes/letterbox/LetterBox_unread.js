@@ -1,5 +1,4 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import LetterBoxNav from "./LetterBoxNav";
 import new_dummy from "./dummy/new_dummy.json";
 import axios from "axios";
 import { useState, useEffect } from "react";
