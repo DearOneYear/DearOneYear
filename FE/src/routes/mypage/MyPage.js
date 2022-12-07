@@ -134,7 +134,7 @@ const MyPage = () => {
 
   // 쿠키 받기
   const getCookie = () => {
-    let cookie = document.cookie.split(";");
+    let cookie = document.cookie.split("; ");
     let cookieArr = [];
     cookie.map((e) => {
       let c = e.split("=");
@@ -146,8 +146,8 @@ const MyPage = () => {
     cookieArr.map((e) => {
       key.push(e[0]);
     });
-    let indexAccessToken = key.indexOf(" my_access_token");
-    let indexKakaoToken = key.indexOf(" access_token");
+    let indexAccessToken = key.indexOf("my_access_token");
+    let indexKakaoToken = key.indexOf("access_token");
     access_token = cookieArr[indexAccessToken][1];
     kakaoToken = cookieArr[indexKakaoToken][1];
 
@@ -160,8 +160,8 @@ const MyPage = () => {
 
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
-  const email = location.state.email.userEmail;
-  console.log(location.state);
+  const email = location.state.email;
+  console.log(email);
 
   // 이메일로 유저 정보 받아오기
   const getUserInfo = async () => {
@@ -240,7 +240,7 @@ const MyPage = () => {
     <Container>
       <Header>
         <IoIosArrowBack
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           style={{
             position: "relative",
             width: "2.125rem",

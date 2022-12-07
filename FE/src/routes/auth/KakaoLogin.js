@@ -56,17 +56,7 @@ const KakaoLogin = () => {
 
   return (
     <>
-      <IoIosArrowBack
-        onClick={() => navigate(-1)}
-        style={{
-          position: "relative",
-          width: "2.125rem",
-          height: "2.125rem",
-          left: "1.5rem",
-          top: "3.4rem",
-          color: "white",
-        }}
-      />
+      <IoIosArrowBack onClick={() => navigate(-1)} />
       <p>로그인 / 회원가입</p>
       <>
         <p>세상에서 가장 소중한 사람,</p>

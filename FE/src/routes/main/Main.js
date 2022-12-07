@@ -107,13 +107,20 @@ function Main() {
       });
   };
 
-  // 디데이 >= 0 인 편지 개수 세기
+  // 읽음 대기 중인 편지 개수 세기
+  // 읽음 대기 편지 중 배열 상 첫번째꺼 아이디
+  let openingLetter = [];
+  let openingLetterId = 0;
   let receivedLetter = 0;
   dbLetter.map((letter) => {
-    if (letter.dday >= 0) {
+    if (letter.dday >= 0 && letter.isOpend === false) {
       receivedLetter += 1;
+      openingLetter.push(letter);
     }
   });
+  if (openingLetter.length !== 0) {
+    openingLetterId = openingLetter[0].id;
+  }
 
   // 가장 빠른 디데이 값 가져오기
   let latestDday = 0;
@@ -126,7 +133,7 @@ function Main() {
   yetLetter = yetLetter.sort(function (a, b) {
     return a.dday - b.dday;
   });
-  // 백 연결 확인하고 이거 켜기
+
   if (yetLetter.length > 0) {
     latestDday = yetLetter[0].dday;
   }
@@ -153,54 +160,99 @@ function Main() {
           <p>유리병을 눌러</p>
           <p>익명의 편지를 읽어보세요</p>
           <Modal />
-          <button>편지하러 가기</button>
+          <button onClick={login}>편지하러 가기</button>
         </>
       ) : (
         <>
           <>
             <p>나의 내일에게</p>
-            <img
-              id="letterbox"
-              onClick={moveTo}
-              src="img/closedbottle.png"
-              alt="letterbox"
-            />
-            <p>{receivedLetter}</p>
-            <BsFillPersonFill
-              id="mypage"
-              onClick={moveTo}
-              style={{
-                color: "white",
-                position: "relative",
-                width: "3.125rem",
-                height: "3.125rem",
-                left: "20rem",
-                top: "-11rem",
-              }}
-            />
-          </>
-          {dbLetter.length === 0 ? (
-            <>
-              <p>{dbLetter.length}개의 편지, 기다리는 중</p>
-              <p>D - {latestDday}</p>
-              <p>아직 도착한 유리병이 없어요.</p>
-              <p>새로운 편지를 보내보는 건 어떨까요?</p>
-            </>
-          ) : (
-            <>
-              <p>
-                {dbLetter.length}개의 편지 중, {receivedLetter}개가 도착했어요!
-              </p>
-              <p>D-DAY</p>
-              <p>유리병을 눌러</p>
-              <p>당신의 편지를 읽어보세요.</p>
-              <img
-                src="/img/closedbottle.png"
-                alt="편지함 가기"
-                onClick={() => navigate("/letterbox/unread")}
+
+            {yetLetter.length === 0 && (
+              <>
+                <img
+                  id="letterbox"
+                  onClick={moveTo}
+                  src="img/closedbottle.png"
+                  alt="letterbox"
+                  style={{ width: "3rem", height: "3rem" }}
+                />
+                <span>{receivedLetter}</span>
+              </>
+            )}
+            {yetLetter.length !== 0 && (
+              <>
+                <img
+                  id="letterbox"
+                  onClick={moveTo}
+                  src="img/redletterbox.png"
+                  alt="letterbox"
+                  style={{ width: "3rem", height: "3rem" }}
+                />
+                <span>{receivedLetter}</span>
+              </>
+            )}
+            <div onClick={moveTo}>
+              <BsFillPersonFill
+                id="mypage"
+                style={{
+                  color: "black",
+                  position: "relative",
+                  width: "3.125rem",
+                  height: "3.125rem",
+                  padding: "1rem",
+                }}
               />
-            </>
-          )}
+            </div>
+          </>
+          <>
+            <p>{dbLetter.length}개의 편지, 기다리는 중</p>
+
+            {dbLetter.length === 0 && (
+              <>
+                <p>기다림을 시작해 보세요.</p>
+                <p>
+                  아직 보낸 편지가 없어요. <br /> 아래의 버튼을 눌러 <br />
+                  미래의 당신에게 위로와 응원을 보내주세요.
+                </p>
+              </>
+            )}
+
+            {dbLetter.length !== 0 && receivedLetter === 0 && (
+              <>
+                <p>{dbLetter.length}개의 편지, 기다리는 중</p>
+                <p>D - {latestDday}</p>
+                <p>
+                  아직 도착한 유리병이 없어요.
+                  <br />
+                  새로운 편지를 보내보는 건 어떨까요?
+                </p>
+              </>
+            )}
+
+            {dbLetter.length !== 0 && receivedLetter > 0 && (
+              <>
+                <p>
+                  {dbLetter.length}개의 편지 중, {receivedLetter}개가
+                  도착했어요!
+                </p>
+                <p>D - DAY</p>
+                <p>
+                  유리병을 눌러
+                  <br />
+                  당신의 편지를 읽어보세요.
+                </p>
+                <img
+                  id="letterbox"
+                  onClick={() => {
+                    navigate(`/detail/${openingLetterId}`);
+                  }}
+                  src="img/closedbottle.png"
+                  alt="letterbox"
+                  style={{ width: "8rem", height: "8rem" }}
+                />
+              </>
+            )}
+          </>
           <button onClick={writeLetter}>편지하러 가기</button>
         </>
       )}
