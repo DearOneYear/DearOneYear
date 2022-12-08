@@ -86,40 +86,33 @@ function Main() {
 
   // 이메일로 편지 목록 가져오기
   let [dbLetter, setDbLetter] = useState([]);
+  let [dbDday, setDbDday] = useState([]);
   const getLetter = async (userEmail) => {
     await axios
       .get("http://localhost:8000/letter/letterbox/", {
         headers: { Email: `Bearer ${userEmail}` },
       })
       .then((res) => {
-        setDbLetter(res.data);
+        setDbLetter([...res.data.letter]);
+        setDbDday([...res.data.ddays]);
       })
       .catch(function (err) {
         console.log(err);
       });
   };
 
+  // 디데이 기존 배열에 합치기
+  for (let j = 0; j < dbLetter.length; j++) {
+    // console.log(j, dbDday[j]);
+    dbLetter[j].dday = dbDday[j];
+  }
+
   // 읽음 대기 중인 편지 개수 세기
-  // 읽음 대기 편지 중 배열 상 첫번째꺼 아이디
   let openingLetter = [];
   let openingLetterId = 0;
-  let receivedLetter = 0;
 
-  // 오늘 날짜랑 비교
-  let now = new Date();
-  let yearNow = now.getFullYear();
-  yearNow = yearNow.toString();
-  let monthNow = now.getMonth() + 1;
-  monthNow = monthNow.toString();
-  let dayNow = now.getDay();
-  dayNow = dayNow.toString();
-  let today = yearNow + monthNow + dayNow;
-
-  // n개의 편지 기다리는 중
   dbLetter.map((letter) => {
-    let dday = letter.openAt.split("T")[0].split("-").join("");
-    if (letter.isOpend !== true) {
-      receivedLetter += 1;
+    if (letter.isOpend !== true && letter.dday <= 0) {
       openingLetter.push(letter);
     }
   });
@@ -181,7 +174,7 @@ function Main() {
                   alt="letterbox"
                   style={{ width: "3rem", height: "3rem" }}
                 />
-                <span>{receivedLetter}</span>
+                <span>{yetLetter.length}</span>
               </>
             )}
             {yetLetter.length !== 0 && (
@@ -193,7 +186,7 @@ function Main() {
                   alt="letterbox"
                   style={{ width: "3rem", height: "3rem" }}
                 />
-                <span>{receivedLetter}</span>
+                <span>{yetLetter.length}</span>
               </>
             )}
             <div onClick={moveTo}>
@@ -221,7 +214,7 @@ function Main() {
               </>
             )}
 
-            {dbLetter.length !== 0 && receivedLetter === 0 && (
+            {dbLetter.length !== 0 && latestDday > 0 && (
               <>
                 <p>{yetLetter.length}개의 편지, 기다리는 중</p>
                 <p>D - {latestDday}</p>
@@ -233,10 +226,10 @@ function Main() {
               </>
             )}
 
-            {yetLetter.length !== 0 && receivedLetter > 0 && (
+            {dbLetter.length !== 0 && latestDday <= 0 && (
               <>
                 <p>
-                  {dbLetter.length}개의 편지 중, {receivedLetter}개가
+                  {dbLetter.length}개의 편지 중, {openingLetter.length}개가
                   도착했어요!
                 </p>
                 <p>D - DAY</p>

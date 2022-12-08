@@ -25,6 +25,8 @@ const LetterBoxUnread = () => {
 
   // 전역 변수
   let [dbLetter, setDbLetter] = useState([]);
+  let [dbDday, setDbDday] = useState([]);
+
   let [accessToken, setAccessToken] = useState("");
 
   // 쿠키 받기
@@ -50,12 +52,24 @@ const LetterBoxUnread = () => {
         headers: { Email: `Bearer ${email}` },
       })
       .then((res) => {
-        setDbLetter([...res.data]);
+        setDbLetter([...res.data.letter]);
+        setDbDday([...res.data.ddays]);
       })
       .catch(function (err) {
         console.log(err);
       });
   };
+  // 디데이 기존 배열에 합치기
+  for (let j = 0; j < dbLetter.length; j++) {
+    dbLetter[j].dday = dbDday[j];
+    if (dbDday[j] === 0) {
+      dbLetter[j].ddayinfo = "- DAY";
+    } else if (dbDday[j] > 0) {
+      dbLetter[j].ddayinfo = `- ${Math.abs(dbDday[j])}`;
+    } else if (dbDday[j] < 0) {
+      dbLetter[j].ddayinfo = `+ ${Math.abs(dbDday[j])}`;
+    }
+  }
 
   dbLetter.map((e) => {
     let open = e.openAt.split("T")[0].split("-");
@@ -69,12 +83,15 @@ const LetterBoxUnread = () => {
     e.sendDate = send[2];
   });
 
-  // 안 읽은 편지만 분류
+  // 안 읽은 편지만 분류 및 디데이 순 정렬
   let unOpenedLetters = [];
   dbLetter.map((l) => {
     if (l.isOpend !== true) {
       unOpenedLetters.push(l);
     }
+  });
+  unOpenedLetters = unOpenedLetters.sort(function (a, b) {
+    return a.dday - b.dday;
   });
 
   //링크 공유하기
@@ -142,7 +159,7 @@ const LetterBoxUnread = () => {
           <div key={letter.id} id={letter.id}>
             <div onClick={openLetter} id={letter.id}>
               <p></p>
-              {letter.isOpend !== true ? (
+              {letter.dday <= 0 ? (
                 <img
                   style={{ width: "3rem" }}
                   src="/img/redletterbox.png"
@@ -160,10 +177,10 @@ const LetterBoxUnread = () => {
 
               {letter.to_name !== letter.from_name ? (
                 <p id={letter.id}>
-                  D {letter.dday} {letter.to_name}에게
+                  D {letter.ddayinfo} {letter.to_name}에게
                 </p>
               ) : (
-                <p id={letter.id}>D {letter.dday}</p>
+                <p id={letter.id}>D {letter.ddayinfo}</p>
               )}
             </div>
             {letter.to_name !== letter.from_name ? (
