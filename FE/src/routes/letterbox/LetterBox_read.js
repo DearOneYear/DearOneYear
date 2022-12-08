@@ -1,5 +1,4 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import LetterBoxNav from "./LetterBoxNav";
 import new_dummy from "./dummy/new_dummy.json";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -242,7 +241,9 @@ const LetterBoxUnread = () => {
           }}
         />
         <BsFillPersonFill
-          onClick={() => navigate("/mypage", { state: { email: { userEmail: email } } })}
+          onClick={() =>
+            navigate("/mypage", { state: { email: { userEmail: email } } })
+          }
           style={{
             color: "white",
             position: "relative",
@@ -253,7 +254,15 @@ const LetterBoxUnread = () => {
           }}
         />
         {/* <LetterBoxNav /> */}
-        <button onClick={() => navigate('/letterbox/unread', { state: { email: { userEmail: email } } })}>기다리는 중</button>
+        <button
+          onClick={() =>
+            navigate("/letterbox/unread", {
+              state: { email: { userEmail: email } },
+            })
+          }
+        >
+          기다리는 중
+        </button>
         <button>읽은 편지함</button>
         {unOpenedLetters.map((letter) => (
           <Letter key={letter.id} id={letter.id}>

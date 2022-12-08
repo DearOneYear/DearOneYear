@@ -103,7 +103,7 @@ const Btn2 = styled.button`
   border-radius: 0.625rem;
 `;
 
-function Confirm1() {
+function Confirm() {
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -201,4 +201,4 @@ function Confirm1() {
   );
 }
 
-export default Confirm1;
+export default Confirm;
