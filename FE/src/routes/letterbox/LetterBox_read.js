@@ -257,7 +257,7 @@ const LetterBoxUnread = () => {
         <button
           onClick={() =>
             navigate("/letterbox/unread", {
-              state: { email: { userEmail: email } },
+              state: { email: email },
             })
           }
         >
@@ -314,8 +314,9 @@ const LetterBoxUnread = () => {
           </Letter>
         ))}
         <center>
-          <NewLetterTxt>새로운 편지하러 가기</NewLetterTxt>
-          <NewLetterBtn></NewLetterBtn>
+          <button onClick={() => navigate("/write/write1")}>
+            새로운 편지하러 가기
+          </button>
         </center>
       </Container>
     </>

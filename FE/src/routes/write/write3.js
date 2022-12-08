@@ -27,6 +27,7 @@ function Write3() {
 
   function Oneyearlater() {
     let now = new Date();
+    console.log(now);
 
     let nextYear = now.getFullYear() + 1;
     let todayMonth = now.getMonth() + 1;
@@ -49,6 +50,21 @@ function Write3() {
   // 올해 날짜와 비교해서, 그 날짜가 지나지 않았으면 그대로 날짜를 보여준다.
 
   // }
+
+  // 다른 날짜 선택 시, 내일부터 선택가능하게 하기
+  let today = new Date();
+  let tomorrow = new Date(today.setDate(today.getDate() + 1));
+  let year = tomorrow.getFullYear();
+  let month = tomorrow.getMonth() + 1;
+  let day = tomorrow.getDate();
+  if (month < 10) {
+    month = "0" + month;
+  }
+  if (day < 10) {
+    day = "0" + day;
+  }
+  let availableDay = `${year}-${month}-${day}`;
+
   return (
     <>
       {who === "tome" ? (
@@ -66,7 +82,12 @@ function Write3() {
       {toname === toyou ? <button>다음 내 생일</button> : <></>}
       <br></br>
       <span> 다른 날짜 선택하기 :</span>
-      <input type="date" id="input_date" onChange={input}></input>
+      <input
+        type="date"
+        min={availableDay}
+        id="input_date"
+        onChange={input}
+      ></input>
       <br></br>
       <p>{selectedDate}</p>
       <button onClick={Navigate}>다음으로</button>

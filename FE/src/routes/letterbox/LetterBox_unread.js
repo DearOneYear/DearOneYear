@@ -19,131 +19,8 @@ const Container = styled.div`
   background-origin: padding-box;
   background-size: cover;
 `;
-const Title = styled.p`
-  position: relative;
-  width: 4.563rem;
-  height: 2rem;
-  left: 1.5rem;
-  top: 5.625rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.5rem;
-  line-height: 2rem;
-
-  letter-spacing: 0.02rem;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-`;
-
-const Letter = styled.div`
-  position: relative;
-  width: 19.25rem;
-  height: 3.625rem;
-  left: 1.688rem;
-  top: 1rem;
-`;
-
-const LetterTitle = styled.p`
-  position: relative;
-  height: 1.813rem;
-  left: 4.2rem;
-  top: -2.625rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.5rem;
-  line-height: 1.813rem;
-  /* identical to box height */
-
-  color: #ffffff;
-
-  /* 기본 그림자 */
-
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
-`;
-
-const LetterPeriod = styled.p`
-  position: relative;
-  height: 1.813rem;
-  left: 4.2rem;
-  top: -6.5rem;
-  margin: 0;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.1rem;
-  line-height: 1.813rem;
-  /* identical to box height */
-
-  color: #ffffff;
-
-  /* 기본 그림자 */
-`;
-
-const NewLetterBtn = styled.button`
-  position: relative;
-  width: 23.875rem;
-  height: 3.563rem;
-  top: 29rem;
-
-  background: rgba(50, 50, 50, 0.7);
-  border: 0.075rem solid #ffffff;
-  box-shadow: 0px 0.25rem 1.5rem -0.063rem rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(0.625rem);
-
-  border-radius: 0.625rem;
-`;
-
-const NewLetterTxt = styled.p`
-  position: relative;
-  width: 12.188rem;
-  height: 1.5rem;
-  top: 32.8rem;
-  z-index: 3;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-
-  display: flex;
-  align-items: center;
-  text-align: center;
-
-  color: #ffffff;
-`;
-
-const ClosedBottle = styled.img`
-  position: relative;
-  width: 2.938rem;
-  height: 58px;
-  top: 2.5rem;
-`;
 
 const LetterBoxUnread = () => {
-  // 백 없이 작업 (더미)
-  // let unOpenedLetters = [new_dummy];
-  // unOpenedLetters.map((e) => {
-  //   let open = e.openAt.split("T")[0].split("-");
-  //   e.openYear = open[0];
-  //   e.openMonth = open[1];
-  //   e.openDate = open[2];
-
-  //   let send = e.sendAt.split("T")[0].split("-");
-  //   e.sendYear = send[0];
-  //   e.sendMonth = send[1];
-  //   e.sendDate = send[2];
-  // });
-
-  // 백 연결시
-  // navigate
   const navigate = useNavigate();
 
   // 전역 변수
@@ -163,16 +40,14 @@ const LetterBoxUnread = () => {
 
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
-  console.log(location.state.email.userEmail);
-  const email = location.state.email.userEmail;
-  // const email = 'wleowldms@naver.com';
+  const email = location.state.email;
   console.log(email);
 
   // 이메일로 편지 목록 가져오기
   const getLetter = async () => {
     await axios
       .get("http://localhost:8000/letter/letterbox/", {
-        headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+        headers: { Email: `Bearer ${email}` },
       })
       .then((res) => {
         setDbLetter([...res.data]);
@@ -202,12 +77,11 @@ const LetterBoxUnread = () => {
     }
   });
 
-  console.log(unOpenedLetters);
-
   //링크 공유하기
-  let url = document.location.href;
   const onShareClick = (e) => {
-    let shareUrl = url + "/" + e.target.id;
+    let url = document.location.href.split("/");
+    let shareUrl =
+      url.splice(0, url.length - 2).join("/") + "/detail/" + e.target.id;
     console.log(shareUrl);
     let textArea = document.createElement("textarea");
     document.body.appendChild(textArea);
@@ -231,7 +105,7 @@ const LetterBoxUnread = () => {
   return (
     <>
       <Container>
-        <Title>편지함</Title>
+        <p>편지함</p>
         <AiFillHome
           onClick={() => navigate("/")}
           style={{
@@ -256,7 +130,6 @@ const LetterBoxUnread = () => {
             top: "2rem",
           }}
         />
-        {/* <LetterBoxNav /> */}
         <button>기다리는 중</button>
         <button
           onClick={() =>
@@ -266,57 +139,61 @@ const LetterBoxUnread = () => {
           읽은 편지함
         </button>
         {unOpenedLetters.map((letter) => (
-          <Letter key={letter.id} id={letter.id}>
+          <div key={letter.id} id={letter.id}>
             <div onClick={openLetter} id={letter.id}>
-              {letter.isOpend === true ? (
+              <p></p>
+              {letter.isOpend !== true ? (
                 <img
-                  style={{ width: "10%" }}
-                  src="/img/opendbottle.png"
+                  style={{ width: "3rem" }}
+                  src="/img/redletterbox.png"
                   alt="open"
                   id={letter.id}
                 />
               ) : (
-                <ClosedBottle
+                <img
                   src="/img/closedbottle.png"
                   alt="close"
                   id={letter.id}
+                  style={{ width: "3rem" }}
                 />
               )}
 
               {letter.to_name !== letter.from_name ? (
-                <LetterTitle id={letter.id}>
-                  D - {letter.dday} {letter.to_name}에게
-                </LetterTitle>
+                <p id={letter.id}>
+                  D {letter.dday} {letter.to_name}에게
+                </p>
               ) : (
-                <LetterTitle id={letter.id}>나에게</LetterTitle>
+                <p id={letter.id}>D {letter.dday}</p>
               )}
             </div>
             {letter.to_name !== letter.from_name ? (
-              <BsLink45Deg
-                style={{
-                  color: "white",
-                  position: "relative",
-                  width: "2.125rem",
-                  height: "2.125rem",
-                  left: "20rem",
-                  top: "-6rem",
-                }}
-                onClick={onShareClick}
-                id={letter.id}
-              />
+              <div onClick={onShareClick} id={letter.id}>
+                <BsLink45Deg
+                  style={{
+                    color: "white",
+                    position: "relative",
+                    width: "2.125rem",
+                    height: "2.125rem",
+                    left: "20rem",
+                    top: "-6rem",
+                  }}
+                  id={letter.id}
+                />
+              </div>
             ) : (
               <></>
             )}
 
-            <LetterPeriod>
+            <p>
               {`${letter.sendYear}.${letter.sendMonth}.${letter.sendDate}.`} →{" "}
               {`${letter.openYear}.${letter.openMonth}.${letter.openDate}.`}
-            </LetterPeriod>
-          </Letter>
+            </p>
+          </div>
         ))}
         <center>
-          <NewLetterTxt>새로운 편지하러 가기</NewLetterTxt>
-          <NewLetterBtn></NewLetterBtn>
+          <button onClick={() => navigate("/write/write1")}>
+            새로운 편지하러 가기
+          </button>
         </center>
       </Container>
     </>
