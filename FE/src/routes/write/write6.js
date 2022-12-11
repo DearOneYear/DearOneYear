@@ -119,8 +119,8 @@ function Write6() {
   }, []);
 
   function Navigate() {
-      navigate(`/write/confirm1`, {state : {selectedDate :  selectedDate , toname : toname, toyou: toyou, email : userEmail}});
-      console.log('confirm1으로 갑시다')
+      navigate(`/write/confirm`, {state : {selectedDate :  selectedDate , toname : toname, toyou: toyou, email : userEmail}});
+      console.log('confirm으로 갑시다')
 
   };
   const confirmSend = async () => {
