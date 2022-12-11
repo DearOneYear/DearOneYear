@@ -40,13 +40,12 @@ class LetterList(APIView):
         for letter in letters:
             openDay = letter.openAt.replace(tzinfo=None)
             dday = openDay - datetime.datetime.now()
-            print(dday)
+            print(dday.days)
             ddays.append(dday.days)
         serializer = LetterSerializer(letters, many = True)
         return Response(data = {"letter":serializer.data, "ddays":ddays})
 
     def post(self, request):
-        # data = request.data.dict()
         data = request.data.dict()
         print(data)
         if data.get('from_name')=='' or data.get('to_name')=='':
@@ -128,7 +127,7 @@ class LetterDetail(APIView):
             #날짜 남은 것
             return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "sendAt": letter.sendAt, "available":False})
         elif thour > 0 or tminute > 0 or dday.seconds > 0:
-            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "sendAt": letter.sendAt,"available":False})      
+            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "sendAt": letter.sendAt, "available":False})      
 
     def post(self, request, pk):
         letter = self.get_object(pk)
