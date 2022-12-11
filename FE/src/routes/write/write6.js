@@ -119,17 +119,22 @@ function Write6() {
   }, []);
 
   function Navigate() {
-      navigate(`/write/confirm`, {state : {selectedDate :  selectedDate , toname : toname, toyou: toyou, email : userEmail}});
-      console.log('confirm으로 갑시다')
-
-  };
+    navigate(`/write/confirm`, {
+      state: {
+        selectedDate: selectedDate,
+        toname: toname,
+        toyou: toyou,
+        email: userEmail,
+      },
+    });
+  }
   const confirmSend = async () => {
     let formData = new FormData();
     if (finalImage) {
-        formData.append("file", finalImage);
-        for (let value of formData.values()) {
-            console.log(value);
-        }
+      formData.append("file", finalImage);
+      for (let value of formData.values()) {
+        console.log(value);
+      }
     }
     formData.append("email", userEmail);
     formData.append("from_name", toyou);
@@ -139,23 +144,20 @@ function Write6() {
     formData.append("sender", finalFromName);
     formData.append("openAt", selectedDate);
     formData.append("emotion", emotion);
-    await axios.post('http://localhost:8000/letter/letterbox/', formData
-    )
-    .then((res)=> {
-      console.log('편지 쓰기 성공');
-      console.log(res);
-      Navigate();
-
-
-    }).catch(function(err){
-      console.log(err);
-    })
-        // console.log("편지를 전송했습니다.")
-
-        
-    };
-    const cancelConfirm = () => console.log("취소했습니다.");
-    const confirmDelete = useConfirm(
+    await axios
+      .post("http://localhost:8000/letter/letterbox/", formData)
+      .then((res) => {
+        console.log("편지 쓰기 성공");
+        console.log(res);
+        Navigate();
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    // console.log("편지를 전송했습니다.")
+  };
+  const cancelConfirm = () => console.log("취소했습니다.");
+  const confirmDelete = useConfirm(
     "편지를 보낸 후에는 수정 및 삭제가 불가능합니다.편지를 보내시겠어요?",
     confirmSend,
     cancelConfirm

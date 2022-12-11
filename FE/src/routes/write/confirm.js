@@ -3,8 +3,6 @@ import { AiFillHome } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { animations, easings } from "react-animation";
-import "react-animation/dist/keyframes.css";
 
 const url = "/img/beach.png";
 const Container = styled.div`
@@ -115,27 +113,21 @@ function Confirm() {
   let toyou = location.state.toyou;
   let email = location.state.email;
 
-  //css용 더미
-  //   let year = 2022;
-  //   let month = 12;
-  //   let date = 30;
-  //   let toname = "보내는 사람";
-  //   let toyou = "받는 사람";
-  //   let email = "1234";
-
-  //링크 공유하기 !!
-  let url = document.location.href;
-  const onShareClick = (e) => {
-    let shareUrl = url + "/" + e.target.id;
-    console.log(shareUrl);
-    let textArea = document.createElement("textarea");
-    document.body.appendChild(textArea);
-    textArea.value = shareUrl;
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-    alert("링크가 복사되었습니다.");
-  };
+  // //링크 공유하기 !!
+  // let url = document.location.href;
+  // const onShareClick = (e) => {
+  //   let url = document.location.href.split("/");
+  //   let shareUrl =
+  //     url.splice(0, url.length - 2).join("/") + "/detail/" + e.target.id;
+  //   console.log(shareUrl);
+  //   let textArea = document.createElement("textarea");
+  //   document.body.appendChild(textArea);
+  //   textArea.value = shareUrl;
+  //   textArea.select();
+  //   document.execCommand("copy");
+  //   document.body.removeChild(textArea);
+  //   alert("링크가 복사되었습니다.");
+  // };
 
   return (
     <Container>
@@ -165,13 +157,7 @@ function Confirm() {
         }}
       />
       <center>
-        <Bottle
-          style={{
-            animation: `fade-out ${easings.linear} 2s forwards`,
-          }}
-          src="/img/closedbottle.png"
-          alt="유리병"
-        />
+        <Bottle src="/img/closedbottle.png" alt="유리병" />
         <Text1>유리병을 바다로 떠나보냈어요.</Text1>
         <Text1>
           {year}년 {month}월 {date}일에
@@ -183,12 +169,12 @@ function Confirm() {
           <Text1>당신께 찾아갈게요!</Text1>
         )}
 
-        <Btn1 onClick={onShareClick}>받는 이에게 편지 링크 공유하기</Btn1>
+        {/* <Btn1 onClick={onShareClick}>받는 이에게 편지 링크 공유하기</Btn1> */}
         <Button2>
           <Btn2
             onClick={() =>
               navigate("/letterbox/unread", {
-                state: { email: { userEmail: email } },
+                state: { email: email },
               })
             }
           >

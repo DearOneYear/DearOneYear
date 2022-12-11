@@ -36,7 +36,9 @@ function Main() {
     if (key.includes("access_token") === true) {
       let indexAccessToken = key.indexOf("my_access_token");
       access_token = cookieArr[indexAccessToken][1];
+      console.log("로그인");
     }
+    userCheck();
   };
 
   // 로그인 상태 체크
@@ -52,12 +54,9 @@ function Main() {
         });
 
         if (response.data.email.length !== 0) {
-          console.log("로그인");
           setUserEmail(response.data.email);
           setIsLoggedIn(true);
-        } else {
-          console.log("login");
-          getLetter();
+          getLetter(response.data.email);
         }
       } catch (error) {
         console.log(error);
@@ -71,13 +70,6 @@ function Main() {
     if (access_token === "") {
       navigate("/login");
     }
-  };
-
-  // 편지하러 가기 클릭 시,
-  // 로그인 안되어 있으면 로그인 페이지
-  // 로그인되어 있으면 편지 작성 페이지
-  const writeLetter = () => {
-    navigate("/write/write1");
   };
 
   // 편지함, 마이페이지 이동
@@ -94,27 +86,33 @@ function Main() {
 
   // 이메일로 편지 목록 가져오기
   let [dbLetter, setDbLetter] = useState([]);
-  const getLetter = async () => {
+  let [dbDday, setDbDday] = useState([]);
+  const getLetter = async (userEmail) => {
     await axios
       .get("http://localhost:8000/letter/letterbox/", {
         headers: { Email: `Bearer ${userEmail}` },
       })
       .then((res) => {
-        setDbLetter([...res.data]);
+        setDbLetter([...res.data.letter]);
+        setDbDday([...res.data.ddays]);
       })
       .catch(function (err) {
         console.log(err);
       });
   };
 
+  // 디데이 기존 배열에 합치기
+  for (let j = 0; j < dbLetter.length; j++) {
+    // console.log(j, dbDday[j]);
+    dbLetter[j].dday = dbDday[j];
+  }
+
   // 읽음 대기 중인 편지 개수 세기
-  // 읽음 대기 편지 중 배열 상 첫번째꺼 아이디
   let openingLetter = [];
   let openingLetterId = 0;
-  let receivedLetter = 0;
+
   dbLetter.map((letter) => {
-    if (letter.dday >= 0 && letter.isOpend === false) {
-      receivedLetter += 1;
+    if (letter.isOpend !== true && letter.dday <= 0) {
       openingLetter.push(letter);
     }
   });
@@ -126,7 +124,7 @@ function Main() {
   let latestDday = 0;
   let yetLetter = [];
   dbLetter.map((letter) => {
-    if (letter.isOpend === false) {
+    if (letter.isOpend !== true) {
       yetLetter.push(letter);
     }
   });
@@ -176,7 +174,7 @@ function Main() {
                   alt="letterbox"
                   style={{ width: "3rem", height: "3rem" }}
                 />
-                <span>{receivedLetter}</span>
+                <span>{yetLetter.length}</span>
               </>
             )}
             {yetLetter.length !== 0 && (
@@ -188,7 +186,7 @@ function Main() {
                   alt="letterbox"
                   style={{ width: "3rem", height: "3rem" }}
                 />
-                <span>{receivedLetter}</span>
+                <span>{yetLetter.length}</span>
               </>
             )}
             <div onClick={moveTo}>
@@ -205,10 +203,9 @@ function Main() {
             </div>
           </>
           <>
-            <p>{dbLetter.length}개의 편지, 기다리는 중</p>
-
             {dbLetter.length === 0 && (
               <>
+                <p>{yetLetter.length}개의 편지, 기다리는 중</p>
                 <p>기다림을 시작해 보세요.</p>
                 <p>
                   아직 보낸 편지가 없어요. <br /> 아래의 버튼을 눌러 <br />
@@ -217,9 +214,9 @@ function Main() {
               </>
             )}
 
-            {dbLetter.length !== 0 && receivedLetter === 0 && (
+            {dbLetter.length !== 0 && latestDday > 0 && (
               <>
-                <p>{dbLetter.length}개의 편지, 기다리는 중</p>
+                <p>{yetLetter.length}개의 편지, 기다리는 중</p>
                 <p>D - {latestDday}</p>
                 <p>
                   아직 도착한 유리병이 없어요.
@@ -229,10 +226,10 @@ function Main() {
               </>
             )}
 
-            {dbLetter.length !== 0 && receivedLetter > 0 && (
+            {dbLetter.length !== 0 && latestDday <= 0 && (
               <>
                 <p>
-                  {dbLetter.length}개의 편지 중, {receivedLetter}개가
+                  {dbLetter.length}개의 편지 중, {openingLetter.length}개가
                   도착했어요!
                 </p>
                 <p>D - DAY</p>
@@ -253,7 +250,9 @@ function Main() {
               </>
             )}
           </>
-          <button onClick={writeLetter}>편지하러 가기</button>
+          <button onClick={() => navigate("/write/write1")}>
+            편지하러 가기
+          </button>
         </>
       )}
     </>
