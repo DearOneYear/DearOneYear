@@ -112,22 +112,21 @@ function Confirm() {
   let toname = location.state.toname;
   let toyou = location.state.toyou;
   let email = location.state.email;
+  let id = location.state.id;
 
-  // //링크 공유하기 !!
-  // let url = document.location.href;
-  // const onShareClick = (e) => {
-  //   let url = document.location.href.split("/");
-  //   let shareUrl =
-  //     url.splice(0, url.length - 2).join("/") + "/detail/" + e.target.id;
-  //   console.log(shareUrl);
-  //   let textArea = document.createElement("textarea");
-  //   document.body.appendChild(textArea);
-  //   textArea.value = shareUrl;
-  //   textArea.select();
-  //   document.execCommand("copy");
-  //   document.body.removeChild(textArea);
-  //   alert("링크가 복사되었습니다.");
-  // };
+  //링크 공유하기
+  let currUrl = window.document.location.href.split("/");
+  let url = currUrl.splice(0, currUrl.length - 2).join("/") + "/detail/" + id;
+
+  const onShareClick = (e) => {
+    let textArea = document.createElement("textarea");
+    document.body.appendChild(textArea);
+    textArea.value = url;
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    alert("링크가 복사되었습니다.");
+  };
 
   return (
     <Container>
@@ -169,7 +168,7 @@ function Confirm() {
           <Text1>당신께 찾아갈게요!</Text1>
         )}
 
-        {/* <Btn1 onClick={onShareClick}>받는 이에게 편지 링크 공유하기</Btn1> */}
+        <Btn1 onClick={onShareClick}>받는 이에게 편지 링크 공유하기</Btn1>
         <Button2>
           <Btn2
             onClick={() =>
