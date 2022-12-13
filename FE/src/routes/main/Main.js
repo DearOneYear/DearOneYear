@@ -108,26 +108,28 @@ function Main() {
   }
 
   // 읽음 대기 중인 편지 개수 세기
-  let openingLetter = [];
-  let openingLetterId = 0;
+  let arrivedLetter = [];
+  let arrivedLetterId = 0;
 
   dbLetter.map((letter) => {
-    if (letter.isOpend !== true && letter.dday <= 0) {
-      openingLetter.push(letter);
+    if (letter.isOpened === false && letter.dday <= 0) {
+      arrivedLetter.push(letter);
     }
   });
-  if (openingLetter.length !== 0) {
-    openingLetterId = openingLetter[0].id;
+  if (arrivedLetter.length !== 0) {
+    arrivedLetterId = arrivedLetter[0].id;
   }
 
   // 가장 빠른 디데이 값 가져오기
   let latestDday = 0;
   let yetLetter = [];
+  console.log(dbLetter);
   dbLetter.map((letter) => {
-    if (letter.isOpend !== true) {
+    if (letter.isOpened === false) {
       yetLetter.push(letter);
     }
   });
+  console.log(yetLetter);
   yetLetter = yetLetter.sort(function (a, b) {
     return a.dday - b.dday;
   });
@@ -165,7 +167,7 @@ function Main() {
           <>
             <p>나의 내일에게</p>
 
-            {yetLetter.length === 0 && (
+            {arrivedLetter.length === 0 && (
               <>
                 <img
                   id="letterbox"
@@ -177,7 +179,7 @@ function Main() {
                 <span>{yetLetter.length}</span>
               </>
             )}
-            {yetLetter.length !== 0 && (
+            {arrivedLetter.length > 0 && (
               <>
                 <img
                   id="letterbox"
@@ -229,7 +231,7 @@ function Main() {
             {dbLetter.length !== 0 && latestDday <= 0 && (
               <>
                 <p>
-                  {dbLetter.length}개의 편지 중, {openingLetter.length}개가
+                  {yetLetter.length}개의 편지 중, {arrivedLetter.length}개가
                   도착했어요!
                 </p>
                 <p>D - DAY</p>
@@ -241,7 +243,7 @@ function Main() {
                 <img
                   id="letterbox"
                   onClick={() => {
-                    navigate(`/detail/${openingLetterId}`);
+                    navigate(`/detail/${arrivedLetterId}`);
                   }}
                   src="img/closedbottle.png"
                   alt="letterbox"

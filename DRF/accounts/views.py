@@ -312,15 +312,18 @@ class UserDetailView(APIView):
         serializer=UserSerializer(user)
         return Response(serializer.data)
     
-    # Edit name, birthday
+
+# Edit name, birthday
     def post(self, request):
         user_email = request.headers.get('email').split(' ')[-1]
         data = request.data
+        print(data['name'])
         user = get_object_or_404(User, email=user_email) # if failed, status 404 will be returned
-        serializer=UserSerializer(user, data={'name': data.get['name'], 'birthday':data.get['birthday']}, partial = True)
+        serializer=UserSerializer(user, data={'name': data['name'], 'birthday':data['birthday']}, partial = True)
+        print(serializer)
         if serializer.is_valid():
+            print('valid')
             serializer.save()
             return Response(serializer.data, status = status.HTTP_200_OK)
         return Response(context={"msg": user_email+" does not exist!"}, status = status.HTTP_400_BAD_REQUEST)
 
-    

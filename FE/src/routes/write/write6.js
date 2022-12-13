@@ -148,8 +148,17 @@ function Write6() {
       .post("http://localhost:8000/letter/letterbox/", formData)
       .then((res) => {
         console.log("편지 쓰기 성공");
-        console.log(res);
-        Navigate();
+        console.log(res.data);
+        navigate("/write/confirm", {
+          state: {
+            selectedDate: selectedDate,
+            toname: toname,
+            toyou: toyou,
+            email: userEmail,
+            id: res.data.id,
+          },
+        });
+        // Navigate();
       })
       .catch(function (err) {
         console.log(err);
