@@ -129,13 +129,15 @@ class LetterDetail(APIView):
         elif thour > 0 or tminute > 0 or dday.seconds > 0:
             return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "sendAt": letter.sendAt, "available":False})      
 
-    def post(self, request, pk):
-        letter = self.get_object(pk)
-        serializer = LetterSerializer(letter)
-
+    def post(self, request):
+        pk = request.headers.get('letterid')
+        print(request.data)
+        letter = self.get_object(pk) # if fail, status 404 will be returned.
+        serializer=LetterSerializer(letter, data={'isOpened':True}, partial = True)
+        
         if serializer.is_valid():
-            serializer.save(letter, data={'isOpened':True}, partial = True)
-            return Response(serializer.data, status = status.HTTP_200_OK)
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_200_OK)        
         return Response({"msg": "Letter read failed."}, status = status.HTTP_400_BAD_REQUEST)
 
     # edit, delete is not allowed
