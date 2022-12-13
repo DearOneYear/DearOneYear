@@ -26,7 +26,6 @@ const LetterBoxUnread = () => {
   // 전역 변수
   let [dbLetter, setDbLetter] = useState([]);
   let [dbDday, setDbDday] = useState([]);
-
   let [accessToken, setAccessToken] = useState("");
 
   // 쿠키 받기
@@ -43,7 +42,6 @@ const LetterBoxUnread = () => {
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
   const email = location.state.email;
-  console.log(email);
 
   // 이메일로 편지 목록 가져오기
   const getLetter = async () => {
@@ -61,13 +59,14 @@ const LetterBoxUnread = () => {
   };
   // 디데이 기존 배열에 합치기
   for (let j = 0; j < dbLetter.length; j++) {
-    dbLetter[j].dday = dbDday[j];
-    if (dbDday[j] === 0) {
+    let d = dbDday[j] + 1;
+    dbLetter[j].dday = d;
+    if (d === 0) {
       dbLetter[j].ddayinfo = "- DAY";
-    } else if (dbDday[j] > 0) {
-      dbLetter[j].ddayinfo = `- ${Math.abs(dbDday[j])}`;
-    } else if (dbDday[j] < 0) {
-      dbLetter[j].ddayinfo = `+ ${Math.abs(dbDday[j])}`;
+    } else if (d > 0) {
+      dbLetter[j].ddayinfo = `- ${Math.abs(d)}`;
+    } else if (d < 0) {
+      dbLetter[j].ddayinfo = `+ ${Math.abs(d)}`;
     }
   }
 
@@ -86,7 +85,7 @@ const LetterBoxUnread = () => {
   // 안 읽은 편지만 분류 및 디데이 순 정렬
   let unOpenedLetters = [];
   dbLetter.map((l) => {
-    if (l.isOpend !== true) {
+    if (l.isOpened === false) {
       unOpenedLetters.push(l);
     }
   });
