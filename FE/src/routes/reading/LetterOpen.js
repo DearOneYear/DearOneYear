@@ -149,7 +149,7 @@ const LetterOpen = () => {
               {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
               {currLetter.sendDate}일,
             </Text2>
-            <Text2>당신이 보낸 유리병이</Text2>
+            <Text2>{currLetter.emotion} 당신이 보낸 유리병이</Text2>
             <Text2>{currLetter.travel_day} 일 동안 세상을 여행하고</Text2>
             <Text2>당신께 돌아왔어요.</Text2>
           </>

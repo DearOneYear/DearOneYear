@@ -128,26 +128,11 @@ const ClosedBottle = styled.img`
 `;
 
 const LetterBoxUnread = () => {
-  // 백 없이 작업 (더미)
-  // let unOpenedLetters = [new_dummy];
-  // unOpenedLetters.map((e) => {
-  //   let open = e.openAt.split("T")[0].split("-");
-  //   e.openYear = open[0];
-  //   e.openMonth = open[1];
-  //   e.openDate = open[2];
-
-  //   let send = e.sendAt.split("T")[0].split("-");
-  //   e.sendYear = send[0];
-  //   e.sendMonth = send[1];
-  //   e.sendDate = send[2];
-  // });
-
-  // 백 연결시
-  // navigate
   const navigate = useNavigate();
 
   // 전역 변수
   let [dbLetter, setDbLetter] = useState([]);
+  let [dbDday, setDbDday] = useState([]);
   let [accessToken, setAccessToken] = useState("");
 
   // 쿠키 받기
@@ -163,23 +148,34 @@ const LetterBoxUnread = () => {
 
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
-  console.log(location);
   const email = location.state.email.email;
-  console.log(email);
 
   // 이메일로 편지 목록 가져오기
   const getLetter = async () => {
     await axios
       .get("http://localhost:8000/letter/letterbox/", {
-        headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
+        headers: { Email: `Bearer ${email}` },
       })
       .then((res) => {
-        setDbLetter([...res.data]);
+        setDbLetter([...res.data.letter]);
+        setDbDday([...res.data.ddays]);
       })
       .catch(function (err) {
         console.log(err);
       });
   };
+
+  console.log(dbDday);
+  // 디데이 기존 배열에 합치기
+  for (let j = 0; j < dbLetter.length; j++) {
+    let d = dbDday[j] + 1;
+    dbLetter[j].dday = d;
+    if (d === 0) {
+      dbLetter[j].ddayinfo = "- DAY";
+    } else if (d < 0) {
+      dbLetter[j].ddayinfo = `+ ${Math.abs(d)}`;
+    }
+  }
 
   dbLetter.map((e) => {
     let open = e.openAt.split("T")[0].split("-");
@@ -193,13 +189,17 @@ const LetterBoxUnread = () => {
     e.sendDate = send[2];
   });
 
-  // 안 읽은 편지만 분류
-  let unOpenedLetters = [];
+  // 읽은 편지만 분류 및 디데이 순 정렬
+  let openedLetters = [];
   dbLetter.map((l) => {
-    if (l.isOpend === true) {
-      unOpenedLetters.push(l);
+    if (l.isOpened === true) {
+      openedLetters.push(l);
     }
   });
+  openedLetters = openedLetters.sort(function (a, b) {
+    return b.dday - a.dday;
+  });
+  console.log(openedLetters.dday);
 
   //링크 공유하기
   let url = document.location.href;
@@ -228,7 +228,7 @@ const LetterBoxUnread = () => {
   return (
     <>
       <Container>
-        <Title>편지함</Title>
+        <p>편지함</p>
         <AiFillHome
           onClick={() => navigate("/")}
           style={{
@@ -241,9 +241,7 @@ const LetterBoxUnread = () => {
           }}
         />
         <BsFillPersonFill
-          onClick={() =>
-            navigate("/mypage", { state: { email: { userEmail: email } } })
-          }
+          onClick={() => navigate("/mypage", { state: { email: email } })}
           style={{
             color: "white",
             position: "relative",
@@ -264,30 +262,21 @@ const LetterBoxUnread = () => {
           기다리는 중
         </button>
         <button>읽은 편지함</button>
-        {unOpenedLetters.map((letter) => (
-          <Letter key={letter.id} id={letter.id}>
+        {openedLetters.map((letter) => (
+          <div key={letter.id} id={letter.id}>
             <div onClick={openLetter} id={letter.id}>
-              {letter.isOpend === true ? (
-                <img
-                  style={{ width: "10%" }}
-                  src="/img/opendbottle.png"
-                  alt="open"
-                  id={letter.id}
-                />
-              ) : (
-                <ClosedBottle
-                  src="/img/closedbottle.png"
-                  alt="close"
-                  id={letter.id}
-                />
-              )}
-
+              <img
+                style={{ width: "3rem" }}
+                src="/img/opendbottle.png"
+                alt="open"
+                id={letter.id}
+              />
               {letter.to_name !== letter.from_name ? (
-                <LetterTitle id={letter.id}>
-                  D - {letter.dday} {letter.to_name}에게
-                </LetterTitle>
+                <p id={letter.id}>
+                  D {letter.ddayinfo} {letter.to_name}에게
+                </p>
               ) : (
-                <LetterTitle id={letter.id}>나에게</LetterTitle>
+                <p id={letter.id}>나에게</p>
               )}
             </div>
             {letter.to_name !== letter.from_name ? (
@@ -307,11 +296,11 @@ const LetterBoxUnread = () => {
               <></>
             )}
 
-            <LetterPeriod>
+            <p>
               {`${letter.sendYear}.${letter.sendMonth}.${letter.sendDate}.`} →{" "}
               {`${letter.openYear}.${letter.openMonth}.${letter.openDate}.`}
-            </LetterPeriod>
-          </Letter>
+            </p>
+          </div>
         ))}
         <center>
           <button onClick={() => navigate("/write/write1")}>

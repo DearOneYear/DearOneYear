@@ -165,9 +165,9 @@ const OpenBottle = () => {
       </Header>
       <center>
         <Letter>
-          <To>{currLetter.to_name}에게</To>
+          <To>{currLetter.recipient}에게</To>
           <Message>{currLetter.message}</Message>
-          <From>{currLetter.from_name}가</From>
+          <From>{currLetter.sender}가</From>
         </Letter>
         {currLetter.from_name === currLetter.to_name ? (
           <NewLetterBtn onClick={() => navigate("/write/write1")}>
