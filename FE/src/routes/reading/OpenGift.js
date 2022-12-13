@@ -100,7 +100,28 @@ const OpenGift = () => {
   let currUrl = window.document.location.href;
   let urlArr = currUrl.split("/");
   let letterId = parseInt(urlArr[urlArr.length - 2]);
+  console.log(letterId);
 
+  // 편지 읽음 처리 해주기 isOpened
+  const config = {
+    headers: { letterid: letterId },
+  };
+
+  const isOpened = async () => {
+    await axios
+      .post("http://localhost:8000/letter/letter/", "", config)
+      .then((res) => {
+        console.log(res.data.isOpened);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    isOpened();
+  }, []);
   return (
     <Container>
       <Header>
