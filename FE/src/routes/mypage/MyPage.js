@@ -276,9 +276,23 @@ const MyPage = () => {
         </Value>
       </Info>
 
-      {/* <Link to="/mypage/edit">
-        <button>프로필 수정하기</button>
-      </Link> */}
+      <button
+        onClick={() => {
+          navigate("/mypage/edit", {
+            state: {
+              email: email,
+              name: dbUserInfo.name,
+              month: month,
+              day: date,
+            },
+          });
+        }}
+      >
+        프로필 수정하기
+      </button>
+      <button>이용 방법</button>
+      <button>소중한 의견 남기기</button>
+      <button>만든 사람들</button>
     </Container>
   );
 };

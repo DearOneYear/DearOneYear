@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const MyPageEdit = () => {
-  const currName = "토끼";
-  const currEmail = "inner0509@gmail.com";
+  // 이전 페이지에서 넘겨준 값 가져오기
+  const location = useLocation();
+  const currName = location.state.name;
+  const email = location.state.email;
   const currBirthMonth = 5;
   const currBirthDate = 9;
 
+  const [name, setName] = useState(currName);
   const [birthMonth, setBirthMonth] = useState(currBirthMonth);
   const [birthDate, setBirthDate] = useState(currBirthDate);
   const [maxDate, setMaxDate] = useState(31);
@@ -15,6 +18,9 @@ const MyPageEdit = () => {
   const thirty = ["4", "6", "9", "11"];
 
   const onChange = (e) => {
+    if (e.target.id === "name") {
+      setName(e.target.value);
+    }
     if (e.target.id === "birth_month") {
       setBirthMonth(e.target.value);
       if (thirtyOne.includes(e.target.value)) {
@@ -32,8 +38,9 @@ const MyPageEdit = () => {
   return (
     <>
       <h1>마이 페이지</h1>
-      <p>이름 {currName}</p>
-      <p>카카오계정 이메일 {currEmail}</p>
+      <label htmlFor="name">이름</label>
+      <input id="name" type="text" value={name} onChange={onChange} />
+      <p>카카오계정 이메일 {email}</p>
       <p>생일</p>
       <input
         id="birth_month"
