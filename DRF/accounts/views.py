@@ -312,6 +312,7 @@ class UserDetailView(APIView):
         serializer=UserSerializer(user)
         return Response(serializer.data)
     
+
 # Edit name, birthday
     def post(self, request):
         user_email = request.headers.get('email').split(' ')[-1]
@@ -325,3 +326,4 @@ class UserDetailView(APIView):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_200_OK)
         return Response(context={"msg": user_email+" does not exist!"}, status = status.HTTP_400_BAD_REQUEST)
+
