@@ -241,9 +241,7 @@ const LetterBoxUnread = () => {
           }}
         />
         <BsFillPersonFill
-          onClick={() =>
-            navigate("/mypage", { state: { email: { userEmail: email } } })
-          }
+          onClick={() => navigate("/mypage", { state: { email: email } })}
           style={{
             color: "white",
             position: "relative",
