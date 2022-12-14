@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MyPageEdit = () => {
-  // 이전 페이지에서 넘겨준 값 가져오기
   const location = useLocation();
   const currName = location.state.name;
   const email = location.state.email;

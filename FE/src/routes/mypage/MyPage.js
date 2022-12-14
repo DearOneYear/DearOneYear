@@ -199,7 +199,7 @@ const MyPage = () => {
         "",
         {
           headers: {
-            Kakaoauth: `${kakaoToken}`, // Bearer 넣지 말 것! JWT 토큰으로 착각해서 Unauthorized 에러 남.
+            Kakaoauth: `${kakaoToken}`,
           },
         }
       );
