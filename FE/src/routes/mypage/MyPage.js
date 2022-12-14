@@ -161,7 +161,6 @@ const MyPage = () => {
   // 이전 페이지에서 넘겨준 email 값 가져오기
   const location = useLocation();
   const email = location.state.email;
-  console.log(email);
 
   // 이메일로 유저 정보 받아오기
   const getUserInfo = async () => {
@@ -170,7 +169,6 @@ const MyPage = () => {
         headers: { Email: `Bearer ${email}` }, // userEmail 앞에서 받은 놈 넣어줍쇼
       })
       .then((res) => {
-        console.log(res);
         setDbUserInfo(res.data);
         birthbirth(res.data);
       })
@@ -201,7 +199,7 @@ const MyPage = () => {
         "",
         {
           headers: {
-            Kakaoauth: `${kakaoToken}`, // Bearer 넣지 말 것! JWT 토큰으로 착각해서 Unauthorized 에러 남.
+            Kakaoauth: `${kakaoToken}`,
           },
         }
       );
@@ -254,13 +252,11 @@ const MyPage = () => {
         <Title>마이 페이지</Title>
         <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
       </Header>
-
       <Welcome>
         <Bottle src="img/closedbottle.png" alt="closedbottle" />
         <WelcomeTxt>안녕하세요, {dbUserInfo.name} 님.</WelcomeTxt>
         <WelcomeTxt>당신만의 유리병을 찾으셨나요?</WelcomeTxt>
       </Welcome>
-
       <Info>
         <Label>이름</Label>
         <Value>{dbUserInfo.name}</Value>
@@ -275,7 +271,6 @@ const MyPage = () => {
           {month}월 {date}일
         </Value>
       </Info>
-
       <button
         onClick={() => {
           navigate("/mypage/edit", {
@@ -290,6 +285,9 @@ const MyPage = () => {
       >
         프로필 수정하기
       </button>
+      <br />
+      <br />
+      <br />
       <button>이용 방법</button>
       <button>소중한 의견 남기기</button>
       <button>만든 사람들</button>
