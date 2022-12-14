@@ -20,27 +20,37 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# secret.json
-secret_file = os.path.join(BASE_DIR, 'secrets.json')  # secrets.json 파일 위치를 명시
+# # SECURITY WARNING: keep the secret key used in production secret!
+# # secret.json
+# secret_file = os.path.join(BASE_DIR, 'secrets.json')  # secrets.json 파일 위치를 명시
 
-with open(secret_file) as f:
-    secrets = json.loads(f.read())
+# with open(secret_file) as f:
+#     secrets = json.loads(f.read())
 
-def get_secret(setting):
-    """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
+# def get_secret(setting):
+#     """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
+#     try:
+#         return secrets[setting]
+#     except KeyError:
+#         error_msg = "Set the {} environment variable".format(setting)
+#         raise ImproperlyConfigured(error_msg)
+
+# SECRET_KEY = get_secret("SECRET_KEY")
+
+# get_secret 함수로 secrets.json 접근하는 것 대신에 클라우드 타입에서 환경변수로 접근할 것
+def get_env_variable(var_name):
     try:
-        return secrets[setting]
+        return os.environ[var_name]
     except KeyError:
-        error_msg = "Set the {} environment variable".format(setting)
+        error_msg = 'Set the {} environment variable'.format(var_name)
         raise ImproperlyConfigured(error_msg)
 
-SECRET_KEY = get_secret("SECRET_KEY")
+SECRET_KEY = get_env_variable('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [ '.ap-northeast-2.compute.amazonaws.com', 'localhost' ] #'3.34.189.37'
+ALLOWED_HOSTS = [ '*' ] #'localhost', '3.34.189.37', '.ap-northeast-2.compute.amazonaws.com', 
 
 
 # Application definition
@@ -66,11 +76,15 @@ INSTALLED_APPS = [
     # 'accounts', 
 ]
 
+# SOCIAL_OUTH_CONFIG = {
+#     'KAKAO_REST_API_KEY' : get_secret("KAKAO_REST_API_KEY"),
+#     'KAKAO_REDIRECT_URI' : get_secret("KAKAO_REDIRECT_URI"),
+#     # 'KAKAO_SECRET_KEY' : get_secret("KAKAO_SECRET_KEY")
+# }
 SOCIAL_OUTH_CONFIG = {
-    'KAKAO_REST_API_KEY' : get_secret("KAKAO_REST_API_KEY"),
-    'KAKAO_REDIRECT_URI' : get_secret("KAKAO_REDIRECT_URI"),
-    # 'KAKAO_SECRET_KEY' : get_secret("KAKAO_SECRET_KEY")
+    'KAKAO_REST_API_KEY' : get_env_variable("KAKAO_REST_API_KEY"),
 }
+
 
 SITE_ID = 1
 
@@ -101,7 +115,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware', # 배포용       
 ]
 
 ROOT_URLCONF = 'DearOneYearLetter.urls'
@@ -171,10 +186,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # Media files - 업로드를 하는 URL과 디렉토리 설정
 MEDIA_URL = '/uploads/' # 업로드 할 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads') #로컬 디렉토리 어디에 저장할 것인지
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -185,6 +200,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # React 포트 번호 물어보자...
 CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5500', 'http://localhost:5500', 'http://localhost:8000', 'http://localhost:3000', 'http://localhost:3001']
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_METHODS = (
     'DELETE',
@@ -237,9 +254,9 @@ REST_FRAMEWORK = {
 # https://medium.com/grad4-engineering/how-to-blacklist-json-web-tokens-in-django-43fb88ae3d17
 SIMPLE_JWT = {
     # access token 기한
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=7), # minutes=5
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=10), # minutes=5
     # refresh token 기한
-    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=28),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=30),
 
     # True일 경우 refresh token 보내면 새로운 access token, refresh token 반환함
     # False일 경우 refresh token은 유지하고 access token만 새로 반환함
