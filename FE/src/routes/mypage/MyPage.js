@@ -206,9 +206,9 @@ const MyPage = () => {
         }
       );
       console.log(response);
-      deleteCookie(" access_token");
-      deleteCookie(" my_access_token");
-      deleteCookie(" my_refresh_token");
+      deleteCookie("access_token");
+      deleteCookie("my_access_token");
+      deleteCookie("my_refresh_token");
 
       navigate("/");
     } catch (error) {

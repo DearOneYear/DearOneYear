@@ -42,11 +42,10 @@ const MyPageEdit = () => {
     let m = 0;
     let d = 0;
     birthMonth < 10 ? (m = "0" + birthMonth) : (m = birthMonth);
-    birthDate < 10 ? (d = "0" + birthDate) : (m = birthDate);
+    birthDate < 10 ? (d = "0" + birthDate) : (d = birthDate);
     let birth = `2023-${m}-${d}`;
-
     const config = {
-      headers: { email: email },
+      headers: { Email: `Bearer ${email}` }, // email
     };
     const data = {
       name: name,
