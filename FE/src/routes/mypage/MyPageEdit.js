@@ -26,7 +26,7 @@ const MyPageEdit = () => {
   const navigate = useNavigate();
   const saveChange = () => {
     const config = {
-      headers: { email: email },
+      headers: { Email: `Bearer ${email}` }, // email
     };
     const data = {
       name: name,
