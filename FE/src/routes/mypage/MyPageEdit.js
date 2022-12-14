@@ -1,5 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const MyPageEdit = () => {
   // 이전 페이지에서 넘겨준 값 가져오기
@@ -35,6 +36,41 @@ const MyPageEdit = () => {
       setBirthDate(e.target.value);
     }
   };
+
+  const navigate = useNavigate();
+  const saveChange = () => {
+    let m = 0;
+    let d = 0;
+    birthMonth < 10 ? (m = "0" + birthMonth) : (m = birthMonth);
+    birthDate < 10 ? (d = "0" + birthDate) : (m = birthDate);
+    let birth = `2023-${m}-${d}`;
+
+    const config = {
+      headers: { email: email },
+    };
+    const data = {
+      name: name,
+      birthday: birth,
+    };
+    correct(data, config);
+
+    navigate("/mypage", {
+      state: {
+        email: email,
+      },
+    });
+  };
+
+  const correct = async (data, config) => {
+    await axios
+      .post("http://localhost:8000/accounts/mypage/", data, config)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <h1>마이 페이지</h1>
@@ -63,9 +99,9 @@ const MyPageEdit = () => {
 
       <br />
       <br />
-      <Link to="/mypage">
-        <button>저장하기</button>
-      </Link>
+      {/* <Link to="/mypage"> */}
+      <button onClick={saveChange}>저장하기</button>
+      {/* </Link> */}
     </>
   );
 };
