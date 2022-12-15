@@ -144,121 +144,248 @@ function Main() {
   }, []);
 
   return (
-    <>
+    <CenterWrapper>
+    <MainWrapper>
       {isLoggedIn === false ? (
         <>
-          <div>
-            <p>나의 내일에게</p>
-            <button onClick={login}>로그인</button>
-          </div>
+          <DivTop>
+            <PLogo>나의 내일에게</PLogo>
+            <ButtonLogin onClick={login}>로그인</ButtonLogin>
+          </DivTop>
 
-          <div>
-            <p>내일의 당신에게 편지하세요</p>
-            <p>나의 내일에게</p>
-          </div>
-
-          <p>유리병을 눌러</p>
-          <p>익명의 편지를 읽어보세요</p>
+          <DivMid>
+            <DivMid1>
+              <PComment1>내일의 당신에게 편지하세요.</PComment1>
+              <PComment2>나의 내일에게</PComment2>
+            </DivMid1>
+            <DivMid2>
+              <PComment3>유리병을 눌러</PComment3>
+              <PComment3>익명의 편지를 읽어보세요</PComment3>
+            </DivMid2>
+          </DivMid>
+          
           <Modal />
-          <button onClick={login}>편지하러 가기</button>
+          <ButtonWrite onClick={login}>편지하러 가기</ButtonWrite>
         </>
+        
       ) : (
         <>
           <>
-            <p>나의 내일에게</p>
+            <DivTop> 
+              <PLogo>나의 내일에게</PLogo>
+              <DivSubTop>
+                {arrivedLetter.length === 0 && (
+                  <>
+                    <img
+                      id="letterbox"
+                      onClick={moveTo}
+                      src="img/closedbottle.png"
+                      alt="letterbox"
+                      style={{ width: "5vh", height: "6vh" }}
+                    />
+                    <span>{yetLetter.length}</span>
+                  </>
+                )}
+                {arrivedLetter.length > 0 && (
+                  <>
+                    <img
+                      id="letterbox"
+                      onClick={moveTo}
+                      src="img/redletterbox.png"
+                      alt="letterbox"
+                      style={{ width: "6.5vh", height: "7.8vh" }}
+                    />
+                    <span>{yetLetter.length}</span>
+                  </>
+                )}
+                <div onClick={moveTo}>
+                  <BsFillPersonFill
+                    id="mypage"
+                    style={{
+                      color: "white",
+                      position: "relative",
+                      width: "6vh",
+                      height: "6vh",
+                      padding: "0.5vh",
+                    }}
+                  />
+                </div>
+              </DivSubTop>
+            </DivTop>
 
-            {arrivedLetter.length === 0 && (
-              <>
-                <img
-                  id="letterbox"
-                  onClick={moveTo}
-                  src="img/closedbottle.png"
-                  alt="letterbox"
-                  style={{ width: "3rem", height: "3rem" }}
-                />
-                <span>{yetLetter.length}</span>
-              </>
-            )}
-            {arrivedLetter.length > 0 && (
-              <>
-                <img
-                  id="letterbox"
-                  onClick={moveTo}
-                  src="img/redletterbox.png"
-                  alt="letterbox"
-                  style={{ width: "3rem", height: "3rem" }}
-                />
-                <span>{yetLetter.length}</span>
-              </>
-            )}
-            <div onClick={moveTo}>
-              <BsFillPersonFill
-                id="mypage"
-                style={{
-                  color: "black",
-                  position: "relative",
-                  width: "3.125rem",
-                  height: "3.125rem",
-                  padding: "1rem",
-                }}
-              />
-            </div>
           </>
           <>
-            {dbLetter.length === 0 && (
-              <>
-                <p>{yetLetter.length}개의 편지, 기다리는 중</p>
-                <p>기다림을 시작해 보세요.</p>
-                <p>
-                  아직 보낸 편지가 없어요. <br /> 아래의 버튼을 눌러 <br />
-                  미래의 당신에게 위로와 응원을 보내주세요.
-                </p>
-              </>
+            {dbLetter.length === 0 && ( // 원래 : {dbLetter.length === 0 && (
+              <DivMid>
+                <DivMid1>
+                  <PComment1>{yetLetter.length}개의 편지, 기다리는 중</PComment1>
+                  <PComment2>기다림을 시작해 보세요.</PComment2>
+                </DivMid1>
+                <DivMid2>
+                  <PComment3>아직 보낸 편지가 없어요.</PComment3>
+                  <PComment3>아래의 버튼을 눌러</PComment3>
+                  <PComment3>미래의 당신에게 위로와 응원을 보내주세요.</PComment3> 
+                </DivMid2>
+              </DivMid>
             )}
 
-            {dbLetter.length !== 0 && latestDday > 0 && (
-              <>
-                <p>{yetLetter.length}개의 편지, 기다리는 중</p>
-                <p>D - {latestDday}</p>
-                <p>
-                  아직 도착한 유리병이 없어요.
-                  <br />
-                  새로운 편지를 보내보는 건 어떨까요?
-                </p>
-              </>
+            {dbLetter.length !== 0 && latestDday > 0 && ( // 원래 : {dbLetter.length !== 0 && latestDday > 0 && (
+              <DivMid>
+                <DivMid1>
+                  <PComment1>{yetLetter.length}개의 편지, 기다리는 중</PComment1>
+                  <PComment2>D - {latestDday}</PComment2>
+                </DivMid1>
+                <DivMid2>
+                  <PComment3>아직 도착한 유리병이 없어요.</PComment3>
+                  <PComment3>새로운 편지를 보내보는 건 어떨까요?</PComment3>
+                </DivMid2>
+              </DivMid>
             )}
 
-            {dbLetter.length !== 0 && latestDday <= 0 && (
-              <>
-                <p>
-                  {yetLetter.length}개의 편지 중, {arrivedLetter.length}개가
-                  도착했어요!
-                </p>
-                <p>D - DAY</p>
-                <p>
-                  유리병을 눌러
-                  <br />
-                  당신의 편지를 읽어보세요.
-                </p>
-                <img
+            {dbLetter.length !== 0 && latestDday <= 0 && ( // 원래 : {dbLetter.length !== 0 && latestDday <= 0 && (
+              <DivMid>
+                <DivMid1>
+                  <PComment1>{yetLetter.length}개의 편지 중, {arrivedLetter.length}개가 도착했어요!</PComment1>
+                  <PComment2>D - DAY</PComment2>
+                </DivMid1>
+                <DivMid2>
+                  <PComment3>유리병을 눌러</PComment3>
+                  <PComment3>당신의 편지를 읽어보세요.</PComment3>
+                </DivMid2>
+                <DivForImgButton>
+                  <img
                   id="letterbox"
                   onClick={() => {
                     navigate(`/detail/${arrivedLetterId}`);
                   }}
                   src="img/closedbottle.png"
                   alt="letterbox"
-                  style={{ width: "8rem", height: "8rem" }}
-                />
-              </>
+                  style={{ width: "20vh" }}
+                  />
+                </DivForImgButton>
+              </DivMid>
             )}
           </>
-          <button onClick={() => navigate("/write/write1")}>
+          <ButtonWrite onClick={() => navigate("/write/write1")}>
             편지하러 가기
-          </button>
+          </ButtonWrite>
         </>
       )}
-    </>
+    </MainWrapper>
+    </CenterWrapper>
   );
 }
 
 export default Main;
+
+const CenterWrapper = styled.div`
+  width: 100vw;  
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  background-color: black;
+`;
+
+const MainWrapper = styled.div`
+  width: 53vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url("img/beach.png");
+  background-size: cover; 
+  background-position: center;
+  color: white;
+`;
+
+const DivTop = styled.div`
+  width: 100%;
+  margin: 1vh 0vh;  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const PLogo = styled.p`
+  font-size: 3vh;
+  font-weight: bold;
+  margin: 2.5vh;
+  text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
+`;
+
+const DivSubTop = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 0vh 2vh;
+`;
+
+const ButtonLogin = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5vh;
+  margin: 2.5vh;
+`;
+
+const DivMid = styled.div`
+  width: 100%;
+`;
+
+const DivForImgButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 5vh;
+`;
+
+const DivMid1 = styled.div`
+  width: 100%;
+  height: 9vh;
+  margin: 8vh 0vh;
+  padding: 0vh 3vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+`;
+
+const PComment1 = styled.p`
+  font-size: 3vh;
+  text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
+`;
+
+const PComment2 = styled.p`
+  font-size: 4vh;
+  text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
+`;
+
+const DivMid2 = styled.div`
+  width: 100%;
+  margin-top: 5vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PComment3 = styled.p`
+  font-size: 2.5vh;
+  text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
+`;
+
+const ButtonWrite = styled.button`
+  width: 47vh;
+  height: 7.5vh;
+  position: absolute;
+  margin-top: 76.5vh;
+
+  border: solid 0.2vh;
+  border-color: white;
+  border-radius: 1vh;
+
+  color: white;
+  font-size: 2.2vh;
+  background-color: rgba(50,50,50,0.7);
+`; // 221215:1429
