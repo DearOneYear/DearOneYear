@@ -328,13 +328,15 @@ const DivSubTop = styled.div`
   margin: 0vh 2vh;
   color: white;
   width: 10vh;
-  justify-content: space-around;
+  height: 8.5vh;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const PLetterBox = styled.p`
   font-size: 3vh;
   font-weight: bold;
-  margin: 3vh;
+  margin: 2.5vh;
   text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
 `;
 
