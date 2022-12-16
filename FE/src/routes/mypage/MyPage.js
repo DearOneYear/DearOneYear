@@ -3,123 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, HiPencil } from "react-icons/io";
 
 const url = "/img/background.png";
-const Container = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-image: url(${url});
-  background-repeat: no-repeat;
-  background-origin: padding-box;
-  background-size: cover;
-`;
-const Header = styled.div`
-  width: 100vw;
-`;
-const Title = styled.p`
-  position: relative;
-  left: 4.5rem;
-  top: 0rem;
-  width: 10rem;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 28px;
-
-  letter-spacing: 0.02em;
-
-  color: #ffffff;
-`;
-
-const LogoutBtn = styled.p`
-  position: relative;
-  height: 1.5rem;
-  width: 7rem;
-  left: 15rem;
-  top: -2.9rem;
-
-  font-family: "MapoGoldenPier";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-  /* identical to box height */
-
-  text-align: right;
-
-  color: #ffffff;
-`;
-const Welcome = styled.div`
-  position: relative;
-  left: 1.5rem;
-  top: 0rem;
-  width: 70vw;
-`;
-
-const Bottle = styled.img`
-  width: 3.25rem;
-  height: 4.063rem;
-  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.15));
-`;
-
-const WelcomeTxt = styled.p`
-  position: relative;
-  left: 3.5rem;
-  top: -4.5rem;
-
-  margin: 0.5rem;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-
-  color: #ffffff;
-
-  text-shadow: 0px 0px 0.313rem rgba(0, 0, 0, 0.25);
-`;
-const Info = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 3.5rem;
-`;
-const Label = styled.span`
-  position: relative;
-  top: -1rem;
-  left: 1.5rem;
-  width: 7rem;
-  height: 1.5rem;
-  margin: 1.625rem 0;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-
-  color: #ffffff;
-`;
-
-const Value = styled.span`
-  position: relative;
-  top: -5.75rem;
-  left: 5.5rem;
-  width: 20rem;
-  height: 24px;
-  margin: 1.625rem 0;
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-
-  color: #ffffff;
-`;
 
 const MyPage = () => {
   // navigate
@@ -235,64 +121,201 @@ const MyPage = () => {
   }, []);
 
   return (
-    <Container>
-      <Header>
-        <IoIosArrowBack
-          onClick={() => navigate("/")}
-          style={{
-            position: "relative",
-            width: "2.125rem",
-            height: "2.125rem",
-            left: "1.5rem",
-            top: "3.4rem",
-            color: "white",
-          }}
-        />
-
-        <Title>마이 페이지</Title>
+    <CenterWrapper>
+    <MainWrapper>
+      <DivTop>
+        <DivTopSubLeft>
+          <DivArrowButton>
+            <IoIosArrowBack onClick={() => navigate("/")} style={{ width: "4vh", height: "4vh"}}/>
+          </DivArrowButton>
+          <PTitle>마이페이지</PTitle>
+        </DivTopSubLeft>
         <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>
-      </Header>
-      <Welcome>
-        <Bottle src="img/closedbottle.png" alt="closedbottle" />
-        <WelcomeTxt>안녕하세요, {dbUserInfo.name} 님.</WelcomeTxt>
-        <WelcomeTxt>당신만의 유리병을 찾으셨나요?</WelcomeTxt>
-      </Welcome>
-      <Info>
-        <Label>이름</Label>
-        <Value>{dbUserInfo.name}</Value>
-      </Info>
-      <Info>
-        <Label>계정</Label>
-        <Value>{dbUserInfo.email}</Value>
-      </Info>
-      <Info>
-        <Label>생일</Label>
-        <Value>
-          {month}월 {date}일
-        </Value>
-      </Info>
-      <button
-        onClick={() => {
-          navigate("/mypage/edit", {
-            state: {
-              email: email,
-              name: dbUserInfo.name,
-              month: month,
-              day: date,
-            },
-          });
-        }}
-      >
-        프로필 수정하기
-      </button>
-      <br />
-      <br />
-      <br />
-      <button>이용 방법</button>
-      <button>소중한 의견 남기기</button>
-      <button>만든 사람들</button>
-    </Container>
+      </DivTop>
+
+      <DivMid>
+        <DivMid1>
+          <ImgBottle src="img/closedbottle.png" alt="closedbottle" />
+          <DivMid1Sub>
+            <PComment>안녕하세요, {dbUserInfo.name} 님.</PComment>
+            <PComment>당신만의 유리병을 찾으셨나요?</PComment>
+          </DivMid1Sub>
+        </DivMid1>
+        <DivMid2>
+          <DivMid2L>
+            <DivInfo>
+              <PLabel>이름</PLabel>
+              <PValue>{dbUserInfo.name}</PValue>
+            </DivInfo>
+            <DivInfo>
+              <PLabel>계정</PLabel>
+              <PValue>{dbUserInfo.email}</PValue>
+            </DivInfo>
+            <DivInfo>
+              <PLabel>생일</PLabel>
+              <PValue>{month}월 {date}일</PValue>
+            </DivInfo>
+          </DivMid2L>
+          <ButtonEdit onClick={() => { navigate("/mypage/edit", { state: { email: email, name: dbUserInfo.name, month: month, day: date, }, });}}
+              ><img src="/img/edit.png" style={{width: "3vh"}}></img></ButtonEdit>
+        </DivMid2>
+
+      </DivMid>
+
+      <DivBottom>
+        <ButtonBottom>이용 방법</ButtonBottom>
+        <ButtonBottom>소중한 의견 남기기</ButtonBottom>
+        <ButtonBottom>만든 사람들</ButtonBottom>
+      </DivBottom>
+    </MainWrapper>
+    </CenterWrapper>
   );
 };
 
 export default MyPage;
+
+const CenterWrapper = styled.div`
+  width: 100vw;  
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  background-color: black;
+`;
+
+const MainWrapper = styled.div`
+  width: 53vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url(${url});
+  background-size: cover; 
+  background-position: center;
+  color: white;
+  // background-origin: padding-box;
+`;
+
+const DivTop = styled.div`
+  width: 100%;
+  margin: 1vh 0vh;  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const DivTopSubLeft = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const DivArrowButton = styled.div`
+  padding-left: 2.5vh;
+`;
+
+const PTitle = styled.p`
+  font-size: 2.5vh;
+  font-weight: bold;
+  margin: 3vh 1.5vh;
+  text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
+`;
+
+const LogoutBtn = styled.p`
+  font-family: "MapoGoldenPier";
+  font-style: normal;ㅇ
+  color: white;
+  font-size: 2.5vh;
+  margin: 3vh;
+`;
+
+const DivMid = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const DivMid1 = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const ImgBottle = styled.img`
+  width: 5vh;
+  height: 6.25vh;
+  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.15));
+  margin: 2vh;
+`;
+
+const DivMid1Sub = styled.div`
+`;
+
+const PComment = styled.p`
+  font-size: 2.5vh;
+`;
+
+const DivMid2 = styled.div`
+  width: 47vh;
+  height: 21vh;
+  margin: 2vh 0vh 0vh;
+
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  color: black;
+  padding: 3vh;
+  border-radius: 1vh;
+  justify-content: space-between;
+`;
+
+const DivMid2L = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const DivInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const PLabel = styled.p`
+  font-size: 2.5vh;
+  margin-right: 1vh;
+`;
+
+const PValue = styled.p`
+  font-size: 2.5vh;
+`;
+
+const ButtonEdit = styled.button`
+  position: static;
+  right: 1vh;
+  height: 3vh;
+  background: none;
+  border: none;
+`;
+
+const DivBottom = styled.div`
+  display: flex;
+  width: 47vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 3vh;
+  border-top: white solid 0.2vh;
+  padding: 1vh;
+`;
+
+const ButtonBottom = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 2vh 0vh;
+`;
