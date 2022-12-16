@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import styled from "styled-components";
 
 function Write3() {
   const location = useLocation();
@@ -66,33 +67,102 @@ function Write3() {
   let availableDay = `${year}-${month}-${day}`;
 
   return (
-    <>
-      {who === "tome" ? (
-        <h2>나에게 편지 쓰는 중...(1/4)</h2>
-      ) : (
-        <h2>너에게 편지쓰는 중...(2/5)</h2>
-      )}
-      {who === "tome" ? (
-        <h3>언제의 나에게 보낼 건가요?</h3>
-      ) : (
-        <h3>언제의 너에게 보낼 건가요?</h3>
-      )}
-      {/* 버튼 누르면 해당 날짜 보여주고, 값을 전달해줘야해. */}
-      <button onClick={Oneyearlater}>1년 후</button> <br></br>
-      {toname === toyou ? <button>다음 내 생일</button> : <></>}
-      <br></br>
-      <span> 다른 날짜 선택하기 :</span>
-      <input
-        type="date"
-        min={availableDay}
-        id="input_date"
-        onChange={input}
-      ></input>
-      <br></br>
-      <p>{selectedDate}</p>
-      <button onClick={Navigate}>다음으로</button>
-    </>
+    <CenterWrapper>
+    <MainWrapper>
+      <DivTop>
+        {who === "tome" ? (
+          <PTitle>나에게 편지 쓰는 중...(1/4)</PTitle>
+        ) : (
+          <PTitle>너에게 편지쓰는 중...(2/5)</PTitle>
+        )}
+      </DivTop>
+      <DivMid>
+        {who === "tome" ? (
+          <PComment>언제의 나에게 보낼 건가요?</PComment>
+        ) : (
+          <PComment>언제의 너에게 보낼 건가요?</PComment>
+        )}
+        {/* 버튼 누르면 해당 날짜 보여주고, 값을 전달해줘야해. */}
+        <DivButtons>
+          <button onClick={Oneyearlater}>1년 후</button> <br></br>
+          {toname === toyou ? <button>다음 내 생일</button> : <></>}
+          <br></br>
+          <span> 다른 날짜 선택하기 :</span>
+          <input
+            type="date"
+            min={availableDay}
+            id="input_date"
+            onChange={input}
+          ></input>
+          <br></br>
+          <p>{selectedDate}</p>
+        </DivButtons>
+        <ButtonNext onClick={Navigate}>다음으로</ButtonNext>
+      </DivMid>
+    </MainWrapper>
+    </CenterWrapper>
   );
 }
 
 export default Write3;
+
+const CenterWrapper = styled.div`
+  width: 100vw;  
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  background-color: black;
+`;
+
+const MainWrapper = styled.div`
+  width: 53vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url("img/background.png");
+  background-size: cover; 
+  background-position: center;
+  color: white;
+`;
+
+
+const DivTop = styled.div`
+  width: 100%;
+  margin: 1vh 0vh;  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const PTitle = styled.p`
+  font-size: 2.5vh;
+  font-weight: bold;
+  margin: 3vh 1.5vh;
+`;
+
+const DivMid = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PComment = styled.p`
+`;
+
+const DivButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ButtonNext = styled.div`
+  display: flex;
+  justify-content: center;
+
+  width: 20vh;
+
+  background-color: black;
+  color: white;
+  border: solid white;
+  border-radius: 1vh;
+`;
