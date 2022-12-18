@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 
 import LetterOpen from "./LetterOpen";
 import LetterClose from "./LetterClose";
-import new_dummy from "../letterbox/dummy/new_dummy.json";
 
 const ReadingLetter = () => {
   let currUrl = window.document.location.href;
