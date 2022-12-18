@@ -149,6 +149,7 @@ const LetterClose = () => {
     currLetter.sendDate = send[2];
   };
 
+  console.log(currLetter);
   //링크 공유하기
   let url = document.location.href.split("/");
   url = url.splice(0, url.length - 2).join("/") + "/detail/" + letterId;
@@ -199,8 +200,8 @@ const LetterClose = () => {
         />
       )}
       <center>
-        <Text1>도착까지, D - {currLetter.dday}</Text1>
-        {currLetter.from_name === currLetter.to_name ? (
+        <Text1>도착까지, D - {parseInt(currLetter.dday) + 2}</Text1>
+        {currLetter.from === currLetter.to ? (
           <>
             <Text2>
               {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
@@ -216,8 +217,8 @@ const LetterClose = () => {
               {currLetter.sendYear}년 {currLetter.sendMonth}월{" "}
               {currLetter.sendDate}일,
             </Text2>
-            <Text2>{currLetter.sender} 님이</Text2>
-            <Text2>{currLetter.recipient} 님께 보낸 유리병이</Text2>
+            <Text2>{currLetter.from} 님이</Text2>
+            <Text2>{currLetter.to} 님께 보낸 유리병이</Text2>
             <Text2>아직 세상을 여행하고 있어요.</Text2>
             <Text3>아래에 이메일을 남겨주시면</Text3>
             <Text3>유리병이 도착할 때 이메일로 알려드릴게요!</Text3>
