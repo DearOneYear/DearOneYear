@@ -36,7 +36,6 @@ function Main() {
     if (key.includes("access_token") === true) {
       let indexAccessToken = key.indexOf("my_access_token");
       access_token = cookieArr[indexAccessToken][1];
-      console.log("로그인");
     }
     userCheck();
   };
@@ -104,7 +103,7 @@ function Main() {
   // 디데이 기존 배열에 합치기
   for (let j = 0; j < dbLetter.length; j++) {
     // console.log(j, dbDday[j]);
-    dbLetter[j].dday = dbDday[j];
+    dbLetter[j].dday = dbDday[j] + 2;
   }
 
   // 읽음 대기 중인 편지 개수 세기
@@ -123,13 +122,13 @@ function Main() {
   // 가장 빠른 디데이 값 가져오기
   let latestDday = 0;
   let yetLetter = [];
-  console.log(dbLetter);
+
   dbLetter.map((letter) => {
     if (letter.isOpened === false) {
       yetLetter.push(letter);
     }
   });
-  console.log(yetLetter);
+
   yetLetter = yetLetter.sort(function (a, b) {
     return a.dday - b.dday;
   });
@@ -145,136 +144,145 @@ function Main() {
 
   return (
     <CenterWrapper>
-    <MainWrapper>
-      {isLoggedIn === false ? (
-        <>
-          <DivTop>
-            <PLogo>나의 내일에게</PLogo>
-            <ButtonLogin onClick={login}>로그인</ButtonLogin>
-          </DivTop>
-
-          <DivMid>
-            <DivMid1>
-              <PComment1>내일의 당신에게 편지하세요.</PComment1>
-              <PComment2>나의 내일에게</PComment2>
-            </DivMid1>
-            <DivMid2>
-              <PComment3>유리병을 눌러</PComment3>
-              <PComment3>익명의 편지를 읽어보세요</PComment3>
-            </DivMid2>
-          </DivMid>
-          
-          <Modal />
-          <ButtonWrite onClick={login}>편지하러 가기</ButtonWrite>
-        </>
-        
-      ) : (
-        <>
+      <MainWrapper>
+        {isLoggedIn === false ? (
           <>
-            <DivTop> 
+            <DivTop>
               <PLogo>나의 내일에게</PLogo>
-              <DivSubTop>
-                {arrivedLetter.length === 0 && (
-                  <>
-                    <DivSubTopLetterBox>
-                      <img
-                        id="letterbox"
-                        onClick={moveTo}
-                        src="img/closedbottle.png"
-                        alt="letterbox"
-                        style={{ width: "4vh", height: "4vh" }}
-                      />
-                      <span>{yetLetter.length}</span>
-                    </DivSubTopLetterBox>
-                  </>
-                )}
-                {arrivedLetter.length > 0 && (
-                  <>
-                    <DivSubTopLetterBox>
-                      <img
-                        id="letterbox"
-                        onClick={moveTo}
-                        src="img/redletterbox.png"
-                        alt="letterbox"
-                        style={{ width: "6.5vh", height: "7.8vh" }}
-                      />
-                      <span>{yetLetter.length}</span>
-                    </DivSubTopLetterBox>
-                  </>
-                )}
-                <div onClick={moveTo}>
-                  <BsFillPersonFill
-                    id="mypage"
-                    style={{
-                      color: "white",
-                      position: "relative",
-                      width: "3.6vh",
-                      height: "3.6vh",
-                    }}
-                  />
-                </div>
-              </DivSubTop>
+              <ButtonLogin onClick={login}>로그인</ButtonLogin>
             </DivTop>
 
+            <DivMid>
+              <DivMid1>
+                <PComment1>내일의 당신에게 편지하세요.</PComment1>
+                <PComment2>나의 내일에게</PComment2>
+              </DivMid1>
+              <DivMid2>
+                <PComment3>유리병을 눌러</PComment3>
+                <PComment3>익명의 편지를 읽어보세요</PComment3>
+              </DivMid2>
+            </DivMid>
+
+            <Modal />
+            <ButtonWrite onClick={login}>편지하러 가기</ButtonWrite>
           </>
+        ) : (
           <>
-            {dbLetter.length === 0 && ( // 원래 : {dbLetter.length === 0 && (
-              <DivMid>
-                <DivMid1>
-                  <PComment1>{yetLetter.length}개의 편지, 기다리는 중</PComment1>
-                  <PComment2>기다림을 시작해 보세요.</PComment2>
-                </DivMid1>
-                <DivMid2>
-                  <PComment3>아직 보낸 편지가 없어요.</PComment3>
-                  <PComment3>아래의 버튼을 눌러</PComment3>
-                  <PComment3>미래의 당신에게 위로와 응원을 보내주세요.</PComment3> 
-                </DivMid2>
-              </DivMid>
-            )}
+            <>
+              <DivTop>
+                <PLogo>나의 내일에게</PLogo>
+                <DivSubTop>
+                  {arrivedLetter.length === 0 && (
+                    <>
+                      <DivSubTopLetterBox>
+                        <img
+                          id="letterbox"
+                          onClick={moveTo}
+                          src="img/closedbottle.png"
+                          alt="letterbox"
+                          style={{ width: "4vh", height: "4vh" }}
+                        />
+                        <span>{yetLetter.length}</span>
+                      </DivSubTopLetterBox>
+                    </>
+                  )}
+                  {arrivedLetter.length > 0 && (
+                    <>
+                      <DivSubTopLetterBox>
+                        <img
+                          id="letterbox"
+                          onClick={moveTo}
+                          src="img/redletterbox.png"
+                          alt="letterbox"
+                          style={{ width: "6.5vh", height: "7.8vh" }}
+                        />
+                        <span>{yetLetter.length}</span>
+                      </DivSubTopLetterBox>
+                    </>
+                  )}
+                  <div onClick={moveTo}>
+                    <BsFillPersonFill
+                      id="mypage"
+                      style={{
+                        color: "white",
+                        position: "relative",
+                        width: "3.6vh",
+                        height: "3.6vh",
+                      }}
+                    />
+                  </div>
+                </DivSubTop>
+              </DivTop>
+            </>
+            <>
+              {dbLetter.length === 0 && ( // 원래 : {dbLetter.length === 0 && (
+                <DivMid>
+                  <DivMid1>
+                    <PComment1>
+                      {yetLetter.length}개의 편지, 기다리는 중
+                    </PComment1>
+                    <PComment2>기다림을 시작해 보세요.</PComment2>
+                  </DivMid1>
+                  <DivMid2>
+                    <PComment3>아직 보낸 편지가 없어요.</PComment3>
+                    <PComment3>아래의 버튼을 눌러</PComment3>
+                    <PComment3>
+                      미래의 당신에게 위로와 응원을 보내주세요.
+                    </PComment3>
+                  </DivMid2>
+                </DivMid>
+              )}
 
-            {dbLetter.length !== 0 && latestDday > 0 && ( // 원래 : {dbLetter.length !== 0 && latestDday > 0 && (
-              <DivMid>
-                <DivMid1>
-                  <PComment1>{yetLetter.length}개의 편지, 기다리는 중</PComment1>
-                  <PComment2>D - {latestDday}</PComment2>
-                </DivMid1>
-                <DivMid2>
-                  <PComment3>아직 도착한 유리병이 없어요.</PComment3>
-                  <PComment3>새로운 편지를 보내보는 건 어떨까요?</PComment3>
-                </DivMid2>
-              </DivMid>
-            )}
+              {dbLetter.length !== 0 &&
+                latestDday > 0 && ( // 원래 : {dbLetter.length !== 0 && latestDday > 0 && (
+                  <DivMid>
+                    <DivMid1>
+                      <PComment1>
+                        {yetLetter.length}개의 편지, 기다리는 중
+                      </PComment1>
+                      <PComment2>D - {latestDday}</PComment2>
+                    </DivMid1>
+                    <DivMid2>
+                      <PComment3>아직 도착한 유리병이 없어요.</PComment3>
+                      <PComment3>새로운 편지를 보내보는 건 어떨까요?</PComment3>
+                    </DivMid2>
+                  </DivMid>
+                )}
 
-            {dbLetter.length !== 0 && latestDday <= 0 && ( // 원래 : {dbLetter.length !== 0 && latestDday <= 0 && (
-              <DivMid>
-                <DivMid1>
-                  <PComment1>{yetLetter.length}개의 편지 중, {arrivedLetter.length}개가 도착했어요!</PComment1>
-                  <PComment2>D - DAY</PComment2>
-                </DivMid1>
-                <DivMid2>
-                  <PComment3>유리병을 눌러</PComment3>
-                  <PComment3>당신의 편지를 읽어보세요.</PComment3>
-                </DivMid2>
-                <DivForImgButton>
-                  <img
-                  id="letterbox"
-                  onClick={() => {
-                    navigate(`/detail/${arrivedLetterId}`);
-                  }}
-                  src="img/closedbottle.png"
-                  alt="letterbox"
-                  style={{ width: "20vh" }}
-                  />
-                </DivForImgButton>
-              </DivMid>
-            )}
+              {dbLetter.length !== 0 &&
+                latestDday <= 0 && ( // 원래 : {dbLetter.length !== 0 && latestDday <= 0 && (
+                  <DivMid>
+                    <DivMid1>
+                      <PComment1>
+                        {yetLetter.length}개의 편지 중, {arrivedLetter.length}
+                        개가 도착했어요!
+                      </PComment1>
+                      <PComment2>D - DAY</PComment2>
+                    </DivMid1>
+                    <DivMid2>
+                      <PComment3>유리병을 눌러</PComment3>
+                      <PComment3>당신의 편지를 읽어보세요.</PComment3>
+                    </DivMid2>
+                    <DivForImgButton>
+                      <img
+                        id="letterbox"
+                        onClick={() => {
+                          navigate(`/detail/${arrivedLetterId}`);
+                        }}
+                        src="img/closedbottle.png"
+                        alt="letterbox"
+                        style={{ width: "20vh" }}
+                      />
+                    </DivForImgButton>
+                  </DivMid>
+                )}
+            </>
+            <ButtonWrite onClick={() => navigate("/write/write1")}>
+              편지하러 가기
+            </ButtonWrite>
           </>
-          <ButtonWrite onClick={() => navigate("/write/write1")}>
-            편지하러 가기
-          </ButtonWrite>
-        </>
-      )}
-    </MainWrapper>
+        )}
+      </MainWrapper>
     </CenterWrapper>
   );
 }
@@ -282,7 +290,7 @@ function Main() {
 export default Main;
 
 const CenterWrapper = styled.div`
-  width: 100vw;  
+  width: 100vw;
   height: 100vh;
   display: grid;
   justify-content: center;
@@ -296,14 +304,14 @@ const MainWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-image: url("img/beach.png");
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   color: white;
 `;
 
 const DivTop = styled.div`
   width: 100%;
-  margin: 1vh 0vh;  
+  margin: 1vh 0vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -400,5 +408,5 @@ const ButtonWrite = styled.button`
 
   color: white;
   font-size: 2.2vh;
-  background-color: rgba(50,50,50,0.7);
+  background-color: rgba(50, 50, 50, 0.7);
 `; // 221215:1429 -> 주석 지우기

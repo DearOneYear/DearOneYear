@@ -47,7 +47,7 @@ const LetterBoxUnread = () => {
   };
   // 디데이 기존 배열에 합치기
   for (let j = 0; j < dbLetter.length; j++) {
-    let d = dbDday[j] + 1;
+    let d = dbDday[j] + 2;
     dbLetter[j].dday = d;
     if (d === 0) {
       dbLetter[j].ddayinfo = "- DAY";
@@ -108,86 +108,92 @@ const LetterBoxUnread = () => {
 
   return (
     <CenterWrapper>
-    <MainWrapper>
-    <>
-        <DivTop>
-          <PLetterBox>편지함</PLetterBox>
-          <DivSubTop>
-            <AiFillHome onClick={() => navigate("/")} style={{ width : "3.6vh", height : "3.6vh" }}/>
-            <BsFillPersonFill onClick={() => navigate("/mypage", { state: { email: email } })} style={{ width : "3.6vh", height : "3.6vh" }}/>
-          </DivSubTop>
-        </DivTop>
-        <DivMid>
-          <DivMidButton>
-            <ButtonSelected>기다리는 중</ButtonSelected>
-            <ButtonUnselected
-              onClick={() =>
-                navigate("/letterbox/read", { state: { email: { email } } })
-              }
-            >
-              읽은 편지함
-            </ButtonUnselected>
-          </DivMidButton>
+      <MainWrapper>
+        <>
+          <DivTop>
+            <PLetterBox>편지함</PLetterBox>
+            <DivSubTop>
+              <AiFillHome
+                onClick={() => navigate("/")}
+                style={{ width: "3.6vh", height: "3.6vh" }}
+              />
+              <BsFillPersonFill
+                onClick={() => navigate("/mypage", { state: { email: email } })}
+                style={{ width: "3.6vh", height: "3.6vh" }}
+              />
+            </DivSubTop>
+          </DivTop>
+          <DivMid>
+            <DivMidButton>
+              <ButtonSelected>기다리는 중</ButtonSelected>
+              <ButtonUnselected
+                onClick={() =>
+                  navigate("/letterbox/read", { state: { email: { email } } })
+                }
+              >
+                읽은 편지함
+              </ButtonUnselected>
+            </DivMidButton>
 
-          {unOpenedLetters.map((letter) => (
-            <div key={letter.id} id={letter.id}>
-              <div onClick={openLetter} id={letter.id}>
-                <p></p>
-                {letter.dday <= 0 ? (
-                  <img
-                    style={{ width: "3rem" }}
-                    src="/img/redletterbox.png"
-                    alt="open"
-                    id={letter.id}
-                  />
-                ) : (
-                  <img
-                    src="/img/closedbottle.png"
-                    alt="close"
-                    id={letter.id}
-                    style={{ width: "3rem" }}
-                  />
-                )}
+            {unOpenedLetters.map((letter) => (
+              <div key={letter.id} id={letter.id}>
+                <div onClick={openLetter} id={letter.id}>
+                  <p></p>
+                  {letter.dday <= 0 ? (
+                    <img
+                      style={{ width: "3rem" }}
+                      src="/img/redletterbox.png"
+                      alt="open"
+                      id={letter.id}
+                    />
+                  ) : (
+                    <img
+                      src="/img/closedbottle.png"
+                      alt="close"
+                      id={letter.id}
+                      style={{ width: "3rem" }}
+                    />
+                  )}
 
-                {letter.to_name !== letter.from_name ? (
-                  <p id={letter.id}>
-                    D {letter.ddayinfo} {letter.to_name}에게
-                  </p>
-                ) : (
-                  <p id={letter.id}>D {letter.ddayinfo}</p>
-                )}
-              </div>
-              {letter.to_name !== letter.from_name ? (
-                <div onClick={onShareClick} id={letter.id}>
-                  <BsLink45Deg
-                    style={{
-                      color: "white",
-                      position: "relative",
-                      width: "2.125rem",
-                      height: "2.125rem",
-                      left: "20rem",
-                      top: "-6rem",
-                    }}
-                    id={letter.id}
-                  />
+                  {letter.to_name !== letter.from_name ? (
+                    <p id={letter.id}>
+                      D {letter.ddayinfo} {letter.to_name}에게
+                    </p>
+                  ) : (
+                    <p id={letter.id}>D {letter.ddayinfo}</p>
+                  )}
                 </div>
-              ) : (
-                <></>
-              )}
+                {letter.to_name !== letter.from_name ? (
+                  <div onClick={onShareClick} id={letter.id}>
+                    <BsLink45Deg
+                      style={{
+                        color: "white",
+                        position: "relative",
+                        width: "2.125rem",
+                        height: "2.125rem",
+                        left: "20rem",
+                        top: "-6rem",
+                      }}
+                      id={letter.id}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
 
-              <p>
-                {`${letter.sendYear}.${letter.sendMonth}.${letter.sendDate}.`} →{" "}
-                {`${letter.openYear}.${letter.openMonth}.${letter.openDate}.`}
-              </p>
-            </div>
-          ))}
-
-        </DivMid>
-        <ButtonWrite onClick={() => navigate("/write/write1")}>
-          새로운 편지하러 가기
-        </ButtonWrite>
-    </>
-    </MainWrapper>
+                <p>
+                  {`${letter.sendYear}.${letter.sendMonth}.${letter.sendDate}.`}{" "}
+                  →{" "}
+                  {`${letter.openYear}.${letter.openMonth}.${letter.openDate}.`}
+                </p>
+              </div>
+            ))}
+          </DivMid>
+          <ButtonWrite onClick={() => navigate("/write/write1")}>
+            새로운 편지하러 가기
+          </ButtonWrite>
+        </>
+      </MainWrapper>
     </CenterWrapper>
   );
 };
@@ -195,7 +201,7 @@ const LetterBoxUnread = () => {
 export default LetterBoxUnread;
 
 const CenterWrapper = styled.div`
-  width: 100vw;  
+  width: 100vw;
   height: 100vh;
   display: grid;
   justify-content: center;
@@ -209,7 +215,7 @@ const MainWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-image: url(${url});
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   color: white;
   // background-origin: padding-box;
@@ -218,7 +224,7 @@ const MainWrapper = styled.div`
 
 const DivTop = styled.div`
   width: 100%;
-  margin: 1vh 0vh;  
+  margin: 1vh 0vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -287,5 +293,5 @@ const ButtonWrite = styled.button`
 
   color: white;
   font-size: 2.2vh;
-  background-color: rgba(50,50,50,0.7);
+  background-color: rgba(50, 50, 50, 0.7);
 `;
