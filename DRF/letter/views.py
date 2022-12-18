@@ -108,26 +108,20 @@ class LetterDetail(APIView):
     def get(self, request):
         pk = request.headers.get('letterid')
         letter = self.get_object(pk)
-        print(type(letter.openAt))
-        print(type(self.get_now()))
-        
+  
         #dday=letter.openAt - self.get_now()
         openDay = letter.openAt.replace(tzinfo=None)
         dday = openDay - datetime.datetime.now()
-        print(dday)
         [tday, thour, tminute] = self.days_hours_minutes(dday)
-        print(dday.days)
-        print(thour)
-        print(tminute)
 
         if dday.days < 0: 
             serializer = LetterSerializer(letter)
             return Response(data=serializer.data, status = status.HTTP_200_OK)
         elif dday.days > 0:
             #날짜 남은 것
-            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "sendAt": letter.sendAt, "available":False})
+            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "from" : letter.from_name, "to" : letter.to_name, "openAt": letter.openAt, "sendAt": letter.sendAt, "available":False})
         elif thour > 0 or tminute > 0 or dday.seconds > 0:
-            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "openAt": letter.openAt, "sendAt": letter.sendAt, "available":False})      
+            return Response({"msg": "아직!", "dday":str(dday.days), "now" : self.get_now(), "from" : letter.from_name, "to" : letter.to_name,"openAt": letter.openAt, "sendAt": letter.sendAt, "available":False})      
 
     def post(self, request):
         pk = request.headers.get('letterid')
