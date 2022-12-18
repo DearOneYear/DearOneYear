@@ -26,9 +26,9 @@ const KakaoLogin = () => {
       .then((res) => {
         console.log(res);
         // 쿠키 설정
-        setCookie("my_access_token", res.data.my_access_token, 30);
-        setCookie("my_refresh_token", res.data.my_refresh_token, 30);
-        setCookie("access_token", res.data.access_token, 1);
+        setCookie("my_access_token", res.data.my_access_token, 3);
+        setCookie("my_refresh_token", res.data.my_refresh_token, 3);
+        setCookie("access_token", res.data.access_token, 3);
         navigate("/");
       })
       .catch((err) => console.log(err));
@@ -56,28 +56,29 @@ const KakaoLogin = () => {
 
   return (
     <CenterWrapper>
-    <MainWrapper>
-      <DivTop>
-        <DivArrowButton>
-          <IoIosArrowBack onClick={() => navigate(-1)} style={{ width: "4vh", height: "4vh"}}/>
-        </DivArrowButton>
-        <PLogin>로그인 / 회원가입</PLogin>
-      </DivTop>
-      <DivMid>
-        <PComment>세상에서 가장 소중한 사람,</PComment>
-        <PComment>바로 당신에게 편지하세요.</PComment>
-        <PComment>세상에서 가장 큰 위로, 응원, 사랑이</PComment>
-        <PComment>되어드릴게요.</PComment>
-      </DivMid>
-      <ImgBottle
-        src="/img/closedbottle.png"
-      />
-      <ImgLoginButton
-        alt="카카오 로그인 버튼"
-        src="/img/kakaologin.png"
-        onClick={onClickLogin}
-      />
-    </MainWrapper>
+      <MainWrapper>
+        <DivTop>
+          <DivArrowButton>
+            <IoIosArrowBack
+              onClick={() => navigate(-1)}
+              style={{ width: "4vh", height: "4vh" }}
+            />
+          </DivArrowButton>
+          <PLogin>로그인 / 회원가입</PLogin>
+        </DivTop>
+        <DivMid>
+          <PComment>세상에서 가장 소중한 사람,</PComment>
+          <PComment>바로 당신에게 편지하세요.</PComment>
+          <PComment>세상에서 가장 큰 위로, 응원, 사랑이</PComment>
+          <PComment>되어드릴게요.</PComment>
+        </DivMid>
+        <ImgBottle src="/img/closedbottle.png" />
+        <ImgLoginButton
+          alt="카카오 로그인 버튼"
+          src="/img/kakaologin.png"
+          onClick={onClickLogin}
+        />
+      </MainWrapper>
     </CenterWrapper>
   );
 };
@@ -85,7 +86,7 @@ const KakaoLogin = () => {
 export default KakaoLogin;
 
 const CenterWrapper = styled.div`
-  width: 100vw;  
+  width: 100vw;
   height: 100vh;
   display: grid;
   justify-content: center;
@@ -99,14 +100,14 @@ const MainWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-image: url("img/beach.png");
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   color: white;
 `;
 
 const DivTop = styled.div`
   width: 100%;
-  margin: 1vh 0vh;  
+  margin: 1vh 0vh;
   display: flex;
   flex-direction: row;
   align-items: center;
