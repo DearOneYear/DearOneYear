@@ -26,8 +26,6 @@ const ReadingLetter = () => {
       });
   };
 
-  console.log(currLetter);
-
   useEffect(() => {
     getLetter();
   }, []);
