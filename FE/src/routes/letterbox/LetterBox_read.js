@@ -7,18 +7,7 @@ import { AiFillHome } from "react-icons/ai";
 import { BsFillPersonFill, BsLink45Deg } from "react-icons/bs";
 
 const url = "/img/background.png";
-const Container = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-image: url(${url});
-  background-repeat: no-repeat;
-  background-origin: padding-box;
-  background-size: cover;
-`;
+
 const Title = styled.p`
   position: relative;
   width: 4.563rem;
@@ -226,42 +215,30 @@ const LetterBoxUnread = () => {
   }, []);
 
   return (
+    <CenterWrapper>
+    <MainWrapper>
     <>
-      <Container>
-        <p>편지함</p>
-        <AiFillHome
-          onClick={() => navigate("/")}
-          style={{
-            color: "white",
-            position: "relative",
-            width: "2.125rem",
-            height: "2.125rem",
-            left: "19.3rem",
-            top: "2rem",
-          }}
-        />
-        <BsFillPersonFill
-          onClick={() => navigate("/mypage", { state: { email: email } })}
-          style={{
-            color: "white",
-            position: "relative",
-            width: "2.125rem",
-            height: "2.125rem",
-            left: "20rem",
-            top: "2rem",
-          }}
-        />
+        <DivTop>
+        <PLetterBox>편지함</PLetterBox>
+          <DivSubTop>
+            <AiFillHome onClick={() => navigate("/")} style={{ width: "3.6vh", height: "3.6vh" }}/>
+            <BsFillPersonFill onClick={() => navigate("/mypage", { state: { email: email } })} style={{ width : "3.6vh", height : "3.6vh" }}/>
+          </DivSubTop>
+        </DivTop>
         {/* <LetterBoxNav /> */}
-        <button
-          onClick={() =>
-            navigate("/letterbox/unread", {
-              state: { email: email },
-            })
-          }
-        >
-          기다리는 중
-        </button>
-        <button>읽은 편지함</button>
+        <DivMid>
+          <DivMidButton>
+            <ButtonUnselected
+              onClick={() =>
+                navigate("/letterbox/unread", {
+                  state: { email: email },
+                })
+              }
+            >
+              기다리는 중
+            </ButtonUnselected>
+            <ButtonSelected>읽은 편지함</ButtonSelected>
+        </DivMidButton>
         {openedLetters.map((letter) => (
           <div key={letter.id} id={letter.id}>
             <div onClick={openLetter} id={letter.id}>
@@ -302,14 +279,110 @@ const LetterBoxUnread = () => {
             </p>
           </div>
         ))}
-        <center>
-          <button onClick={() => navigate("/write/write1")}>
-            새로운 편지하러 가기
-          </button>
-        </center>
-      </Container>
+        </DivMid>
+        <ButtonWrite onClick={() => navigate("/write/write1")}>
+          새로운 편지하러 가기
+        </ButtonWrite>
     </>
+    </MainWrapper>
+    </CenterWrapper>
   );
 };
 
 export default LetterBoxUnread;
+
+const CenterWrapper = styled.div`
+  width: 100vw;  
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  background-color: black;
+`;
+
+const MainWrapper = styled.div`
+  width: 53vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url(${url});
+  background-size: cover; 
+  background-position: center;
+  color: white;
+  // background-origin: padding-box;
+  // overflow: hidden;
+`;
+
+const DivTop = styled.div`
+  width: 100%;
+  margin: 1vh 0vh;  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DivSubTop = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 0vh 2vh;
+  color: white;
+  width: 10vh;
+  height: 8.5vh;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const PLetterBox = styled.p`
+  font-size: 3vh;
+  font-weight: bold;
+  margin: 2.5vh;
+  text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
+`;
+
+const DivMid = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const DivMidButton = styled.div`
+  background: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
+const ButtonUnselected = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  margin-left: 3vh;
+  font-size: 2.5vh;
+  padding-bottom: 1vh;
+`;
+
+const ButtonSelected = styled.button`
+  background: none;
+  border: none;
+  border-bottom: white solid 0.2vh;
+  color: white;
+  margin-left: 3vh;
+  font-size: 2.5vh;
+  padding-bottom: 1vh;
+`;
+
+const ButtonWrite = styled.button`
+  width: 47vh;
+  height: 7.5vh;
+  position: absolute;
+  margin-top: 76.5vh;
+
+  border: solid 0.2vh;
+  border-color: white;
+  border-radius: 1vh;
+
+  color: white;
+  font-size: 2.2vh;
+  background-color: rgba(50,50,50,0.7);
+`;

@@ -176,26 +176,30 @@ function Main() {
               <DivSubTop>
                 {arrivedLetter.length === 0 && (
                   <>
-                    <img
-                      id="letterbox"
-                      onClick={moveTo}
-                      src="img/closedbottle.png"
-                      alt="letterbox"
-                      style={{ width: "5vh", height: "6vh" }}
-                    />
-                    <span>{yetLetter.length}</span>
+                    <DivSubTopLetterBox>
+                      <img
+                        id="letterbox"
+                        onClick={moveTo}
+                        src="img/closedbottle.png"
+                        alt="letterbox"
+                        style={{ width: "4vh", height: "4vh" }}
+                      />
+                      <span>{yetLetter.length}</span>
+                    </DivSubTopLetterBox>
                   </>
                 )}
                 {arrivedLetter.length > 0 && (
                   <>
-                    <img
-                      id="letterbox"
-                      onClick={moveTo}
-                      src="img/redletterbox.png"
-                      alt="letterbox"
-                      style={{ width: "6.5vh", height: "7.8vh" }}
-                    />
-                    <span>{yetLetter.length}</span>
+                    <DivSubTopLetterBox>
+                      <img
+                        id="letterbox"
+                        onClick={moveTo}
+                        src="img/redletterbox.png"
+                        alt="letterbox"
+                        style={{ width: "6.5vh", height: "7.8vh" }}
+                      />
+                      <span>{yetLetter.length}</span>
+                    </DivSubTopLetterBox>
                   </>
                 )}
                 <div onClick={moveTo}>
@@ -204,9 +208,8 @@ function Main() {
                     style={{
                       color: "white",
                       position: "relative",
-                      width: "6vh",
-                      height: "6vh",
-                      padding: "0.5vh",
+                      width: "3.6vh",
+                      height: "3.6vh",
                     }}
                   />
                 </div>
@@ -318,6 +321,16 @@ const DivSubTop = styled.div`
   display: flex;
   flex-direction: row;
   margin: 0vh 2vh;
+  width: 10vh;
+  height: 8.5vh;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const DivSubTopLetterBox = styled.div`
+  display: flex;
+  flex-direction; row;
+  align-items: center;
 `;
 
 const ButtonLogin = styled.button`
@@ -388,4 +401,4 @@ const ButtonWrite = styled.button`
   color: white;
   font-size: 2.2vh;
   background-color: rgba(50,50,50,0.7);
-`; // 221215:1429
+`; // 221215:1429 -> 주석 지우기

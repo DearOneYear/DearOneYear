@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 const useConfirm = (message = null, onConfirm, onCancel) => {
   if (!onConfirm || typeof onConfirm !== "function") {
@@ -173,50 +174,100 @@ function Write6() {
   );
 
   return (
-    <>
-      {who === "tome" ? (
-        <h2>나에게 편지 쓰는 중...(4/4)</h2>
-      ) : (
-        <h2>너에게 편지쓰는 중...(5/5)</h2>
-      )}
+    <CenterWrapper>
+    <MainWrapper>
+      <DivTop>
+        {who === "tome" ? (
+          <PTitle>나에게 편지 쓰는 중...(4/4)</PTitle>
+        ) : (
+          <PTitle>너에게 편지쓰는 중...(5/5)</PTitle>
+        )}
+      </DivTop>
+      <DivMid>
+        <PComment>소중한 마음을 담아<br></br>편지를 작성해주세요.</PComment>
+        <div>
+          <span>To. </span>
+          <input
+            id="finaltoname"
+            type="text"
+            required
+            maxLength="20"
+            onChange={FinalToName}
+          ></input>
+          <br></br>
+          <input
+            type="text"
+            rows="50"
+            cols="100"
+            required
+            maxLength="1000"
+            id="finaltext"
+            onChange={FinalText}
+          ></input>
+          <br></br>
+          <span>From. </span>
+          <input
+            type="text"
+            required
+            maxLength="20"
+            id="finalfromname"
+            onChange={FinalFromName}
+          ></input>
+        </div>
 
-      <h3>
-        소중한 마음을 담아<br></br>편지를 작성해주세요.
-      </h3>
-
-      <div>
-        <span>To. </span>
-        <input
-          id="finaltoname"
-          type="text"
-          required
-          maxLength="20"
-          onChange={FinalToName}
-        ></input>
-        <br></br>
-        <input
-          type="text"
-          rows="50"
-          cols="100"
-          required
-          maxLength="1000"
-          id="finaltext"
-          onChange={FinalText}
-        ></input>
-        <br></br>
-        <span>From. </span>
-        <input
-          type="text"
-          required
-          maxLength="20"
-          id="finalfromname"
-          onChange={FinalFromName}
-        ></input>
-      </div>
-
-      <input type="submit" value="편지 보내기" onClick={confirmDelete}></input>
-    </>
+        <InputSend type="submit" value="편지 보내기" onClick={confirmDelete}></InputSend>
+      </DivMid>
+    </MainWrapper>
+    </CenterWrapper>
   );
 }
 
 export default Write6;
+
+const CenterWrapper = styled.div`
+  width: 100vw;  
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  background-color: black;
+`;
+
+const MainWrapper = styled.div`
+  width: 53vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url("img/background.png");
+  background-size: cover; 
+  background-position: center;
+  color: white;
+`;
+
+
+const DivTop = styled.div`
+  width: 100%;
+  margin: 1vh 0vh;  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const PTitle = styled.p`
+  font-size: 2.5vh;
+  font-weight: bold;
+  margin: 3vh 1.5vh;
+`;
+
+const DivMid = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PComment = styled.p`
+`;
+
+
+const InputSend = styled.input`
+`;

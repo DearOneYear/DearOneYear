@@ -1,4 +1,5 @@
 import { useNavigate , useLocation} from "react-router-dom";
+import styled from "styled-components";
 
 function Write5() {
 
@@ -42,16 +43,66 @@ function Write5() {
         }
     }
     return (
-    <>
-    {who === 'tome' ? <h2>나에게 편지 쓰는 중...(3/4)</h2> :<h2>너에게 편지쓰는 중...(4/5)</h2>}
-    <h3>n일 후 받을 편지에서 추억할 사진을 첨부해 주세요.</h3>
-    <div>
-        <input type="file" name='profile_img' onChange={setThumbnail} accept='image/*' required></input>
-        <div id="image_container"></div>
-        <input type="submit" value="편지 내용 쓰기" onClick={Navigate}></input>
-    </div>
+    <CenterWrapper>
+    <MainWrapper>
+        <DivTop>
+            {who === 'tome' ? <PTitle>나에게 편지 쓰는 중...(3/4)</PTitle> :<PTitle>너에게 편지쓰는 중...(4/5)</PTitle>}
+        </DivTop>
+        <DivMid>
+        <PComment>n일 후 받을 편지에서 추억할 사진을 첨부해 주세요.</PComment>
+            <div>
+                <input type="file" name='profile_img' onChange={setThumbnail} accept='image/*' required></input>
+                <div id="image_container"></div>
+                <input type="submit" value="편지 내용 쓰기" onClick={Navigate}></input>
+            </div>
+        </DivMid>
 
-    </>
+    </MainWrapper>
+    </CenterWrapper>
     )
 };
 export default Write5;
+
+const CenterWrapper = styled.div`
+  width: 100vw;  
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  background-color: black;
+`;
+
+const MainWrapper = styled.div`
+  width: 53vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url("img/background.png");
+  background-size: cover; 
+  background-position: center;
+  color: white;
+`;
+
+
+const DivTop = styled.div`
+  width: 100%;
+  margin: 1vh 0vh;  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const PTitle = styled.p`
+  font-size: 2.5vh;
+  font-weight: bold;
+  margin: 3vh 1.5vh;
+`;
+
+const DivMid = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PComment = styled.p`
+`;

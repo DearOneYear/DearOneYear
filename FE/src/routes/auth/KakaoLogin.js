@@ -59,7 +59,7 @@ const KakaoLogin = () => {
     <MainWrapper>
       <DivTop>
         <DivArrowButton>
-          <IoIosArrowBack onClick={() => navigate(-1)} />
+          <IoIosArrowBack onClick={() => navigate(-1)} style={{ width: "4vh", height: "4vh"}}/>
         </DivArrowButton>
         <PLogin>로그인 / 회원가입</PLogin>
       </DivTop>
@@ -119,7 +119,7 @@ const DivArrowButton = styled.div`
 const PLogin = styled.p`
   font-size: 2.5vh;
   font-weight: bold;
-  margin: 3vh;
+  margin: 3vh 1.5vh;
   text-shadow: 0vh 0.2vh 0.3vh rgba(0, 0, 0, 0.2);
 `;
 
