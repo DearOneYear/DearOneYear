@@ -24,46 +24,36 @@ const useConfirm = (message = null, onConfirm, onCancel) => {
 
 function Write6() {
   const location = useLocation();
-  const toname = location.state.toname;
-  const toyou = location.state.toyou;
   const emotion = location.state.emotion;
   const selectedDate = location.state.selectedDate;
   const finalImage = location.state.finalImage;
 
-  console.log(selectedDate);
   const [finalToName, setFinalToName] = useState("");
   const [finalText, setFinalText] = useState("");
   const [finalFromName, setFinalFromName] = useState("");
-  let [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
 
   function FinalToName(e) {
-    // const finalToName = document.getElementById('finaltoname').value;
-    // const finalToName = e.target.value;
-    console.log(e.target.value);
     setFinalToName(e.target.value);
-    // console.log(finalToName)
-    // setFinalToName(finalToName);
+    if (finalToName !== "" && finalFromName !== "" && finalText !== "") {
+      setNextBtn("");
+    }
   }
-  console.log("확인용", finalToName);
 
   function FinalText(e) {
-    // const finalText = document.getElementById('finaltext').value;
     setFinalText(e.target.value);
-    console.log(e.target.value);
+    if (finalToName !== "" && finalFromName !== "" && finalText !== "") {
+      setNextBtn("");
+    }
   }
 
   function FinalFromName(e) {
-    // const finalFromName = document.getElementById('finalfromname').value;
-
     setFinalFromName(e.target.value);
-    console.log(e.target.value);
+    if (finalToName !== "" && finalFromName !== "" && finalText !== "") {
+      setNextBtn("");
+    }
   }
-
-  let currUrl = window.document.location.href;
-  let urlArr = currUrl.split("/");
-  let who = urlArr[urlArr.length - 1];
-  console.log(who);
 
   let access_token = "";
   // 쿠키 받기
@@ -119,16 +109,6 @@ function Write6() {
     userCheck();
   }, []);
 
-  function Navigate() {
-    navigate(`/write/confirm`, {
-      state: {
-        selectedDate: selectedDate,
-        toname: toname,
-        toyou: toyou,
-        email: userEmail,
-      },
-    });
-  }
   const confirmSend = async () => {
     let formData = new FormData();
     if (finalImage) {
@@ -138,33 +118,31 @@ function Write6() {
       }
     }
     formData.append("email", userEmail);
-    formData.append("from_name", toyou);
-    formData.append("to_name", toname);
+    formData.append("from_name", finalFromName);
+    formData.append("to_name", finalToName);
     formData.append("recipient", finalToName);
     formData.append("message", finalText);
     formData.append("sender", finalFromName);
     formData.append("openAt", selectedDate);
     formData.append("emotion", emotion);
+    formData.append("file", finalImage);
+
     await axios
       .post("http://localhost:8000/letter/letterbox/", formData)
       .then((res) => {
         console.log("편지 쓰기 성공");
         console.log(res.data);
-        navigate("/write/confirm", {
+        navigate("/confirm", {
           state: {
             selectedDate: selectedDate,
-            toname: toname,
-            toyou: toyou,
             email: userEmail,
             id: res.data.id,
           },
         });
-        // Navigate();
       })
       .catch(function (err) {
         console.log(err);
       });
-    // console.log("편지를 전송했습니다.")
   };
   const cancelConfirm = () => console.log("취소했습니다.");
   const confirmDelete = useConfirm(
@@ -173,19 +151,20 @@ function Write6() {
     cancelConfirm
   );
 
+  // 다음 버튼
+  const [nextBtn, setNextBtn] = useState("disabled");
+
   return (
     <CenterWrapper>
-    <MainWrapper>
-      <DivTop>
-        {who === "tome" ? (
+      <MainWrapper>
+        <DivTop>
           <PTitle>나에게 편지 쓰는 중...(4/4)</PTitle>
-        ) : (
-          <PTitle>너에게 편지쓰는 중...(5/5)</PTitle>
-        )}
-      </DivTop>
-      <DivMid>
-        <PComment>소중한 마음을 담아<br></br>편지를 작성해주세요.</PComment>
-        <div>
+        </DivTop>
+        <DivMid>
+          <PComment>
+            소중한 마음을 담아<br></br>편지를 작성해주세요.
+          </PComment>
+
           <span>To. </span>
           <input
             id="finaltoname"
@@ -213,11 +192,13 @@ function Write6() {
             id="finalfromname"
             onChange={FinalFromName}
           ></input>
-        </div>
 
-        <InputSend type="submit" value="편지 보내기" onClick={confirmDelete}></InputSend>
-      </DivMid>
-    </MainWrapper>
+          <br />
+          <button disabled={nextBtn} onClick={confirmDelete}>
+            편지 보내기
+          </button>
+        </DivMid>
+      </MainWrapper>
     </CenterWrapper>
   );
 }
@@ -225,7 +206,7 @@ function Write6() {
 export default Write6;
 
 const CenterWrapper = styled.div`
-  width: 100vw;  
+  width: 100vw;
   height: 100vh;
   display: grid;
   justify-content: center;
@@ -239,15 +220,14 @@ const MainWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-image: url("img/background.png");
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   color: white;
 `;
 
-
 const DivTop = styled.div`
   width: 100%;
-  margin: 1vh 0vh;  
+  margin: 1vh 0vh;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -265,9 +245,6 @@ const DivMid = styled.div`
   align-items: center;
 `;
 
-const PComment = styled.p`
-`;
+const PComment = styled.p``;
 
-
-const InputSend = styled.input`
-`;
+const InputSend = styled.button``;

@@ -4,6 +4,96 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
+function Confirm() {
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  console.log(location);
+  let selectedDate = location.state.selectedDate.split("-");
+  let year = selectedDate[0];
+  let month = selectedDate[1];
+  let date = selectedDate[2];
+  let email = location.state.email;
+  let id = location.state.id;
+
+  // 링크 공유하기
+  let currUrl = window.document.location.href.split("/");
+  let url = currUrl.splice(0, currUrl.length - 1).join("/") + "/detail/" + id;
+
+  const onShareClick = (e) => {
+    let textArea = document.createElement("textarea");
+    document.body.appendChild(textArea);
+    textArea.value = url;
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    alert("링크가 복사되었습니다.");
+  };
+
+  return (
+    <Container>
+      <Title>나의 내일에게</Title>
+      <AiFillHome
+        onClick={() => navigate("/")}
+        style={{
+          color: "white",
+          position: "relative",
+          width: "2.125rem",
+          height: "2.125rem",
+          left: "19.3rem",
+          top: "2rem",
+        }}
+      />
+      <BsFillPersonFill
+        onClick={() =>
+          navigate("/mypage", { state: { email: { userEmail: email } } })
+        }
+        style={{
+          color: "white",
+          position: "relative",
+          width: "2.125rem",
+          height: "2.125rem",
+          left: "20rem",
+          top: "2rem",
+        }}
+      />
+      <center>
+        <Bottle src="/img/closedbottle.png" alt="유리병" />
+        <Text1>유리병을 바다로 떠나보냈어요.</Text1>
+        <Text1>
+          {year}년 {month}월 {date}일에
+        </Text1>
+
+        <Text1>당신께 찾아갈게요!</Text1>
+
+        <Btn1 onClick={onShareClick}>받는 이에게 편지 링크 공유하기</Btn1>
+        <Button2>
+          <Btn2
+            onClick={() =>
+              navigate("/letterbox/unread", {
+                state: { email: email },
+              })
+            }
+          >
+            편지함으로
+          </Btn2>
+          <Btn2
+            onClick={() =>
+              navigate("/write/1", {
+                state: { email: email },
+              })
+            }
+          >
+            새로운 편지하기
+          </Btn2>
+        </Button2>
+      </center>
+    </Container>
+  );
+}
+
+export default Confirm;
+
 const url = "/img/beach.png";
 const Container = styled.div`
   position: absolute;
@@ -100,90 +190,3 @@ const Btn2 = styled.button`
 
   border-radius: 0.625rem;
 `;
-
-function Confirm() {
-  const navigate = useNavigate();
-
-  const location = useLocation();
-  let selectedDate = location.state.selectedDate.split("-");
-  let year = selectedDate[0];
-  let month = selectedDate[1];
-  let date = selectedDate[2];
-  let toname = location.state.toname;
-  let toyou = location.state.toyou;
-  let email = location.state.email;
-  let id = location.state.id;
-
-  //링크 공유하기
-  let currUrl = window.document.location.href.split("/");
-  let url = currUrl.splice(0, currUrl.length - 2).join("/") + "/detail/" + id;
-
-  const onShareClick = (e) => {
-    let textArea = document.createElement("textarea");
-    document.body.appendChild(textArea);
-    textArea.value = url;
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-    alert("링크가 복사되었습니다.");
-  };
-
-  return (
-    <Container>
-      <Title>나의 내일에게</Title>
-      <AiFillHome
-        onClick={() => navigate("/")}
-        style={{
-          color: "white",
-          position: "relative",
-          width: "2.125rem",
-          height: "2.125rem",
-          left: "19.3rem",
-          top: "2rem",
-        }}
-      />
-      <BsFillPersonFill
-        onClick={() =>
-          navigate("/mypage", { state: { email: { userEmail: email } } })
-        }
-        style={{
-          color: "white",
-          position: "relative",
-          width: "2.125rem",
-          height: "2.125rem",
-          left: "20rem",
-          top: "2rem",
-        }}
-      />
-      <center>
-        <Bottle src="/img/closedbottle.png" alt="유리병" />
-        <Text1>유리병을 바다로 떠나보냈어요.</Text1>
-        <Text1>
-          {year}년 {month}월 {date}일에
-        </Text1>
-
-        {toname !== toyou ? (
-          <Text1>{toname}님께 찾아갈게요!</Text1>
-        ) : (
-          <Text1>당신께 찾아갈게요!</Text1>
-        )}
-
-        <Btn1 onClick={onShareClick}>받는 이에게 편지 링크 공유하기</Btn1>
-        <Button2>
-          <Btn2
-            onClick={() =>
-              navigate("/letterbox/unread", {
-                state: { email: email },
-              })
-            }
-          >
-            편지함으로
-          </Btn2>
-          <Btn2 onClick={() => navigate("/write/write1")}>새로운 편지하기</Btn2>
-        </Button2>
-      </center>
-    </Container>
-  );
-}
-
-export default Confirm;
