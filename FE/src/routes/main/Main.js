@@ -102,7 +102,6 @@ function Main() {
 
   // 디데이 기존 배열에 합치기
   for (let j = 0; j < dbLetter.length; j++) {
-    // console.log(j, dbDday[j]);
     dbLetter[j].dday = dbDday[j] + 2;
   }
 
@@ -277,7 +276,11 @@ function Main() {
                   </DivMid>
                 )}
             </>
-            <ButtonWrite onClick={() => navigate("/write/write1")}>
+            <ButtonWrite
+              onClick={() =>
+                navigate("/write/1", { state: { email: userEmail } })
+              }
+            >
               편지하러 가기
             </ButtonWrite>
           </>

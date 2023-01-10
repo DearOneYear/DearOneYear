@@ -10,6 +10,11 @@ const KakaoLogin = () => {
   let kakaoUrl = "http://localhost:8000/accounts/signin/kakao/";
   let kakaoCallbackUrl =
     "http://localhost:8000/accounts/signin/kakao/callback/";
+
+  // let kakaoUrl =
+  //   "https://port-0-dearoneyearbe-cf24lcbtczhq.gksl2.cloudtype.app/accounts/signin/kakao/";
+  // let kakaoCallbackUrl =
+  //   "https://port-0-dearoneyearbe-cf24lcbtczhq.gksl2.cloudtype.app/accounts/signin/kakao/callback/";
   const onClickLogin = () => {
     window.location.href = kakaoUrl;
   };
@@ -24,7 +29,6 @@ const KakaoLogin = () => {
     await axios
       .post(`${kakaoCallbackUrl}`, data, config)
       .then((res) => {
-        console.log(res);
         // 쿠키 설정
         setCookie("my_access_token", res.data.my_access_token, 3);
         setCookie("my_refresh_token", res.data.my_refresh_token, 3);

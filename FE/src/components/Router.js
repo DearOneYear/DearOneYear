@@ -53,17 +53,11 @@ const AppRouter = () => {
         <Route path="/detail/:id/photo" element={<OpenPhoto />} />
 
         {/* 편지 작성 */}
-        <Route path="/write/write1" element={<Write1 />} />
-        <Route path="/write/write2" element={<Write2 />} />
-        <Route path="/write/write3/tome" element={<Write3 />} />
-        <Route path="/write/write3/toyou" element={<Write3 />} />
-        <Route path="/write/write4/tome" element={<Write4 />} />
-        <Route path="/write/write4/toyou" element={<Write4 />} />
-        <Route path="/write/write5/tome" element={<Write5 />} />
-        <Route path="/write/write5/toyou" element={<Write5 />} />
-        <Route path="/write/write6/tome" element={<Write6 />} />
-        <Route path="/write/write6/toyou" element={<Write6 />} />
-        <Route path="/write/confirm" element={<Confirm />} />
+        <Route path="/write/1" element={<Write3 />} />
+        <Route path="/write/2" element={<Write4 />} />
+        <Route path="/write/3" element={<Write5 />} />
+        <Route path="/write/4" element={<Write6 />} />
+        <Route path="/confirm" element={<Confirm />} />
       </Routes>
     </BrowserRouter>
   );
